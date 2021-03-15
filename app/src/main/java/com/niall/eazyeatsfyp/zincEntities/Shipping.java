@@ -40,4 +40,13 @@ public class Shipping {
     public void setMax_price(double max_price) {
         this.max_price = max_price;
     }
+
+    @Override
+    public String toString() {
+        return "Shipping{" +
+                "order_by='" + order_by + '\'' +
+                ", max_days=" + max_days +
+                ", max_price=" + max_price +
+                '}';
+    }
 }

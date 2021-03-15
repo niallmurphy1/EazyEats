@@ -6,6 +6,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
 import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.util.Constants;
 
@@ -23,15 +24,16 @@ public class OrderRepo {
     private static final String URL = "https://api.zinc.io/v1/orders";
 
     public void createOrder(Order order, Callback<String> callback) {
+        String jsonOrder = new Gson().toJson(order);
         AndroidNetworking.post(URL)
                 .addHeaders("Authorization", Constants.ZINC_AUTH)
-                .addBodyParameter(order)
+                .addStringBody(jsonOrder)
                 .build()
                 .getAsObject(OrderResponse.class, new ParsedRequestListener<OrderResponse>() {
                     @Override
                     public void onResponse(OrderResponse response) {
 
-                        Log.d(OrderRepo.class.getSimpleName(), response.requestId);
+                        //Log.d(OrderRepo.class.getSimpleName(), response.requestId);
                         callback.onSuccess(response.requestId);
                     }
 

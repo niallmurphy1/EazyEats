@@ -99,4 +99,18 @@ public class Address {
     }
 
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", address_line1='" + address_line1 + '\'' +
+                ", address_line2='" + address_line2 + '\'' +
+                ", zip_code='" + zip_code + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                '}';
+    }
 }

@@ -125,6 +125,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        sameAsBilling();
                         assignVariables();
 
 
@@ -139,11 +140,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             }
         });
-
-        sameAsBilling();
-
-
-
 
     }
 
@@ -293,23 +289,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 //TODO: get order working
                 Log.d("TAG", "onSuccess: The string for order confirmation " + data);
 
-                //last response
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: <-- 200 OK https://api.zinc.io/v1/orders (859ms)
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Server: nginx
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Date: Fri, 12 Mar 2021 19:58:01 GMT
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Content-Type: application/json; charset=utf-8
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Transfer-Encoding: chunked
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Connection: keep-alive
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Vary: Accept-Encoding
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: X-Powered-By: Express
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Access-Control-Allow-Origin: *
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Access-Control-Allow-Headers: Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: ETag: W/"47a-ci5PU8rZniik2Hnhm33bskqJSxc"
-//                2021-03-12 19:58:01.641 21096-21321/com.niall.eazyeatsfyp D/OkHttp: Strict-Transport-Security: max-age=15768000
-//                2021-03-12 19:58:01.643 21096-21321/com.niall.eazyeatsfyp D/OkHttp: {"request_id":"cc033fdbc9701b1cc16803ec6afd0527","_type":"error","code":"invalid_request","message":"Validation failed on the request.","data":{"validator_errors":[{"path":"shipping_address.phone_number","message":"'undefined' is not a permitted value for 'shipping_address.phone_number' field."},{"path":"shipping_address.country","message":"'undefined' is not a permitted value for 'shipping_address.country' field."},{"path":"shipping_address.city","message":"'undefined' is not a permitted value for 'shipping_address.city' field."},{"path":"shipping_address.zip_code","message":"'undefined' is not a permitted value for 'shipping_address.zip_code' field."},{"path":"shipping_address.address_line1","message":"'undefined' is not a permitted value for 'shipping_address.address_line1' field."},{"path":"shipping_address.last_name","message":"'undefined' is not a permitted value for 'shipping_address.last_name' field."},{"path":"shipping_address.first_name","message":"'undefined' is not a permitted value for 'shipping_address.first_name' field."},{"path":"retailer","message":"'undefined' is not a permitted value for 'retailer' field."}]}}
-//                2021-03-12 19:58:01.643 21096-21321/com.niall.eazyeatsfyp D/OkHttp: <-- END HTTP (1146-byte body)
-//                2021-03-12 19:58:01.657 21096-21096/com.niall.eazyeatsfyp D/AndroidRuntime: Shutting down VM
-
 
             }
 
@@ -330,17 +309,17 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if(sameAsShippingCheckbox.isChecked()){
 
             firstNameBillingEdit.setText(firstNameEdit.getText().toString());
-            lastNameBillingEdit.setText(lastNameEdit.getText());
-            address1BillingEdit.setText(address2ShippingEdit.getText());
-            address2BillingEdit.setText(address2ShippingEdit.getText());
-            zipBillingEdit.setText(zipShippingEdit.getText());
-            cityBillingEdit.setText(cityShippingEdit.getText());
-            stateBillingEdit.setText(stateShippingEdit.getText());
-            countryCodeBillingEdit.setText(countryCodeShippingEdit.getText());
-            phoneNoBillingEdit.setText(phoneNoShippingEdit.getText());
+            lastNameBillingEdit.setText(lastNameEdit.getText().toString());
+            address1BillingEdit.setText(address1ShippingEdit.getText().toString());
+            address2BillingEdit.setText(address2ShippingEdit.getText().toString());
+            zipBillingEdit.setText(zipShippingEdit.getText().toString());
+            cityBillingEdit.setText(cityShippingEdit.getText().toString());
+            stateBillingEdit.setText(stateShippingEdit.getText().toString());
+            countryCodeBillingEdit.setText(countryCodeShippingEdit.getText().toString());
+            phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
 
         }
-        else if(!sameAsShippingCheckbox.isChecked()){
+        else {
             firstNameBillingEdit.setText("");
             lastNameBillingEdit.setText("");
             address1BillingEdit.setText("");

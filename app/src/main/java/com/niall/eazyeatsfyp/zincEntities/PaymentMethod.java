@@ -70,4 +70,16 @@ public class PaymentMethod {
     public void setUse_gift(boolean use_gift) {
         this.use_gift = use_gift;
     }
+
+    @Override
+    public String toString() {
+        return "PaymentMethod{" +
+                "name_on_card='" + name_on_card + '\'' +
+                ", number='" + number + '\'' +
+                ", security_code='" + security_code + '\'' +
+                ", expiration_month=" + expiration_month +
+                ", expiration_year=" + expiration_year +
+                ", use_gift=" + use_gift +
+                '}';
+    }
 }
