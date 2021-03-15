@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_image_title"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/product_image_dialog_image_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/product_name_dialog_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="This is an example of a product title from amazon"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rating_linear_layout"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_image_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <RatingBar
+        android:id="@+id/rating_bar_dialog_amazon_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.DeviceDefault.RatingBar"
+        android:padding="8dp"
+        android:stepSize="0.1"
+        android:numStars="5"
+        android:layout_weight="4"
+        android:isIndicator="true"/>
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/product_stars_dialog_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:gravity="bottom"
+            android:text="4.6 stars"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/amazon_num_ratings_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:text="(123 reviews)"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/quantity_amazon_product_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/rating_linear_layout"
+        app:layout_constraintEnd_toStartOf="@id/product_quant_number_picker"
+        android:paddingTop="80dp"
+        android:paddingEnd="10dp"
+        android:text="Quantity: "/>
+
+    <NumberPicker
+        android:id="@+id/product_quant_number_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/product_price_dialog_text_view"
+        app:layout_constraintTop_toBottomOf="@id/rating_linear_layout" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/product_price_dialog_text_view"
+        app:layout_constraintTop_toBottomOf="@id/rating_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:paddingTop="70dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="Price: €4.99"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

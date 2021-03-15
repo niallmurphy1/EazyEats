@@ -1,0 +1,123 @@
+<resources>
+    <string name="app_name">Eazy Eats</string>
+    <string name="password">password</string>
+    <string name="username">username</string>
+    <string name="login">login</string>
+    <string name="todo">TODO</string>
+    <string name="reigster">Register</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="enter_your_details_here">Enter your details here!</string>
+    <string name="enter_your_date_of_birth">Enter your date of birth</string>
+    <string name="register">Register</string>
+    <string name="enter_you_details_below">enter you details below</string>
+    <string name="email">email</string>
+    <string name="activity_login">Login</string>
+    <string name="loginBTN">Login</string>
+    <string name="show_id">Show ID</string>
+    <string name="welcome">welcome</string>
+    <string name="scan">Scan</string>
+    <string name="press_for_username">press for username</string>
+    <string name="already_a_user">Already a user?</string>
+    <string name="email_">email</string>
+    <string name="add_apple_to_inventory">Add apple to inventory</string>
+    <string name="name">name</string>
+    <string name="meal_type">meal type</string>
+    <string name="macro">macro</string>
+    <string name="quantity">quantity</string>
+    <string name="add">Add</string>
+    <string name="press_for_italian_recipes">press for Italian recipes</string>
+    <string name="search_recipes">Search recipes</string>
+    <string name="no_results">No Results</string>
+    <string name="scan_dashboard">Scan</string>
+    <string name="eazy_eats_name">Eazy Eats</string>
+    <string name="filter_icon">Filter icon</string>
+    <string name="search_icon">Search icon</string>
+    <string name="title_activity_recipe_viewer">RecipeViewer</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="italian_tuna_pasta_might_be_just_the_main_course_you_are_sear_ching_for_this_recipe_makes_3_servings_with_b_610_calories_b_b_51g_of_protein_b_and_b_13g_of_fat_b_each_for_b_2_09_per_serving_b_this_recipe_b_covers_40_b_of_your_daily_requirements_of_vitamins_and_minerals_a_mixture_of_chillies_tuna_parsley_leaves_and_a_handful_of_other_ingredients_are_all_it_takes_to_make_this_recipe_so_delicious_from_preparation_to_the_plate_this_recipe_takes_approximately_b_20_minutes_b_1_person_has_tried_and_liked_this_recipe_it_is_a_good_option_if_you_re_following_a_b_dairy_free_and_pescatarian_b_diet_all_things_considered_we_decided_this_recipe_b_deserves_a_spoonacular_score_of_93_b_this_score_is_tremendous"><![CDATA[Italian Tuna Pasta might be just the main course you are sear ching for. This recipe makes 3 servings with <b>610 calories</b>, <b>51g of protein</b>, and <b>13g of fat</b> each. For <b>$2.09 per serving</b>, this recipe <b>covers 40%</b> of your daily requirements of vitamins and minerals. A mixture of chillies, tuna, parsley leaves, and a handful of other ingredients are all it takes to make this recipe so delicious. From preparation to the plate, this recipe takes approximately <b>20 minutes</b>. 1 person has tried and liked this recipe. It is a good option if you\'re following a <b>dairy free and pescatarian</b> diet. All things considered, we decided this recipe <b>deserves a spoonacular score of 93%</b>. This score is tremendous.]]></string>
+    <string name="my_food">My food</string>
+    <string name="shopping_list">Shopping list</string>
+    <string name="recipes">Recipes</string>
+    <string name="nav">Nav</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_recipes_dot_dot_dot">Search recipes...</string>
+    <string name="recipe_tinder">Recipe tinder</string>
+
+    <string-array name="units">
+        <item>Choose a Unit…</item>
+        <item>g</item>
+        <item>oz</item>
+        <item>lb</item>
+        <item>cup</item>
+        <item>can</item>
+        <item>fl oz</item>
+        <item>whole</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+
+
+    </string-array>
+
+    <string name="example_recipe_instructions">• Begin by preheating oven to 160C for standard heating oven, 150C for fan-forced oven. I can\'t stress enough how important it is to have an efficient oven when it comes to baking. So if you intend to bake regularly, please invest in an oven thermometer so that you know the exact temperature your oven heats up to.
+• Next, grease and line a 10 X 10 X 3 square baking pan or 11 round pan. Grease first, line with baking paper and then grease again.
+• Add 5 large eggs to a large deep mixing bowl.
+• Add 1 cup of sugar. Feel free to cut this amount by a tablespoon or two if your bananas are very very ripe. Ripe bananas have a lot of sugar in them.
+• Add 1 teaspoon of banana flavoured essence.
+• Peel about 5 large bananas to get 400g of bananas. Use very ripe bananas. The stronger they smell, the better. You can cut the bananas into large pieces if they are too long for the bowl.
+• Add the bananas to the egg and sugar mixture. Beat at low speed for one minute and then at maximum speed for 14 minutes.
+• Let the machine whisk the mixture until it resembles whipped cream. If the mixture is still runny or wet, whisk some more. It should be white, stiff and non-dripping.
+• While the egg and banana mixture is being whisked, prepare the dry ingredients.
+• Sieve 2 &amp; 1/2 cups of plain flour into a bowl. Add 1 &amp; 1/2 teaspoon of baking powder. Add 1/2 teaspoon of bicarbonate of soda.
+• Prepare 200g of vegetable oil  about 2/3 cup and 1/4 cup.
+• Transfer the whisked egg-banana mixture to a large bowl/pot if necessary.
+• Add the flour mixture in 3 parts to the egg-banana mixture. Fold the flour mixture into the egg-banana mixture with your hands. Use large folding movements. Do this step in 3 parts. Dont add all the flour at one time.
+• When the flour mixture has been folded into the egg-banana mixture, add the vegetable oil. And fold that in as well. If you have chopped walnuts, add them here too. I liked my cake with no nuts.
+• Pour the batter into the greased and lined baking pan.
+• Bake at a pre-heated oven of 160C for standard heating oven, 150C for fan-forced oven for 55 minutes or until the cake turns golden brown. A cake pick or satay stick should come out clean when placed into the centre of the cake. A cake pick or satay stick should come out clean when placed into the centre of the cake.
+• Place a cake base or plate over the baking pan and invert the cake over. Peel the baking paper away from the cake.
+• Use a cooling rack and invert the cake again. Let the cake cool on the cooling rack. If you are in a dry or cold environment, place a clean towel over the cake as it cools so that it would not dry out too quickly.
+• Best served warm.</string>
+    <string name="title_activity_recipe_from_ingredients">RecipeFromIngredientsActivity</string>
+    <string name="french">French</string>
+    <string name="italian">Italian</string>
+    <string name="chinese">Chinese</string>
+    <string name="mexican">Mexican</string>
+    <string name="thai">Thai</string>
+    <string name="mediterranean">Mediterranean</string>
+    <string name="indian">Indian</string>
+    <string name="greek">Greek</string>
+    <string name="filter_meal_types">Filter Meal Types</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="main_course">Main Course</string>
+    <string name="side_dish">Side dish</string>
+    <string name="dessert">Dessert</string>
+    <string name="appetizer">Appetizer</string>
+    <string name="beverage">Beverage</string>
+    <string name="select_to_remove">(select to remove)</string>
+    <string name="filter_allergens">Filter Allergens</string>
+    <string name="dairy">Dairy</string>
+    <string name="egg">Egg</string>
+    <string name="peanut">Peanut</string>
+    <string name="soy">Soy</string>
+    <string name="gluten">Gluten</string>
+    <string name="seafood">Seafood</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="servings">Servings:</string>
+    <string name="textview">TextView</string>
+    <string name="sample_amazon_product_image">https://m.media-amazon.com/images/I/716o2TbJwDL._AC_UL320_.jpg</string>
+    <string name="noImageAvailableImage">https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg</string>
+
+
+</resources>

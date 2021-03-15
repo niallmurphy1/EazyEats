@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "522529687830",
+    "firebase_url": "https://eazy-eats-f7d11.firebaseio.com",
+    "project_id": "eazy-eats-f7d11",
+    "storage_bucket": "eazy-eats-f7d11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522529687830:android:6fadb1bb1e2bc173866837",
+        "android_client_info": {
+          "package_name": "com.niall.eazyeatsfyp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522529687830-u4dqkd9pefthnfvjsccodmrvskjufj2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5E6w4M7two4eQ1iW1AvvkVxWZBOKZekU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522529687830-u4dqkd9pefthnfvjsccodmrvskjufj2a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

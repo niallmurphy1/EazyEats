@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/inventory_nav"
+        android:icon="@drawable/ic_food_inventory"
+        android:title="@string/my_food"
+        />
+
+    <item android:id="@+id/shopping_list_nav"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="@string/shopping_list"
+        />
+
+
+    <item android:id="@+id/recipe_tinder_nav"
+        android:icon="@drawable/ic_fire_tinder"
+        android:title="@string/recipe_tinder"
+        />
+
+
+    <item android:id="@+id/recipes_nav"
+        android:icon="@drawable/ic_recipe_book"
+        android:title="@string/recipes"
+        />
+
+
+</menu>
