@@ -67,10 +67,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private EditText countryCodeBillingEdit;
     private EditText phoneNoBillingEdit;
 
-    //shipping_method
-    private EditText orderByShippingEdit;
-    private EditText maxDaysShippingEdit;
-    private EditText maxPriceShippingEdit;
+
 
     //payment_method
     private EditText nameOnCardEdit;
@@ -101,7 +98,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         initFields();
 
         //assign required variables to create an order object
-
         userAmazonCartRef  = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonShoppingCart");
         userAmazonCreds = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonCreds");
 
@@ -169,10 +165,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         sameAsShippingCheckbox = findViewById(R.id.order_details_same_as_shipping_checkbox);
 
-        //shippingPrefs
-        orderByShippingEdit = findViewById(R.id.order_details_order_by_text);
-        maxDaysShippingEdit = findViewById(R.id.order_details_max_days_text);
-        maxPriceShippingEdit = findViewById(R.id.order_details_max_price_shipping_text);
 
         //initPaymentMethod
         nameOnCardEdit = findViewById(R.id.order_details_payment_name_on_card_text);
@@ -182,7 +174,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         expirationYearEdit = findViewById(R.id.oder_details_expiration_year_text);
         useGiftCheckbox = findViewById(R.id.order_details_use_gift_checkbox);
 
-        maxPriceEdit = findViewById(R.id.order_details_max_price_text);
 
         confirmAndPayButton = findViewById(R.id.order_details_confirm_and_pay_button);
 
@@ -249,14 +240,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 , useGiftCheckbox.isChecked());
 
         //shipping
-        shipping_object = new Shipping();
-        shipping_object.setOrder_by(orderByShippingEdit.getText().toString().trim());
-        shipping_object.setMax_days(Integer.parseInt(maxDaysShippingEdit.getText().toString().trim()));
-        shipping_object.setMax_price(Double.parseDouble(maxPriceShippingEdit.getText().toString().trim()));
+        shipping_object = new Shipping("price", 10, 0);
 
         is_gift = useGiftCheckbox.isChecked();
 
-        max_price = Double.parseDouble(maxPriceEdit.getText().toString().trim());
+        max_price = 0;
 
         List<ProductObject> amazonProducts = new ArrayList<>();
 

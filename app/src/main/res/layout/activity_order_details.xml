@@ -225,55 +225,55 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:text="Shipping preferences"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="left"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:text="Shipping preferences"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="15sp" />-->
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_margin="6dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
-            app:errorEnabled="true">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="54dp"-->
+<!--            android:layout_margin="6dp"-->
+<!--            app:counterEnabled="true"-->
+<!--            app:counterMaxLength="15"-->
+<!--            android:background="@drawable/round_corner_toggle"-->
+<!--            app:errorEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/order_details_order_by_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_corner_toggle"
-                android:importantForAutofill="yes"
-                android:hint="Order by..."
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/order_details_order_by_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/round_corner_toggle"-->
+<!--                android:importantForAutofill="yes"-->
+<!--                android:hint="Order by..."-->
+<!--                android:maxLines="1" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_margin="6dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
-            app:errorEnabled="true">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="54dp"-->
+<!--            android:layout_margin="6dp"-->
+<!--            app:counterEnabled="true"-->
+<!--            app:counterMaxLength="15"-->
+<!--            android:background="@drawable/round_corner_toggle"-->
+<!--            app:errorEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/order_details_max_days_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/round_corner_toggle"
-                android:hint="Max days"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/order_details_max_days_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="number"-->
+<!--                android:background="@drawable/round_corner_toggle"-->
+<!--                android:hint="Max days"-->
+<!--                android:maxLines="1" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -620,22 +620,22 @@
             android:text="Use gift"/>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_margin="6dp"
-            android:background="@drawable/round_corner_toggle"
-            app:errorEnabled="true">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="54dp"-->
+<!--            android:layout_margin="6dp"-->
+<!--            android:background="@drawable/round_corner_toggle"-->
+<!--            app:errorEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/order_details_max_price_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/round_corner_toggle"
-                android:hint="max price"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/order_details_max_price_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="number"-->
+<!--                android:background="@drawable/round_corner_toggle"-->
+<!--                android:hint="max price"-->
+<!--                android:maxLines="1" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
         <Button
