@@ -80,7 +80,7 @@
         android:layout_marginLeft="18dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_plus_add"

@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         loginPwordEdit = findViewById(R.id.loginPasswordEditText);
         loginEmailEdit = findViewById(R.id.loginEmailEditText);
 
-        foo();
+        //foo();
     }
 
     @NotNull

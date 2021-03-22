@@ -28,6 +28,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:padding="5dp"
+            android:paddingEnd="10dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="This is an example of a product title from amazon"/>
@@ -85,7 +86,8 @@
         app:layout_constraintTop_toBottomOf="@id/rating_linear_layout"
         app:layout_constraintEnd_toStartOf="@id/product_quant_number_picker"
         android:paddingTop="80dp"
-        android:paddingEnd="10dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="10dp"
         android:text="Quantity: "/>
 
     <NumberPicker

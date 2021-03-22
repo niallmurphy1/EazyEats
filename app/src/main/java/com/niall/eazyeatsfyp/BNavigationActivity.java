@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.niall.eazyeatsfyp.barcode.Scanner;
 import com.niall.eazyeatsfyp.fragments.MyFoodFragment;
 import com.niall.eazyeatsfyp.fragments.RecipeSearcherFragment;
@@ -21,6 +23,8 @@ import com.niall.eazyeatsfyp.fragments.ShoppingListFragment;
 public class BNavigationActivity extends AppCompatActivity {
 
     final SparseArray<Fragment> fragments = new SparseArray<>();
+
+    FirebaseAuth firebaseAuth;
 
     Intent cameraIntent;
 
@@ -33,6 +37,8 @@ public class BNavigationActivity extends AppCompatActivity {
         BottomNavigationView bNV = findViewById(R.id.bottom_nav_view);
 
         bNV.setSelectedItemId(R.id.myFoodTabLayout);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         if(savedInstanceState == null){
             setInitialFrag();
@@ -123,8 +129,11 @@ public class BNavigationActivity extends AppCompatActivity {
                 return  true;
 
             case R.id.item3:
-                //startActivity(logoutIntent);
-                //startActivity(logoutIntent);
+                if (firebaseAuth.getCurrentUser() != null) {
+                    firebaseAuth.signOut();
+                    startActivity(new Intent(this, RegisterActivity.class));
+                }
+
                 return  true;
         }
         return super.onOptionsItemSelected(item);
