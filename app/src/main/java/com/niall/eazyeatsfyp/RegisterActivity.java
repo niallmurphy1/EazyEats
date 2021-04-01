@@ -41,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText usernameEdit;
     private EditText passwordEdit;
 
+
+
     private static final String TAG = "EmailPassword";
 
 

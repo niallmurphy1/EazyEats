@@ -59,6 +59,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
    // ActivityRecipeViewerBinding binding;
     private boolean isRotate = false;
 
+    private TextView recipeNameText;
     private ImageView recipeImage;
     private TextView recipeInstructions;
     private TextView recipeTimeTextView;
@@ -72,7 +73,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
     private Recipe recipe;
 
-    public DatabaseReference dataRef;
     public FirebaseAuth fAuth = FirebaseAuth.getInstance();
     public FirebaseUser fUser = fAuth.getCurrentUser();
     final String userId = fUser.getUid();
@@ -93,21 +93,19 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     private ArrayList<String> foodIds = new ArrayList<>();
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_viewer_new);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_new);
+        collapsingToolbarLayout.setTitleEnabled(true);
 
         changeServingsBtn = findViewById(R.id.change_servings_button);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_viewer_new);
 
+        recipeNameText = findViewById(R.id.recipe_name_collapsing_tbar_textview);
         recipeTimeTextView = findViewById(R.id.ready_in_mins_recipe_viewer);
         recipeInstructions = findViewById(R.id.recipe_instructions);
         servingsTextView = findViewById(R.id.recipe_viewer_servings_text);
@@ -244,7 +242,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                     String rName = obj.getString("title");
                    // collapsingToolbarLayout.setTitleEnabled(false);
                     collapsingToolbarLayout.setTitle(rName);
-
+                   recipeNameText.setText(rName);
 
                     int time = obj.getInt("readyInMinutes");
 
@@ -254,6 +252,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                     recipe = new Recipe(rName, dishTypes, ingredients, time, servings, recipeImageURI, recipeID, cuisines);
 
                     recipe.setMethod(recipeInstructions.getText().toString());
+
 
 
                     setUpRCV();

@@ -1,13 +1,16 @@
 package com.niall.eazyeatsfyp.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +32,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.common.api.internal.ApiKey;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +46,7 @@ import com.niall.eazyeatsfyp.adapters.MyIngredientsAdapter;
 import com.niall.eazyeatsfyp.adapters.RecipeCardAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
+import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -50,6 +55,8 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
 
@@ -63,8 +70,9 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     public FirebaseUser fUser = fAuth.getCurrentUser();
     final String userId = fUser.getUid();
 
+    private boolean undoClicked = false;
+
     public RecyclerView recipeRecycler;
-    RecyclerView.Adapter recipeAdapter;
     RecipeCardAdapter adapter;
     ArrayList<Recipe> recipes = new ArrayList<>();
     private DatabaseReference userFavRecipesRef;
@@ -108,6 +116,146 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
     }
 
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.deleteRed))
+                    .addSwipeLeftActionIcon(R.drawable.ic_delete_bin).create().decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+
+            Log.d("TAG", "onSwiped: recipe deleted position " + recipes.get(position));
+
+           // Log.d("TAG", "onSwiped: recipe deleted position -1 " + recipes.get(position-1));
+            Recipe deletedRecipe = recipes.get(position);
+
+
+
+            if(direction == ItemTouchHelper.LEFT){
+                recipes.remove(position);
+
+                adapter.notifyItemRemoved(position);
+
+
+                //TODO: fix the Snackbar so that undo doesn't delete from firebase!!!
+
+
+                Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
+                        Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        undoClicked = true;
+                        recipes.add(position, deletedRecipe);
+                        adapter.notifyItemInserted(position);
+                    }
+                }).show();
+                Log.d("UNDOCLICKED", "onSwiped: value of undo clicked " + undoClicked);
+
+
+                if(!undoClicked){
+
+                    Log.d("TAG", "onSwiped: on DeleteRecipe: " + deletedRecipe.toString());
+
+                    userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
+
+
+                    userFavRecipesRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                            Log.d("TAG", "onDataChange: in this onDataChanged method");
+                            for(DataSnapshot keyNode: snapshot.getChildren()){
+
+                                Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
+
+
+                                Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
+
+                                if (keyNode.child("recipeID").getValue().toString().equals(deletedRecipe.getRecipeID())){
+
+                                    Log.d("TAG", "onDataChange: product to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
+
+                                    userFavRecipesRef.child(keyNode.getKey()).removeValue();
+
+
+                                    Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
+                                }
+                            }
+
+                            //adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+
+                            Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
+                        }
+                    });
+
+                }
+
+
+            }
+        }
+    };
+
+
+
+//    public void removeFromFirebase(Recipe recipe){
+//
+//        userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-likedRecipes");
+//
+//
+//        userFavRecipesRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//
+//                for(DataSnapshot keyNode: snapshot.getChildren()){
+//
+//
+//                    if (keyNode.getKey().equals(recipe.getRecipeID())){
+//
+//                        Log.d("TAG", "onDataChange: product to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
+//
+//                        userFavRecipesRef.child(keyNode.getKey()).removeValue();
+//
+//
+//                        Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
+//                    }
+//                }
+//
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//
+//                Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
+//            }
+//        });
+//    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,11 +277,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         bapsChangeServingsBtn = view.findViewById(R.id.baps_change_servings_button);
 
 
-
         //TODO: add more func. to bottom sheet eg. removeFromFav btn, see similar recipes,
-
-
-
 
 
     }
@@ -210,9 +354,12 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
     public void setUpRCV(){
         if (getView() != null) {
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
             recipeRecycler = getView().findViewById(R.id.recipes_rcv_my_food);
             recipeRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new RecipeCardAdapter(getContext(), recipes, this);
+            itemTouchHelper.attachToRecyclerView(recipeRecycler);
             recipeRecycler.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

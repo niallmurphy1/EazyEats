@@ -248,4 +248,6 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
          return formatter.format(price);
 
     }
+
+
 }

@@ -102,7 +102,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
     public Map newShopListItem = new HashMap();
 
-    private EditText searchBar;
+
     private FloatingActionButton addItem;
     private FloatingActionButton scanBtn;
 
@@ -216,7 +216,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        searchBar = view.findViewById(R.id.searchBarShopList);
         scanBtn = view.findViewById(R.id.fabScan);
         addItem = view.findViewById(R.id.addToShopListBtn);
 
@@ -239,8 +238,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         getShoppingListFromFirebase();
 
         retrieveProductsFromFirebase();
-
-        setUpFilter();
 
         productRecycler = view.findViewById(R.id.bap_amazon_product_cart_rcv);
         productViewAdapter = new AmazonCardViewBSheetAdapter(getContext());
@@ -328,31 +325,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
     //TODO: figure out how to access delete/add/remove buttons etc.
 
-
-
-
-    private void setUpFilter() {
-
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //adapter.getFilter().filter(s.toString());
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                adapter.getFilter().filter(s.toString());
-            }
-        });
-
-    }
 
 
     public void getShoppingListFromFirebase(){

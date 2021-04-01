@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         loginPwordEdit = findViewById(R.id.loginPasswordEditText);
         loginEmailEdit = findViewById(R.id.loginEmailEditText);
 
-        //foo();
     }
 
     @NotNull
@@ -63,69 +62,55 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void onLoginClick(View view){
-
         Log.d(TAG, "onLoginClick: login button clicked");
 
-        final Intent nav = new Intent(this, BNavigationActivity.class);
-
-        mAuth.signInWithEmailAndPassword(getEmailInput(), getPasswordInput())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String userId = user.getUid();
-                            Toast.makeText(LoginActivity.this, "Login success.",
-                                    Toast.LENGTH_SHORT).show();
-
-                            db = FirebaseDatabase.getInstance().getReference().child("User");
-                            String key = db.push().getKey();
-
-                            Toast.makeText(LoginActivity.this, userId,
-                                    Toast.LENGTH_LONG).show();
+        if(getEmailInput().isEmpty() || getPasswordInput().isEmpty()){
+            Toast.makeText(this, "You must enter in details!", Toast.LENGTH_SHORT).show();
+        }else {
 
 
-                            startActivity(nav);
+            final Intent nav = new Intent(this, BNavigationActivity.class);
+
+            mAuth.signInWithEmailAndPassword(getEmailInput(), getPasswordInput())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                String userId = user.getUid();
+                                Toast.makeText(LoginActivity.this, "Login success.",
+                                        Toast.LENGTH_SHORT).show();
+
+                                db = FirebaseDatabase.getInstance().getReference().child("User");
+                                String key = db.push().getKey();
+
+                                Toast.makeText(LoginActivity.this, userId,
+                                        Toast.LENGTH_LONG).show();
 
 
-                          // startActivity(dash);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                startActivity(nav);
+
+
+                                // startActivity(dash);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                // ...
+                            }
+
                             // ...
                         }
+                    });
 
-                        // ...
-                    }
-               });
+        }
     }
 
 
-    public void foo(){
 
-
-        String creds = okhttp3.Credentials.basic("88DD74AB4C41EACFB9354D8A", "");
-
-
-        AndroidNetworking.get("https://api.zinc.io/v1/search?query=steak&page=1&retailer=amazon").addHeaders("Authorization", creds).build().getAsString(new StringRequestListener() {
-            @Override
-            public void onResponse(String response) {
-
-
-                Log.d(TAG, "onResponse: " + response);
-            }
-
-            @Override
-            public void onError(ANError anError) {
-
-                Log.d(TAG, "onError: " + anError.getErrorBody());
-            }
-        });
-    }
 
 
 

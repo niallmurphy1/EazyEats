@@ -25,14 +25,26 @@
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:contentScrim="@color/app_orange"
                 android:textAlignment="center"
-                app:title="Recipe Name"
                 >
-
                 <ImageView
                     android:id="@+id/recipe_viewer_image_new"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:src="@drawable/food_bg"/>
+
+                <TextView
+                    android:id="@+id/recipe_name_collapsing_tbar_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="15dp"
+                    android:text="Recipe Name"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_collapseMode="pin"
+                    android:textSize="25dp"/>
+
+
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -136,6 +148,19 @@
                     android:textColor="@color/black"
                     android:padding="8dp"
                     android:textSize="18sp" />
+
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/app_orange"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:text="Related Recipes:"-->
+<!--                    android:textSize="20sp"-->
+<!--                    />-->
+
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

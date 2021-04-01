@@ -119,6 +119,22 @@ public class Recipe {
     public void setMethod(String method) {
         this.method = method;
     }
+
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "name='" + name + '\'' +
+                ", dishType=" + dishType +
+                ", ingredients=" + ingredients +
+                ", time=" + time +
+                ", servings=" + servings +
+                ", cuisines=" + cuisines +
+                ", imageURI='" + imageURI + '\'' +
+                ", recipeID='" + recipeID + '\'' +
+                ", method='" + method + '\'' +
+                '}';
+    }
 }
 
 

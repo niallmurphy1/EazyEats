@@ -27,10 +27,6 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
     private ViewHolder.OnRecipeListener mOnRecipeListener;
 
 
-
-
-
-
     public RecipeCardAdapter(Context context, ArrayList<Recipe> recipeData, ViewHolder.OnRecipeListener onRecipeListener){
         this.layoutInflater = LayoutInflater.from(context);
         this.recipeData = recipeData;
@@ -70,8 +66,6 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
 
             public void onRecipeClick(int position);
 
-
-
         }
 
     }
@@ -99,23 +93,6 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
         holder.recipeServingsText.setText("Servings: "+ currentRecipe.getServings());
 
 
-
-    }
-
-
-
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void glideImage(ImageView imageView){
-         Glide.with(imageView.getContext()).load("https://spoonacular.com/recipeImages/648279-312x231.jpg").into(imageView);
 
     }
 
