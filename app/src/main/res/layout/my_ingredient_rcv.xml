@@ -43,8 +43,8 @@
                 android:id="@+id/my_ingredient_name_rcv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/my_ingredient_quant_unit"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:layout_marginStart="20dp"
                 android:textSize="14sp"

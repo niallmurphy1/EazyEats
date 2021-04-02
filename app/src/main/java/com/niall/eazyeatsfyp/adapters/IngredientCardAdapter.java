@@ -117,6 +117,8 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
         return new ViewHolder(view, mOnIngredientListener);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull IngredientCardAdapter.ViewHolder holder, int position) {
 
@@ -139,6 +141,7 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                             isEnabled = true;
                             ClickItem(holder);
+
 
                             ingredientViewModel.getText().observe((LifecycleOwner) holder.itemView.getContext(), new Observer<String>() {
                                 @Override
@@ -163,8 +166,9 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                                     break;
                                 case R.id.menu_delete_ingredient:
 
-                                    frag.deleteIngredientsfromFirebase(selectedItems);
-
+                                    //ClickItem(holder);
+                                    Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
+                                    frag.deleteIngredientsFromFirebase(selectedItems);
 
                                     if(ingredients.size() == 0){
 
@@ -205,7 +209,7 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
 
                             selectAll = false;
 
-                            selectedItems.clear();
+                            //selectedItems.clear();
 
                             notifyDataSetChanged();
 
@@ -250,7 +254,12 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
     }
 
     private void ClickItem(ViewHolder holder) {
+
+        Log.d("CLICKITEMMETHOD", "ClickItem: this item has been clicked: " + ingredients.get(holder.getAdapterPosition()));
+
         Food food = ingredients.get(holder.getAdapterPosition());
+
+
         if(holder.checkImage.getVisibility() == View.GONE){
 
             holder.checkImage.setVisibility(View.VISIBLE);
@@ -258,6 +267,8 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
             holder.itemView.setBackgroundColor(Color.LTGRAY);
 
             selectedItems.add(food);
+
+            Log.d(TAG, "ClickItem: selected items: " + selectedItems.toString() );
         }
         else{
 

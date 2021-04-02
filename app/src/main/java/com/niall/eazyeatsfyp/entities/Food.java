@@ -3,6 +3,8 @@ package com.niall.eazyeatsfyp.entities;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +83,7 @@ public class Food {
         this.unit = unit;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Food{" +

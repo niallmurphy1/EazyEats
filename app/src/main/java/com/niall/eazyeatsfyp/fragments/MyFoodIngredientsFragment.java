@@ -225,6 +225,8 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
 
 
+                    //TODO: live search to add food, display options with proper quantities
+
                     //Log.d(TAG, "onClick: Food item created: " + food.toString());
 
                     AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query="+food.getName()
@@ -461,7 +463,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
     }
 
-    public void deleteIngredientsfromFirebase(ArrayList<Food> selectedItemsDelete) {
+    public void deleteIngredientsFromFirebase(ArrayList<Food> selectedItemsDelete) {
 
 
         Log.d(TAG, "deleteIngredientsfromFirebase: selected items: " + selectedItemsDelete.toString());
@@ -470,6 +472,8 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
         // TODO: find out why selectedItemsDelete gets cleared in here
 
             Log.d(TAG, "deleteIngredientsfromFirebase: method started");
+
+
             userIngredientsRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -503,7 +507,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                         adapter.notifyDataSetChanged();
                     }
 
-                    Toast.makeText(getActivity(),  selectedItemsDelete.size() + " items deleted successfully", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(),  selectedItemsDelete.size() + " items deleted successfully", Toast.LENGTH_SHORT).show();
 
 
                 }
