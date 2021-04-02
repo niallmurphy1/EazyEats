@@ -131,19 +131,52 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         Intent intent = getIntent();
 
-        final String recipeID = intent.getStringExtra(RecipeSearcherFragment.RECIPE_ID);
-        String recipeImageURI = intent.getStringExtra(RecipeSearcherFragment.RECIPE_IMAGEURI);
+        if(intent !=null) {
+            String strdata = intent.getExtras().getString("WhereFrom");
 
-        System.out.println("Recipe ID:" + recipeID);
+            if(strdata.equals("RECIPEFROMSEARCH")){
+                final String recipeID = intent.getStringExtra(RecipeSearcherFragment.RECIPE_ID);
+                String recipeImageURI = intent.getStringExtra(RecipeSearcherFragment.RECIPE_IMAGEURI);
+
+                callRecipeAPI(recipeID, recipeImageURI);
+
+            }else if(strdata.equals("RECIPEFROMINGREDIENTS")){
+
+                final String recipeIDFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_ID);
+                final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
+
+                callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
+            }
+            else if(strdata.equals("RECIPEFROMTINDER")){
+
+                final String recipeIDFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_ID);
+                final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
+
+                callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
+            }
+
+
+
+        }
+
+
+
+
+
+    }
+
+    public void callRecipeAPI(String rID, String rImage){
+
+        System.out.println("Recipe ID:" + rID);
         recipeImage = findViewById(R.id.recipe_viewer_image_new);
         Picasso.get()
-                .load(recipeImageURI)
+                .load(rImage)
                 .fit()
                 .centerCrop()
                 .into(recipeImage);
 
 
-        AndroidNetworking.get("https://api.spoonacular.com/recipes/" + recipeID + "/information?" + "apiKey=c029b15f6c654e36beba722a71295883")
+        AndroidNetworking.get("https://api.spoonacular.com/recipes/" + rID + "/information?" + "apiKey=c029b15f6c654e36beba722a71295883")
                 .addPathParameter("pageNumber", "0")
                 .addQueryParameter("limit", "1")
                 .addHeaders("token", "1234")
@@ -165,35 +198,35 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                     JSONArray jArray = obj.getJSONArray("extendedIngredients");
 
                     for(int i=0; i < jArray.length(); i++){
-                       String ingredientName = jArray.getJSONObject(i).getString("name");
+                        String ingredientName = jArray.getJSONObject(i).getString("name");
 
-                       String categories = jArray.getJSONObject(i).getString("aisle");
+                        String categories = jArray.getJSONObject(i).getString("aisle");
 
-                       String foodId = jArray.getJSONObject(i).getString("id");
+                        String foodId = jArray.getJSONObject(i).getString("id");
 
-                       ShoppingListItem shoppingListItem = new ShoppingListItem(foodId, ingredientName, categories);
+                        ShoppingListItem shoppingListItem = new ShoppingListItem(foodId, ingredientName, categories);
 
-                       String unit = jArray.getJSONObject(i).getString("unit");
+                        String unit = jArray.getJSONObject(i).getString("unit");
 
-                       String quant = jArray.getJSONObject(i).getString("amount");
+                        String quant = jArray.getJSONObject(i).getString("amount");
 
-                       Double ingredientQuant = jArray.getJSONObject(i).getDouble("amount");
+                        Double ingredientQuant = jArray.getJSONObject(i).getDouble("amount");
 
-                       initialQuants.add(ingredientQuant);
+                        initialQuants.add(ingredientQuant);
 
-                       Food food = new Food(ingredientName, quant, unit);
+                        Food food = new Food(ingredientName, quant, unit);
 
 
 
-                       food.setFoodId(foodId);
-                       ingredients.add(food);
+                        food.setFoodId(foodId);
+                        ingredients.add(food);
 
                         System.out.println("Ingredient #" + i + ": " + ingredientName);
 
 
-                       shoppingListItems.add(shoppingListItem);
+                        shoppingListItems.add(shoppingListItem);
 
-                       foodIds.add(foodId);
+                        foodIds.add(foodId);
 
                     }
 
@@ -214,13 +247,13 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                     }
 
 
-                   ArrayList<String> dishTypes = new ArrayList<>();
+                    ArrayList<String> dishTypes = new ArrayList<>();
 
 
 
-                   for(int i =0; i< obj.getJSONArray("dishTypes").length(); i++){
-                       dishTypes.add(obj.getJSONArray("dishTypes").get(i).toString());
-                   }
+                    for(int i =0; i< obj.getJSONArray("dishTypes").length(); i++){
+                        dishTypes.add(obj.getJSONArray("dishTypes").get(i).toString());
+                    }
 
                     ArrayList<String> cuisines = new ArrayList<>();
 
@@ -240,16 +273,16 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
 
                     String rName = obj.getString("title");
-                   // collapsingToolbarLayout.setTitleEnabled(false);
+                    // collapsingToolbarLayout.setTitleEnabled(false);
                     collapsingToolbarLayout.setTitle(rName);
-                   recipeNameText.setText(rName);
+                    recipeNameText.setText(rName);
 
                     int time = obj.getInt("readyInMinutes");
 
                     recipeTimeTextView.setText("Time: "+time+ " mins");
 
 
-                    recipe = new Recipe(rName, dishTypes, ingredients, time, servings, recipeImageURI, recipeID, cuisines);
+                    recipe = new Recipe(rName, dishTypes, ingredients, time, servings, rImage, rID, cuisines);
 
                     recipe.setMethod(recipeInstructions.getText().toString());
 
@@ -269,7 +302,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 Log.w("API:", "NOPE");
             }
         });
-
 
     }
 

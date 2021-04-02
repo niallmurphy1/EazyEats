@@ -468,9 +468,6 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
         Log.d(TAG, "deleteIngredientsfromFirebase: selected items: " + selectedItemsDelete.toString());
 
-
-        // TODO: find out why selectedItemsDelete gets cleared in here
-
             Log.d(TAG, "deleteIngredientsfromFirebase: method started");
 
 

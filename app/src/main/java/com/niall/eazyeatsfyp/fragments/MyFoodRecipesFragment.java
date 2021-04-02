@@ -30,6 +30,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.common.api.internal.ApiKey;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,7 +56,9 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -163,8 +167,17 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                         undoClicked = true;
                         recipes.add(position, deletedRecipe);
                         adapter.notifyItemInserted(position);
+
+
+
+                        //addToFirebase(deletedRecipe);
+
                     }
-                }).show();
+                }
+
+
+
+                ).show();
                 Log.d("UNDOCLICKED", "onSwiped: value of undo clicked " + undoClicked);
 
 
@@ -190,7 +203,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                                 if (keyNode.child("recipeID").getValue().toString().equals(deletedRecipe.getRecipeID())){
 
-                                    Log.d("TAG", "onDataChange: product to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
+                                    Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
 
                                     userFavRecipesRef.child(keyNode.getKey()).removeValue();
 
@@ -211,49 +224,44 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                     });
 
                 }
-
-
             }
+
+
         }
     };
 
+    public void addToFirebase(Recipe deletedRecipe) {
+
+        Map newOldRecipe = new HashMap();
+        DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
+
+        userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
+
+        String key = recipeRef.push().getKey();
+
+        Map<String, Object> recipeValues = deletedRecipe.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put(key, recipeValues);
+        newOldRecipe.put(key, recipeValues);
+
+        userFavRecipesRef.updateChildren(newOldRecipe).addOnSuccessListener(new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+
+                Log.d("ADDTOFIREBASE", "onSuccess: recipe added:  " + deletedRecipe.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
 
-//    public void removeFromFirebase(Recipe recipe){
-//
-//        userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-likedRecipes");
-//
-//
-//        userFavRecipesRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//                for(DataSnapshot keyNode: snapshot.getChildren()){
-//
-//
-//                    if (keyNode.getKey().equals(recipe.getRecipeID())){
-//
-//                        Log.d("TAG", "onDataChange: product to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
-//
-//                        userFavRecipesRef.child(keyNode.getKey()).removeValue();
-//
-//
-//                        Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
-//                    }
-//                }
-//
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//
-//                Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
-//            }
-//        });
-//    }
+                Log.e("ADDTOFIREBASE", "onFailure: Failed to add ",e );
+            }
+        });
+
+    }
 
 
     @Override
@@ -353,6 +361,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     }
 
     public void setUpRCV(){
+
         if (getView() != null) {
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -455,6 +464,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                     Log.d("TAG", "onValueChange: initialQuants arraylist: " + initialQuants.get(i));
 
 
+                    //TODO: IndexOutOfBoundsException: FIX THIS
                     Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
                     Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
                     Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));

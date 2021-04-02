@@ -414,11 +414,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     }
 
 
-    //TODO:bottom sheet for access to shopping cart in shopping list activity
-    //create UI for bottom sheet
-    //retain asin codes for products
-
-
     public void onScanClick(){
         startActivity(scanIntent);
     }

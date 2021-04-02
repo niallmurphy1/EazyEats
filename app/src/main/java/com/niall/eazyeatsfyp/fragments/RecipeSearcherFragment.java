@@ -217,6 +217,8 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
 
         System.out.println(recipes.get(position).toString() + "\nRecipe ID: " + recipes.get(position).getRecipeID());
 
+        recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMSEARCH");
+
         recipeViewerIntent.putExtra(RECIPE_ID, recipes.get(position).getRecipeID());
 
         recipeViewerIntent.putExtra(RECIPE_IMAGEURI, recipes.get(position).getImageURI());

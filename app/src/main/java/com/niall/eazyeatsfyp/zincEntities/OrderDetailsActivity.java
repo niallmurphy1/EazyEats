@@ -274,9 +274,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String data) {
 
-                //TODO: get order working
                 Log.d("TAG", "onSuccess: The string for order confirmation " + data);
-
 
             }
 

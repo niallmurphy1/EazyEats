@@ -1,14 +1,12 @@
 package com.niall.eazyeatsfyp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -33,8 +31,14 @@ import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
 public class RecipeFromIngredientsActivity extends AppCompatActivity implements RecipeCardAdapter.ViewHolder.OnRecipeListener{
 
 
-    private Intent intent;
+    private Intent ingredientQueryIntent;
 
+    private Intent recipeViewerIntent;
+
+    private ArrayList<Recipe> recipes = new ArrayList<>();
+
+    public static final String RECIPE_ID = "recipeID";
+    public static final String RECIPE_IMAGEURI = "recipeImage";
 
     public RecyclerView recipeRecycler;
     RecipeCardAdapter adapter;
@@ -45,9 +49,9 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_from_ingredients);
 
-        intent = getIntent();
+        ingredientQueryIntent = getIntent();
 
-        String ingredientQuery = intent.getStringExtra(MyFoodIngredientsFragment.INGREDIENTSQUERY);
+        String ingredientQuery = ingredientQueryIntent.getStringExtra(MyFoodIngredientsFragment.INGREDIENTSQUERY);
 
 
 
@@ -59,7 +63,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
     public void searchByIngredient(String ingredientQuery) {
 
-        ArrayList<Recipe> recipes = new ArrayList<>();
+
 
 
         AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
@@ -130,7 +134,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                             shoppingListItems.add(shoppingListItem);
 
-
                         }
 
 
@@ -189,6 +192,14 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
     @Override
     public void onRecipeClick(int position) {
         //TODO: open recipe viewer activity
+
+        recipeViewerIntent = new Intent(this, RecipeViewerActivity.class);
+
+        recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMINGREDIENTS");
+        recipeViewerIntent.putExtra(RECIPE_ID, recipes.get(position).getRecipeID());
+        recipeViewerIntent.putExtra(RECIPE_IMAGEURI, recipes.get(position).getImageURI());
+
+        startActivity(recipeViewerIntent);
 
     }
 

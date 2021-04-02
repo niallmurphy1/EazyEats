@@ -1,6 +1,7 @@
 package com.niall.eazyeatsfyp.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.RecipeViewerActivity;
 import com.niall.eazyeatsfyp.adapters.CardStackAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
@@ -84,9 +86,13 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
     private BottomSheetBehavior bottomSheetBehavior;
     private Button applyFiltersBtn;
 
+    private  ArrayList<Recipe> tinderRecipes;
+
     private ChipGroup cuisineChips;
     private ChipGroup mealTypeChips;
     private ChipGroup allergenChips;
+
+    private Intent recipeViewerIntent;
 
 
     private DatabaseReference userFavRecipesRef;
@@ -101,6 +107,9 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
     //private ArrayList<Recipe> tinderRecipes = new ArrayList<>();
     private ArrayList<Recipe> favRecipes = new ArrayList<>();
     private ArrayList<Food> ingredients = new ArrayList<>();
+
+    public static final String RECIPE_ID = "recipeID";
+    public static final String RECIPE_IMAGEURI = "recipeImage";
 
 
     MaterialAlertDialogBuilder materialAlertDialogBuilder;
@@ -568,7 +577,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
     private void fetchRecipes(String query) {
         pageNum++;
-        ArrayList<Recipe> tinderRecipes = new ArrayList<>();
+        tinderRecipes = new ArrayList<>();
 
 //        tinderRecipes.clear();
 //        adapter.notifyDataSetChanged();
@@ -768,6 +777,15 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
     public void onCardClick(int position) {
 
         Log.d(TAG, "onCardClick: recipe: " + adapter.getRecipes().get(position).getName());
+
+        recipeViewerIntent = new Intent(getContext(), RecipeViewerActivity.class);
+
+        recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMTINDER");
+        recipeViewerIntent.putExtra(RECIPE_ID, tinderRecipes.get(position).getRecipeID());
+        recipeViewerIntent.putExtra(RECIPE_IMAGEURI, tinderRecipes.get(position).getImageURI());
+
+        startActivity(recipeViewerIntent);
+
 
 
     }
