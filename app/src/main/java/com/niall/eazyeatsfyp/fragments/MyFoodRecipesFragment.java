@@ -384,7 +384,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 setUpIngredientsRCV(position);
 
 
-
                 if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }else{
@@ -420,6 +419,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         bapsChangeServingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: fix recipe servings issue
                 changeServings(position);
             }
         });
@@ -465,6 +465,9 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
 
                     //TODO: IndexOutOfBoundsException: FIX THIS
+                    // whole algorithm is wrong sometimes, strip and redo this
+
+
                     Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
                     Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
                     Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));

@@ -86,6 +86,7 @@ public class MainShopListTestAdapter extends RecyclerView.Adapter<MainShopListTe
 
     @Override
     public void onShopListItemClick(View v, ShoppingListItem item) {
+
         Toast.makeText(v.getContext(),  item.getName() + " clicked!", Toast.LENGTH_SHORT).show();
         Log.d("TAG", "onShopListItemClick: item: " + item.getName());
 

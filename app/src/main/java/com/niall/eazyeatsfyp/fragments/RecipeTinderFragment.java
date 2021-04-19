@@ -37,6 +37,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -318,6 +319,9 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         headerLayout = view.findViewById(R.id.header_layout);
         headerArrowImage = view.findViewById(R.id.header_arrow);
 
+
+        getRecipesFromFirebase();
+
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -435,36 +439,43 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                     Recipe recipeSwiped = adapter.getRecipes().get(manager.getTopPosition()-1);
 
-                    //TODO: allow user to rate recipe, save rating to user-likedRecipes in FB with recipe key and rating
+                    if( !isDuplicateFavourite(favRecipes, recipeSwiped)) {
+                        //TODO: allow user to rate recipe, save rating to user-likedRecipes in FB with recipe key and rating
 
-                    DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
+                        DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
-                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
 
-                    String key = recipeRef.push().getKey();
+                        String key = recipeRef.push().getKey();
 
-                    Map<String, Object> recipeValues = recipeSwiped.toMap();
+                        Map<String, Object> recipeValues = recipeSwiped.toMap();
 
-                    Map<String, Object> childUpdates = new HashMap<>();
+                        Map<String, Object> childUpdates = new HashMap<>();
 
-                    childUpdates.put(key, recipeValues);
+                        childUpdates.put(key, recipeValues);
 
-                    userRef.child(userId).child("user-favRecipes").updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
+                        userRef.child(userId).child("user-favRecipes").updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 
-                            Toast.makeText(getContext(), recipeSwiped.getName() + " Added to favourites!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), recipeSwiped.getName() + " Added to favourites!", Toast.LENGTH_SHORT).show();
 
-                            System.out.println("Recipe:" + recipeSwiped.toString() + " Added to favourites");
-                        }
-                    });
+                                System.out.println("Recipe:" + recipeSwiped.toString() + " Added to favourites");
+                            }
+                        });
 
-                    recipeRef.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "onSuccess: RECIPE ADDED" );
-                        }
-                    });
+                        recipeRef.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "onSuccess: RECIPE ADDED" );
+                            }
+                        });
+
+
+                    }else {
+                        Snackbar.make(getView(), "This recipe is already in your favourites!", Snackbar.LENGTH_SHORT).show();
+                    }
+
 
 
 
@@ -526,7 +537,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         adapter.setmOnCardLickListener(this);
         cardStackView.setAdapter(adapter);
         cardStackView.setItemAnimator(new DefaultItemAnimator());
-        getRecipesFromFirebase();
+
 
         fetchRecipes("&sort=random&&fillIngredients=true&number=10");
 
@@ -729,12 +740,6 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         });
     }
 
-
-
-
-
-
-
     public void getRecipesFromFirebase(){
 
         userFavRecipesRef.addValueEventListener(new ValueEventListener() {
@@ -750,15 +755,15 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
                         Recipe recipe = keyNode.getValue(Recipe.class);
 
                                 favRecipes.add(recipe);
-                                System.out.println("This is the recipe: "+ recipe.toString());
+                               // System.out.println("This is the recipe: "+ recipe.toString());
 
-                        Log.d(TAG, "Recipe name: " + recipe.getName());
+                        //Log.d(TAG, "Favourite recipe : " + recipe.getName());
 
-                        Log.d(TAG, "onDataChange: This is the recipe ingredients: " + recipe.getIngredients().toString());
                     }
 
+                Log.d("getRecipesFromFirebase", "onDataChange: The favourite recipes: " + favRecipes.toString());
 
-
+                Log.d("getRecipesFromFirebase", "onDataChange: Favourite recipes size: " + favRecipes.size());
             }
 
             @Override
@@ -771,6 +776,20 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         });
 
 
+    }
+
+
+    public boolean isDuplicateFavourite(ArrayList<Recipe> recipes, Recipe swipedRecipe){
+
+        boolean duplicate = false;
+        for(Recipe recipe: recipes) {
+
+            if (swipedRecipe.getRecipeID().equals(recipe.getRecipeID())) {
+                duplicate = true;
+                break;
+            }
+        }
+            return duplicate;
     }
 
     @Override

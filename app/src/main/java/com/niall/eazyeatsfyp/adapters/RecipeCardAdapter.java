@@ -50,7 +50,6 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
             recipeTimeText  = itemView.findViewById(R.id.time_textview);
             this.onRecipeListener = onRecipeListener;
 
-
             itemView.setOnClickListener(this);
 
         }

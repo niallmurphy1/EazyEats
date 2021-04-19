@@ -167,6 +167,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             }
         });
 
+
+        //TODO: bottom sheet cutting off at bottom when scrollable
         //set up bottom sheet
         bottomSheetConstraint = view.findViewById(R.id.bottom_sheet_product_cart);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetConstraint);
@@ -269,7 +271,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             subtotal += (product.getPrice() * product.getQuantity());
 
         }
-
         quantTotalText.setText("Total item(s): " + quantCount);
 
         subtotal = subtotal/100.00;
@@ -308,8 +309,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 productViewAdapter.setProductObjects(productObjects);
                 productViewAdapter.notifyDataSetChanged();
                 setProductTotals((ArrayList<ProductObject>) productObjects);
-
-                Log.d("TAG", "onDataChange: the products from adapter: " + productViewAdapter.getProductObjects().toString());
 
 
             }

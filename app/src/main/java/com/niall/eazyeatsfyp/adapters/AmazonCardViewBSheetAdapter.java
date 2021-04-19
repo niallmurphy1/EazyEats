@@ -217,7 +217,6 @@ public class AmazonCardViewBSheetAdapter extends RecyclerView.Adapter<AmazonCard
             productQuantText.setText(productObject.getQuantity()+"");
 
 
-
         }
     }
 }

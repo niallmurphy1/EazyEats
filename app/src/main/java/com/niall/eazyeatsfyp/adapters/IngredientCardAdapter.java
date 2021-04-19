@@ -147,6 +147,7 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                                 @Override
                                 public void onChanged(String s) {
 
+                                    //TODO: fix number  %s selected incorrect
                                     mode.setTitle(String.format("%s selected",s));
 
                                 }
@@ -173,7 +174,6 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                                     if(ingredients.size() == 0){
 
                                         //create text view empty, add in constructor of adapter
-
                                         Toast.makeText(frag.getContext(), "You have no ingredients your inventory", Toast.LENGTH_SHORT).show();
                                         Log.d(TAG, "onActionItemClicked: no ingredients in the RCV");
                                     }

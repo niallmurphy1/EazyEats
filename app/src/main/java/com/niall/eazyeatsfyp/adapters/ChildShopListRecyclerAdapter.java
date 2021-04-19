@@ -18,13 +18,11 @@ public class ChildShopListRecyclerAdapter extends RecyclerView.Adapter<ChildShop
     ArrayList<ShoppingListItem> shoppingListItems;
     ViewHolder.OnShopListener onShopListener;
 
-
-
-
     public ChildShopListRecyclerAdapter(){
 
-
     }
+
+
     public ChildShopListRecyclerAdapter(ArrayList<ShoppingListItem> items){
 
         this.shoppingListItems = items;
@@ -66,7 +64,6 @@ public class ChildShopListRecyclerAdapter extends RecyclerView.Adapter<ChildShop
 
 
         TextView shopListItemTextView;
-
         OnShopListener onShopListener;
 
 

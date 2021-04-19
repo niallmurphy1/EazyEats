@@ -49,6 +49,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_from_ingredients);
 
+
+        Log.d(TAG, "onCreate: ");
         ingredientQueryIntent = getIntent();
 
         String ingredientQuery = ingredientQueryIntent.getStringExtra(MyFoodIngredientsFragment.INGREDIENTSQUERY);
@@ -62,10 +64,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
 
     public void searchByIngredient(String ingredientQuery) {
-
-
-
-
+        
+        
         AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
                 .addQueryParameter("limit", "1")
                 .addHeaders("token", "1234")
@@ -87,7 +87,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                     Log.d(TAG, "recipe JSON Array size: " + arr.length());
 
                     for (int i = 0; i < arr.length(); i++) {
-
 
                         //pull title, readyInMinutes, Image URI, servings, ID, dishtypes
 
