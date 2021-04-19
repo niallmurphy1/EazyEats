@@ -579,9 +579,6 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
     }
 
 
-    //TODO: add bottom sheet for recipe preview like in MyFoodRecipesFragment
-
-
     private void fetchRecipes(String query) {
         pageNum++;
         tinderRecipes = new ArrayList<>();
@@ -663,11 +660,9 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                         }
 
-
-                        //TODO: Add recipe analyzedInstructions
-
                         String method ="";
 
+                        //TODO: use steps for method?
 
                         JSONArray analyzedInstructionsArray = arr.getJSONObject(i).getJSONArray("analyzedInstructions");
 

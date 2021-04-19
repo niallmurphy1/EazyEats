@@ -1,4 +1,4 @@
-package com.niall.eazyeatsfyp.zincEntities;
+package com.niall.eazyeatsfyp.zincActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
 
 public class AmazonCredsActivity extends AppCompatActivity {
 

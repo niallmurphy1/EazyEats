@@ -13,16 +13,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,7 +46,7 @@ import com.niall.eazyeatsfyp.adapters.ShoppingListItemAdapter;
 import com.niall.eazyeatsfyp.barcode.Scanner;
 import com.niall.eazyeatsfyp.entities.ShopListCategory;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
-import com.niall.eazyeatsfyp.zincEntities.AmazonCredsActivity;
+import com.niall.eazyeatsfyp.zincActivities.AmazonCredsActivity;
 import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 
 import org.json.JSONArray;
@@ -322,10 +318,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
     }
 
-    //TODO: figure out how to access delete/add/remove buttons etc.
-
-
-
     public void getShoppingListFromFirebase(){
 
         shoppingListItems.clear();
@@ -382,7 +374,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
                 System.out.println("Shopping list items: but some are null for no reason "+shoppingListItems.toString());
 
-                //TODO: items added from dialog are messed up
+                //TODO: items added from dialog are messed up, have a look at this tuesday
 
 
                 mainAdapter.setShopListCategories(shopListCategories);

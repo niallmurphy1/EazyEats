@@ -90,6 +90,7 @@ public class MainShopListTestAdapter extends RecyclerView.Adapter<MainShopListTe
         Toast.makeText(v.getContext(),  item.getName() + " clicked!", Toast.LENGTH_SHORT).show();
         Log.d("TAG", "onShopListItemClick: item: " + item.getName());
 
+        //TODO: need the barcode for this....May not work the same way as it did in ElectronicsStore
         v.getContext().startActivity(ProductSelectorActivity.getIntent(v.getContext(), item.getName(), item.getBarcodeUPC()));
     }
 
@@ -109,8 +110,6 @@ public class MainShopListTestAdapter extends RecyclerView.Adapter<MainShopListTe
     }
 
     private void getRidOfDuplicates(ArrayList<String> shopListCategoryNames) {
-
-
         if(shopListCategoryNames != null) {
             LinkedHashSet<String> set = new LinkedHashSet<String>(shopListCategoryNames);
             shopListCategoryNames.clear();

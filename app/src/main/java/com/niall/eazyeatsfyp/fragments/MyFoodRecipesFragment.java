@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -74,7 +75,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     public FirebaseUser fUser = fAuth.getCurrentUser();
     final String userId = fUser.getUid();
 
-    private boolean undoClicked = false;
+    private boolean undoClicked;
 
     public RecyclerView recipeRecycler;
     RecipeCardAdapter adapter;
@@ -103,6 +104,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     private ArrayList<Double> initialQuants = new ArrayList<>();
 
 
+    private ItemTouchHelper.SimpleCallback simpleCallback;
 
 
 
@@ -118,117 +120,114 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
 
-    }
-
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.deleteRed))
-                    .addSwipeLeftActionIcon(R.drawable.ic_delete_bin).create().decorate();
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            final int position = viewHolder.getAdapterPosition();
-
-            Log.d("TAG", "onSwiped: recipe deleted position " + recipes.get(position));
-
-           // Log.d("TAG", "onSwiped: recipe deleted position -1 " + recipes.get(position-1));
-            Recipe deletedRecipe = recipes.get(position);
 
 
 
-            if(direction == ItemTouchHelper.LEFT){
-                recipes.remove(position);
-
-                adapter.notifyItemRemoved(position);
-
-
-                //TODO: fix the Snackbar so that undo doesn't delete from firebase!!!
-
-
-                Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
-                        Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        undoClicked = true;
-                        recipes.add(position, deletedRecipe);
-                        adapter.notifyItemInserted(position);
-
-
-
-                        //addToFirebase(deletedRecipe);
-
-                    }
-                }
-
-
-
-                ).show();
-                Log.d("UNDOCLICKED", "onSwiped: value of undo clicked " + undoClicked);
-
-
-                if(!undoClicked){
-
-                    Log.d("TAG", "onSwiped: on DeleteRecipe: " + deletedRecipe.toString());
-
-                    userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
-
-
-                    userFavRecipesRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                            Log.d("TAG", "onDataChange: in this onDataChanged method");
-                            for(DataSnapshot keyNode: snapshot.getChildren()){
-
-                                Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
-
-
-                                Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
-
-                                if (keyNode.child("recipeID").getValue().toString().equals(deletedRecipe.getRecipeID())){
-
-                                    Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
-
-                                    userFavRecipesRef.child(keyNode.getKey()).removeValue();
-
-
-                                    Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
-                                }
-                            }
-
-                            //adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-
-                            Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
-                        }
-                    });
-
-                }
+        simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
 
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-        }
-    };
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.deleteRed))
+                        .addSwipeLeftActionIcon(R.drawable.ic_delete_bin).create().decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                final int position = viewHolder.getAdapterPosition();
+
+                Log.d("TAG", "onSwiped: recipe deleted position " + recipes.get(position));
+
+                // Log.d("TAG", "onSwiped: recipe deleted position -1 " + recipes.get(position-1));
+                Recipe deletedRecipe = recipes.get(position);
+
+
+                if(direction == ItemTouchHelper.LEFT){
+                   // recipes.remove(position);
+
+                    undoClicked = false;
+                   // adapter.notifyItemRemoved(position);
+                    Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
+                            Snackbar.LENGTH_LONG).setAction("Undo", v -> {
+                                undoClicked = true;
+                                recipes.add(deletedRecipe);
+                                adapter.notifyItemInserted(position);
+                                addToFirebase(deletedRecipe);
+                            }
+                    ).show();
+
+
+                    Log.d("UNDOCLICKED", "onSwiped: value of undo clicked " + undoClicked);
+
+
+                    //TODO: fix this snackbar undo button
+
+
+                    deleteIfNotUndo(deletedRecipe);
+                }
+            }
+        };
+    }
+
+
+    public void deleteIfNotUndo(Recipe deletedRecipe){
+
+            if(!undoClicked){
+
+                Log.d("TAG", "onSwiped: on DeleteRecipe: " + deletedRecipe.toString());
+
+                userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
+
+
+                userFavRecipesRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                        Log.d("TAG", "onDataChange: in this onDataChanged method");
+                        for(DataSnapshot keyNode: snapshot.getChildren()){
+
+                            Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
+
+
+                            Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
+
+                            if (keyNode.child("recipeID").getValue().equals(deletedRecipe.getRecipeID())){
+
+                                Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
+
+                                userFavRecipesRef.child(keyNode.getKey()).removeValue();
+
+
+                                Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
+                            }
+                        }
+
+                        //adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+
+                        Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
+                    }
+                });
+
+            }
+
+    }
+
+
+
 
     public void addToFirebase(Recipe deletedRecipe) {
 
@@ -525,7 +524,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         return (newServe / oldServe) * oldQuant;
     }
-
 
 }
 

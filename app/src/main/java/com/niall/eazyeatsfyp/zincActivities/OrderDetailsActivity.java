@@ -1,4 +1,4 @@
-package com.niall.eazyeatsfyp.zincEntities;
+package com.niall.eazyeatsfyp.zincActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.zincEntities.Address;
+import com.niall.eazyeatsfyp.zincEntities.Order;
+import com.niall.eazyeatsfyp.zincEntities.OrderRepo;
+import com.niall.eazyeatsfyp.zincEntities.PaymentMethod;
+import com.niall.eazyeatsfyp.zincEntities.ProductObject;
+import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
+import com.niall.eazyeatsfyp.zincEntities.Shipping;
 
 import java.util.ArrayList;
 import java.util.List;
