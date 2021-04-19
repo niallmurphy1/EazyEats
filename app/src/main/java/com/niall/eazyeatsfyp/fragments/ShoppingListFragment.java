@@ -111,6 +111,9 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
 
 
+    //TODO: make it easier to the user to know that they need to click on an item to search it in amazon.
+    // Implement deletion from shopList
+
     public ShoppingListFragment() {
         // Required empty public constructor
     }
