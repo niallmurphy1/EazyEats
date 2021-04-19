@@ -1,6 +1,5 @@
 package com.niall.eazyeatsfyp.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,9 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 
-import android.text.Html;
 import android.util.Log;
-import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +29,6 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -51,6 +47,7 @@ import com.niall.eazyeatsfyp.adapters.CardStackAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
+import com.niall.eazyeatsfyp.util.RecipeChecker;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
@@ -66,7 +63,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static com.niall.eazyeatsfyp.util.Constants.RECIPE_SEARCH;
 import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
@@ -320,7 +316,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         headerArrowImage = view.findViewById(R.id.header_arrow);
 
 
-        getRecipesFromFirebase();
+        favRecipes = RecipeChecker.getRecipesFromFirebase(favRecipes, userFavRecipesRef, RecipeTinderFragment.class.getSimpleName());
 
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -439,7 +435,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                     Recipe recipeSwiped = adapter.getRecipes().get(manager.getTopPosition()-1);
 
-                    if( !isDuplicateFavourite(favRecipes, recipeSwiped)) {
+                    if(!RecipeChecker.isDuplicateFavourite(favRecipes, recipeSwiped)) {
                         //TODO: allow user to rate recipe, save rating to user-likedRecipes in FB with recipe key and rating
 
                         DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
@@ -778,19 +774,6 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
     }
 
-
-    public boolean isDuplicateFavourite(ArrayList<Recipe> recipes, Recipe swipedRecipe){
-
-        boolean duplicate = false;
-        for(Recipe recipe: recipes) {
-
-            if (swipedRecipe.getRecipeID().equals(recipe.getRecipeID())) {
-                duplicate = true;
-                break;
-            }
-        }
-            return duplicate;
-    }
 
     @Override
     public void onCardClick(int position) {

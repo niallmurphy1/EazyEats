@@ -12,6 +12,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 import com.niall.eazyeatsfyp.fragments.MyFoodIngredientsFragment;
 import com.niall.eazyeatsfyp.fragments.RecipeSearcherFragment;
+import com.niall.eazyeatsfyp.util.RecipeChecker;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
@@ -77,9 +79,13 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     public FirebaseUser fUser = fAuth.getCurrentUser();
     final String userId = fUser.getUid();
 
+    private DatabaseReference userFavRecipesRef;
+
     public RecyclerView ingredientsRecycler;
     MyIngredientsAdapter adapter = new MyIngredientsAdapter();
     ArrayList<Food> ingredients = new ArrayList<>();
+
+    private ArrayList<Recipe> favRecipes= new ArrayList<>();;
 
     private Button changeServingsBtn;
     private NumberPicker numberPicker;
@@ -97,6 +103,8 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_viewer_new);
+
+        userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
 
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_new);
         collapsingToolbarLayout.setTitleEnabled(true);
@@ -156,12 +164,10 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
             }
 
 
-
         }
 
 
-
-
+        favRecipes = RecipeChecker.getRecipesFromFirebase(favRecipes, userFavRecipesRef, RecipeViewerActivity.class.getSimpleName());
 
     }
 
@@ -311,9 +317,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     }
 
     public void changeServings(){
-
-
-
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
         builder.setView(dialogView);
@@ -403,36 +406,48 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         System.out.println("Favourite clicked");
         Log.d("FAVOURITE", "Clicked! ");
 
-        DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
+        Log.d("Onfavclick", "onFavClick: favorurite recipes to string: " + favRecipes.toString());
 
-        String key = recipeRef.push().getKey();
+        Log.d("TAG", "onFavClick: The recipe favourited: " + recipe.toString());
 
-        Map<String, Object> recipeValues = recipe.toMap();
+        if(!RecipeChecker.isDuplicateFavourite(favRecipes, recipe)){
 
-        Map<String, Object> childUpdates = new HashMap<>();
+            DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
-        childUpdates.put(key, recipeValues);
-        newUserRecipe.put(key, recipeValues);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
 
-        userRef.child(userId).child("user-favRecipes").updateChildren(newUserRecipe).addOnSuccessListener(new OnSuccessListener() {
-            @Override
-            public void onSuccess(Object o) {
-                Log.d("RECIPE FAV", " ADDED!! ");
-                Toast.makeText(RecipeViewerActivity.this, recipe.getName() + " added to favourites", Toast.LENGTH_SHORT).show();
-            }
-        });
+            String key = recipeRef.push().getKey();
 
-        recipeRef.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("RECIPE:", " Successfully added to db");
-            }
-        });
+            Map<String, Object> recipeValues = recipe.toMap();
+
+            Map<String, Object> childUpdates = new HashMap<>();
+
+            childUpdates.put(key, recipeValues);
+            newUserRecipe.put(key, recipeValues);
+
+            userRef.child(userId).child("user-favRecipes").updateChildren(newUserRecipe).addOnSuccessListener(new OnSuccessListener() {
+                @Override
+                public void onSuccess(Object o) {
+                    Log.d("RECIPE FAV", " ADDED!! ");
+                    Toast.makeText(RecipeViewerActivity.this, recipe.getName() + " added to favourites", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            recipeRef.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("RECIPE:", " Successfully added to db");
+                }
+            });
 
 
-        System.out.println(recipe.toString());
+            System.out.println(recipe.toString());
+
+
+        }else Snackbar.make(findViewById(R.id.recipe_viewer_activity_layout), "You already have this recipe in your Favorites!", Snackbar.LENGTH_SHORT).show();
+
+
 
 
     }

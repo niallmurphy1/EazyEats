@@ -464,14 +464,16 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                     Log.d("TAG", "onValueChange: initialQuants arraylist: " + initialQuants.get(i));
 
 
-                    //TODO: IndexOutOfBoundsException: FIX THIS
-                    // whole algorithm is wrong sometimes, strip and redo this
+
 
 
                     Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
                     Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
                     Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));
 
+
+                    //TODO: IndexOutOfBoundsException: FIX THIS
+                    // whole algorithm is wrong sometimes, strip and redo this
 
                     String newQuant = String.valueOf(changeIngredientQuants(origServings.get(i), numberPicker.getValue(), initialQuants.get(i)));
 
