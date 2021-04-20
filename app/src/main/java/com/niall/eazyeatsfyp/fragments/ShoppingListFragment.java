@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -110,7 +111,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     private boolean duplicate;
 
 
-
     //TODO: make it easier to the user to know that they need to click on an item to search it in amazon.
     // Implement deletion from shopList
 
@@ -157,17 +157,19 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
         checkoutIntent = new Intent(getContext(), AmazonCredsActivity.class);
 
-
         proceedToCheckoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                onCheckoutClick();
+                if (productObjects.size() == 0) {
+                    Snackbar.make(getView(), "You cart is empty, click on items to search in the market", Snackbar.LENGTH_LONG).show();
+                } else {
+                    onCheckoutClick();
+                }
             }
         });
 
 
-        //TODO: bottom sheet cutting off at bottom when scrollable
+        //TODO: bottom sheet cutting off at bottom when scrollable!!!!!
         //set up bottom sheet
         bottomSheetConstraint = view.findViewById(R.id.bottom_sheet_product_cart);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetConstraint);
@@ -179,7 +181,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 //do stuff
-                switch(newState){
+                switch (newState) {
 
 
                     case BottomSheetBehavior.STATE_EXPANDED:
@@ -207,9 +209,9 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             @Override
             public void onClick(View v) {
 
-                if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }else{
+                } else {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
@@ -241,6 +243,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         retrieveProductsFromFirebase();
 
         productRecycler = view.findViewById(R.id.bap_amazon_product_cart_rcv);
+        productRecycler.setNestedScrollingEnabled(false);
         productViewAdapter = new AmazonCardViewBSheetAdapter(getContext());
         productRecycler.setAdapter(productViewAdapter);
         productRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -252,19 +255,20 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         mainRecycler.setAdapter(mainAdapter);
 
 
-
     }
 
-    public void onCheckoutClick(){
+    public void onCheckoutClick() {
 
         startActivity(checkoutIntent);
+
+
     }
 
-    public void setProductTotals(ArrayList<ProductObject> productObjects){
+    public void setProductTotals(ArrayList<ProductObject> productObjects) {
 
         int quantCount = 0;
         double subtotal = 0.00;
-        for(ProductObject product: productObjects){
+        for (ProductObject product : productObjects) {
 
             quantCount += product.getQuantity();
             subtotal += (product.getPrice() * product.getQuantity());
@@ -272,29 +276,29 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         }
         quantTotalText.setText("Total item(s): " + quantCount);
 
-        subtotal = subtotal/100.00;
+        subtotal = subtotal / 100.00;
 
         subtotalText.setText("Subtotal: " + formatPricePounds(subtotal));
 
 
     }
 
-    public String formatPricePounds(double price){
+    public String formatPricePounds(double price) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.UK);
         return formatter.format(price);
 
     }
 
-    public void retrieveProductsFromFirebase(){
+    public void retrieveProductsFromFirebase() {
 
-       //productObjects.clear();
+        //productObjects.clear();
 
         userAmazonCartRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 productObjects.clear();
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
                     ProductObject productObject = keyNode.getValue(ProductObject.class);
 
                     Log.d("retrieveProductsFromFirebase", "onDataChange: keyNode.toString():  " + keyNode.toString());
@@ -308,8 +312,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 productViewAdapter.setProductObjects(productObjects);
                 productViewAdapter.notifyDataSetChanged();
                 setProductTotals((ArrayList<ProductObject>) productObjects);
-
-
             }
 
             @Override
@@ -317,11 +319,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
             }
         });
-
-
     }
-
-    public void getShoppingListFromFirebase(){
+    public void getShoppingListFromFirebase() {
 
         shoppingListItems.clear();
 
@@ -333,7 +332,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 shoppingListItems.clear();
                 shopListCategories.clear();
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
                     foodIds.add(keyNode.getKey());
                     ShoppingListItem shoppingListItem = keyNode.getValue(ShoppingListItem.class);
                     shoppingListItems.add(shoppingListItem);
@@ -346,27 +345,24 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 System.out.println("Cat Names w/out doops : " + categoryNames);
 
 
-
-
-
-                for(String catName: categoryNames){
+                for (String catName : categoryNames) {
 
                     ShopListCategory sListCat = new ShopListCategory(catName);
                     shopListCategories.add(sListCat);
 
                 }
 
-                for(ShopListCategory shopListCategory: shopListCategories){
+                for (ShopListCategory shopListCategory : shopListCategories) {
 
                     ArrayList<ShoppingListItem> items = new ArrayList<>();
 
                     shopListCategory.setItems(items);
 
-                    for(ShoppingListItem shoppingListItem: shoppingListItems){
+                    for (ShoppingListItem shoppingListItem : shoppingListItems) {
 
-                        if(shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())){
+                        if (shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())) {
 
-                           items.add(shoppingListItem);
+                            items.add(shoppingListItem);
 
                         }
                     }
@@ -375,7 +371,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 Log.d("TAG", "onDataChange: These are the shopping list category names and their item: " + shopListCategories.toString());
 
 
-                System.out.println("Shopping list items: but some are null for no reason "+shoppingListItems.toString());
+                System.out.println("Shopping list items: but some are null for no reason " + shoppingListItems.toString());
 
                 //TODO: items added from dialog are messed up, have a look at this tuesday
 
@@ -398,7 +394,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     private void removeDuplicates(ArrayList<String> strings) {
 
 
-        if(strings != null) {
+        if (strings != null) {
             LinkedHashSet<String> set = new LinkedHashSet<>(strings);
             strings.clear();
             strings.addAll(set);
@@ -408,16 +404,16 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     }
 
 
-    public void onScanClick(){
+    public void onScanClick() {
         startActivity(scanIntent);
     }
 
 
-    public void onAddShopListItemClick(){
+    public void onAddShopListItemClick() {
 
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_shop_list_item,null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_shop_list_item, null);
         builder.setView(dialogView);
         builder.setTitle("New Shopping list item");
         builder.setPositiveButton("Add", (dialog, which) -> {
@@ -428,7 +424,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             System.out.println("Dialog edit text name: " + dialogTextName.getText());
 
 
-            AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query="+dialogTextName.getText().toString().trim()+"&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
+            AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query=" + dialogTextName.getText().toString().trim() + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
                     .build().getAsString(new StringRequestListener() {
                 @Override
                 public void onResponse(String response) {
@@ -436,7 +432,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                     Log.d("TAG", "API works:" + response);
                     try {
 
-                        Log.d("TAG", "API working : " );
+                        Log.d("TAG", "API working : ");
                         JSONObject results = new JSONObject(response);
 
                         JSONArray arr = results.getJSONArray("results");
@@ -450,32 +446,31 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
                         shopListAddedItem = new ShoppingListItem(id, name, category);
 
-                        for(int i = 0; i < shoppingListItems.size(); i++){
+                        for (int i = 0; i < shoppingListItems.size(); i++) {
 
-                            if( shopListAddedItem.getName().equalsIgnoreCase(shoppingListItems.get(i).getName())){
+                            if (shopListAddedItem.getName().equalsIgnoreCase(shoppingListItems.get(i).getName())) {
 
-                                Toast.makeText(getActivity(), shopListAddedItem.getName()+" is already in your Shopping List!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), shopListAddedItem.getName() + " is already in your Shopping List!", Toast.LENGTH_SHORT).show();
 
                                 duplicate = true;
                             }
                         }
 
-                        if(!duplicate) {
+                        if (!duplicate) {
 
-                            Log.d("TAG", "SHOPLISTADDEDITEM: " + shopListAddedItem.getName() +shopListAddedItem.getCategory()+ shopListAddedItem.getsId());
+                            Log.d("TAG", "SHOPLISTADDEDITEM: " + shopListAddedItem.getName() + shopListAddedItem.getCategory() + shopListAddedItem.getsId());
 
                             Map<String, Object> shoppingListItemMap = shopListAddedItem.toMap();
                             newShopListItem.put(shopListAddedItem.getsId(), shoppingListItemMap);
                             userShopList.updateChildren(newShopListItem).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
-                                    Toast.makeText(getContext(), shopListAddedItem.getName().toString()+ " added to list", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), shopListAddedItem.getName().toString() + " added to list", Toast.LENGTH_SHORT).show();
                                     //shoppingListItems.clear();
                                     //getShoppingListFromFirebase();
 
                                 }
                             });
-
 
 
                         }
@@ -508,8 +503,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         alertDialog.show();
 
     }
-
-
 
 
     @Override

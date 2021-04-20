@@ -10,6 +10,8 @@ import com.niall.eazyeatsfyp.R;
 
 public class AmazonOrderConfirmationActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +22,7 @@ public class AmazonOrderConfirmationActivity extends AppCompatActivity {
 
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Your Code
+
         }, 7500);
 
     }

@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:text="Use the options menu to refine recipes!"
+        android:text="Use the filter below to refine recipes!"
         android:layout_width="match_parent"
         android:textSize="25sp"
         android:gravity="center"

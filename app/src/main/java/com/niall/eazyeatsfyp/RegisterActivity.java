@@ -88,12 +88,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view) {
 
-        //TODO: handle no fields entered here
+        //TODO: handle no fields entered here, crashes
         if (getEmailInput().isEmpty() || getPasswordInput().isEmpty() || usernameEdit.getText().toString().isEmpty()) {
             Snackbar.make(getCurrentFocus(), "You must enter all fields!", Snackbar.LENGTH_LONG);
         } else {
-
-
 
         final Intent i = new Intent(this, BNavigationActivity.class);
 

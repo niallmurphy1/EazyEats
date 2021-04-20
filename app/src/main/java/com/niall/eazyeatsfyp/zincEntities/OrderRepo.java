@@ -5,7 +5,6 @@ import android.util.Log;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.util.Constants;
@@ -33,8 +32,8 @@ public class OrderRepo {
                     @Override
                     public void onResponse(OrderResponse response) {
 
-                        //Log.d(OrderRepo.class.getSimpleName(), response.requestId);
-                        callback.onSuccess(response.requestId);
+                        Log.d(OrderRepo.class.getSimpleName(),"Create order method, response request ID:" + response.request_id);
+                        callback.onSuccess(response.request_id);
                     }
 
                     @Override
@@ -43,6 +42,11 @@ public class OrderRepo {
 
                     }
                 });
+    }
+
+    public void retrieveOrder(String orderRequest){
+
+
     }
 
 }

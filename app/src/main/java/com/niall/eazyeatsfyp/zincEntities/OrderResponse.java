@@ -1,5 +1,10 @@
 package com.niall.eazyeatsfyp.zincEntities;
 
+
 public class OrderResponse {
-    public String requestId;
+
+
+    public String request_id;
+
+
 }

@@ -27,6 +27,7 @@ import com.niall.eazyeatsfyp.zincEntities.PaymentMethod;
 import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
 import com.niall.eazyeatsfyp.zincEntities.Shipping;
+import com.niall.eazyeatsfyp.zincEntities.UserAmazonDetailsWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private OrderRepo orderRepo = new OrderRepo();
 
+    private UserAmazonDetailsWriter userAmazonDetailsWriter = new UserAmazonDetailsWriter();
+
     private List<ProductObject> productObjects;
+
+    private Address addressFromFirebase;
+    boolean useFirebaseAddress;
 
     //Text fields etc.
 
@@ -63,6 +69,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private MaterialCheckBox sameAsShippingCheckbox;
 
+    private MaterialCheckBox useSavedAddressCheckBox;
+
     //billing_address
     private EditText firstNameBillingEdit;
     private EditText lastNameBillingEdit;
@@ -73,7 +81,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private EditText stateBillingEdit;
     private EditText countryCodeBillingEdit;
     private EditText phoneNoBillingEdit;
-
 
 
     //payment_method
@@ -95,6 +102,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private DatabaseReference userAmazonCartRef;
     private DatabaseReference userAmazonCreds;
 
+    private DatabaseReference userAddressRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +113,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
         //initialise variables
         initFields();
 
+
+
         //assign required variables to create an order object
-        userAmazonCartRef  = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonShoppingCart");
+        userAmazonCartRef = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonShoppingCart");
         userAmazonCreds = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonCreds");
 
+        userAddressRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-shippingAddress");
+        addressFromFirebase = new Address();
+
+        getAddressFromFirebase();
 
         userAmazonCartRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,7 +130,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
                 productObjects = new ArrayList<>();
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
 
                     ProductObject productObject = keyNode.getValue(ProductObject.class);
 
@@ -130,12 +145,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
                         sameAsBilling();
                         assignVariables();
-
-
                     }
                 });
-
-
             }
 
             @Override
@@ -146,7 +157,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void initFields(){
+    public void initFields() {
 
         //initShipping
         firstNameEdit = findViewById(R.id.order_details_first_name_text);
@@ -171,6 +182,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
         phoneNoBillingEdit = findViewById(R.id.oder_details_phone_number_billing_text);
 
         sameAsShippingCheckbox = findViewById(R.id.order_details_same_as_shipping_checkbox);
+
+        useSavedAddressCheckBox = findViewById(R.id.use_saved_shipping_details_checkbox);
+
+
 
 
         //initPaymentMethod
@@ -206,6 +221,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         String stateShipping = stateShippingEdit.getText().toString().trim();
         String isoCountryCode = countryCodeShippingEdit.getText().toString().trim();
         String phoneNoShipping = phoneNoShippingEdit.getText().toString().trim();
+
         shipping_address = new Address(firstNameShip
                 , lastNameShip
                 , address1Ship
@@ -227,7 +243,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         String stateBill = stateBillingEdit.getText().toString().trim();
         String isoCountryCodeBill = countryCodeBillingEdit.getText().toString().trim();
         String phoneNoBill = phoneNoBillingEdit.getText().toString().trim();
-         billing_address = new Address(firstNameBill
+        billing_address = new Address(firstNameBill
                 , lastNameBill
                 , address1Bill
                 , address2Bill
@@ -238,7 +254,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 , phoneNoBill);
 
 
-         //payment_method
+        //payment_method
         payment_method = new PaymentMethod(nameOnCardEdit.getText().toString().trim()
                 , cardNumberEdit.getText().toString().trim()
                 , securityCodeEdit.getText().toString().trim()
@@ -256,25 +272,46 @@ public class OrderDetailsActivity extends AppCompatActivity {
         List<ProductObject> amazonProducts = new ArrayList<>();
 
         //Convert objects to objects for the api to use
-        for(ProductObject productObject: productObjects){
+        for (ProductObject productObject : productObjects) {
 
             ProductObject product = new ProductObject(productObject.getProduct_id(), productObject.getQuantity());
 
             amazonProducts.add(product);
         }
 
-        order = new Order("amazon_uk"
-                , amazonProducts
-                , shipping_address
-                , shipping_object
-                , billing_address
-                , payment_method
-                , retailer_creds
-                , is_gift
-                , max_price);
+        if(useFirebaseAddress){
+            order = new Order("amazon_uk"
+                    , amazonProducts
+                    , addressFromFirebase
+                    , shipping_object
+                    , addressFromFirebase
+                    , payment_method
+                    , retailer_creds
+                    , is_gift
+                    , max_price);
 
+        }
+
+        else {
+            order = new Order("amazon_uk"
+                    , amazonProducts
+                    , shipping_address
+                    , shipping_object
+                    , billing_address
+                    , payment_method
+                    , retailer_creds
+                    , is_gift
+                    , max_price);
+        }
 
         Log.d("TAG", "assignVariables: Here is the Order: " + order.toString());
+
+
+        Log.d(OrderDetailsActivity.class.getSimpleName()
+                , "assignVariables: user address ref: " + userAddressRef.toString()
+                        + " user order shipping address: " + order.getShipping_address());
+
+        userAmazonDetailsWriter.writeAddress(userAddressRef, order.getShipping_address());
 
 
         orderRepo.createOrder(order, new Callback<String>() {
@@ -282,25 +319,35 @@ public class OrderDetailsActivity extends AppCompatActivity {
             public void onSuccess(String data) {
 
                 Log.d("TAG", "onSuccess: The string for order confirmation " + data);
-
             }
 
             @Override
             public void onError(Throwable error) {
 
-
-                Log.e("TAG", "onError: There was an error: "+ error);
+                Log.e("TAG", "onError: There was an error: " + error);
             }
         });
 
 
-
     }
 
-    public void sameAsBilling(){
+    public void sameAsBilling() {
 
-        if(sameAsShippingCheckbox.isChecked()){
 
+        if(useSavedAddressCheckBox.isChecked()){
+            sameAsShippingCheckbox.setClickable(false);
+            useFirebaseAddress = true;
+
+        }
+        else if(!useSavedAddressCheckBox.isChecked()){
+            sameAsShippingCheckbox.setClickable(true);
+            useFirebaseAddress=false;
+
+        }
+
+       else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
+
+           useFirebaseAddress = false;
             firstNameBillingEdit.setText(firstNameEdit.getText().toString());
             lastNameBillingEdit.setText(lastNameEdit.getText().toString());
             address1BillingEdit.setText(address1ShippingEdit.getText().toString());
@@ -311,8 +358,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
             countryCodeBillingEdit.setText(countryCodeShippingEdit.getText().toString());
             phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
 
-        }
-        else {
+        } else {
+           useFirebaseAddress=false;
             firstNameBillingEdit.setText("");
             lastNameBillingEdit.setText("");
             address1BillingEdit.setText("");
@@ -323,6 +370,22 @@ public class OrderDetailsActivity extends AppCompatActivity {
             countryCodeBillingEdit.setText("");
             phoneNoBillingEdit.setText("");
         }
+    }
+
+    public void getAddressFromFirebase() {
+
+        userAddressRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                addressFromFirebase = snapshot.getValue(Address.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 

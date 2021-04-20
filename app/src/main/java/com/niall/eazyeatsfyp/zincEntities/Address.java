@@ -14,6 +14,10 @@ public class Address {
     private String phone_number;
 
 
+    public Address(){
+
+    }
+
     public Address(String first_name, String last_name, String address_line1, String address_line2, String zip_code, String city, String state, String country, String phone_number) {
         this.first_name = first_name;
         this.last_name = last_name;
