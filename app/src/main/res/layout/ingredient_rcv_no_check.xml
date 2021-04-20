@@ -20,18 +20,19 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Fair beaners" />
+                tools:text="Fair beaners"
+                android:layout_marginBottom="5dp"/>
 
             <TextView
                 android:id="@+id/ingredient_quant_units_rcv_no_check"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:textColor="@android:color/black"
                 android:visibility="visible"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                tools:text="45 mins" />
+                tools:text="there are 5 of these " />
 
 
 

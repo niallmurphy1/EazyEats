@@ -18,7 +18,8 @@
         android:roundIcon="@drawable/fork_knife"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".zincActivities.OrderDetailsActivity"></activity>
+        <activity android:name=".zincActivities.AmazonOrderConfirmationActivity"></activity>
+        <activity android:name=".zincActivities.OrderDetailsActivity" />
         <activity android:name=".zincActivities.AmazonCredsActivity" />
         <activity android:name=".ProductSelectorActivity" />
         <activity android:name=".RecipeFromIngredientsActivity" />

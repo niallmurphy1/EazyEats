@@ -72,7 +72,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     public RecyclerView productRecycler;
     public AmazonCardViewBSheetAdapter productViewAdapter;
 
-    ShoppingListItemAdapter adapter = new ShoppingListItemAdapter();
+    //ShoppingListItemAdapter adapter = new ShoppingListItemAdapter();
     public ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
     public ArrayList<ShopListCategory> categories;
     private List<ProductObject> productObjects = new ArrayList<>();

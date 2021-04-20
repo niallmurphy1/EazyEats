@@ -17,6 +17,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -85,7 +86,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void onRegisterClick(View view){
+    public void onRegisterClick(View view) {
+
+        //TODO: handle no fields entered here
+        if (getEmailInput().isEmpty() || getPasswordInput().isEmpty() || usernameEdit.getText().toString().isEmpty()) {
+            Snackbar.make(getCurrentFocus(), "You must enter all fields!", Snackbar.LENGTH_LONG);
+        } else {
+
+
 
         final Intent i = new Intent(this, BNavigationActivity.class);
 
@@ -118,8 +126,6 @@ public class RegisterActivity extends AppCompatActivity {
                             });
 
 
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -130,6 +136,10 @@ public class RegisterActivity extends AppCompatActivity {
                         //...
                     }
                 });
+
+    }
+
+
     }
 
 //    public void passwordCheck(){

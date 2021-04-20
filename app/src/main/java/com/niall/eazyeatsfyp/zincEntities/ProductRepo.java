@@ -1,17 +1,11 @@
 package com.niall.eazyeatsfyp.zincEntities;
 
-import android.util.Log;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.util.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepo {

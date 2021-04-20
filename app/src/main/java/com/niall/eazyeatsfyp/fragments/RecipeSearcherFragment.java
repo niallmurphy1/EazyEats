@@ -89,11 +89,7 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
 
 
                 AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + "&query=" + query + "&addRecipeInformation=true&fillIngredients=true")
-                        .addPathParameter("pageNumber", "0")
-                        .addQueryParameter("limit", "1")
-                        .addHeaders("token", "1234")
-                        .setTag("test")
-                        .setPriority(Priority.LOW)
+
                         .build().getAsString(new StringRequestListener() {
 
                     @Override

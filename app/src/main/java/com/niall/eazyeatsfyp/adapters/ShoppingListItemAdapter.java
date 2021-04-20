@@ -16,6 +16,10 @@ import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 
 import java.util.ArrayList;
 
+
+
+//TODO: class not used, delete?
+
 public class ShoppingListItemAdapter extends RecyclerView.Adapter<ShoppingListItemAdapter.ViewHolder> implements Filterable {
 
 

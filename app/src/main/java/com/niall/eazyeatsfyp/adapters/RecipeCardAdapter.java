@@ -88,7 +88,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
                 .into(holder.recipeImage);
         //Glide.with(holder.recipeImage.getContext()).load(currentRecipe.getImageURI()).into(holder.recipeImage);
         holder.recipeTitleText.setText(currentRecipe.getName());
-        holder.recipeTimeText.setText(currentRecipe.getTime() + "mins");
+        holder.recipeTimeText.setText(currentRecipe.getTime() + " mins");
         holder.recipeServingsText.setText("Servings: "+ currentRecipe.getServings());
 
 
