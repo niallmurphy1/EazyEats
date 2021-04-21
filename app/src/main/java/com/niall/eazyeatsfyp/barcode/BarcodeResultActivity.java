@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +53,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
     private boolean duplicate = false;
 
+    private View root;
 
     public Map newShopListItem = new HashMap();
 
@@ -63,6 +66,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
         getShoppingListItemsFromFirebase();
 
+        root = findViewById(R.id.barcode_result_activity_layout);
 
         barcodeTextView = findViewById(R.id.textView_barcode);
         Intent intent = getIntent();
@@ -120,7 +124,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
                     }
 
 
-                    Toast.makeText(BarcodeResultActivity.this, "Name of grocery " + name, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(root, "Name of grocery " + name, Snackbar.LENGTH_SHORT).show();
 
                     scannedItem = new ShoppingListItem(id, name, cat);
                     scannedItem.setBarcodeUPC(upcBarcode);
@@ -160,7 +164,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
             //Method works, but for some null items that are added with manual FAB button in ShoppingListFragment
 
-            if(shopListItem.getsId().equals(null)){
+            if(shopListItem.getsId() == null){
                 Log.d("NULL ITEM", "checkDuplicateAndAdd: Null item name " + shopListItem.getName());
             }
             else if(shopListItem.getsId().equalsIgnoreCase(scannedItem.getsId())){
@@ -171,13 +175,15 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
         }
 
+        //TODO: figure out why adding works here and not in dialog
+
         if(!duplicate) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
             userRef.child(userId).child("user-shoppinglist").updateChildren(newShopListItem).addOnSuccessListener(new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object o) {
 
-                    Toast.makeText(BarcodeResultActivity.this, scannedItem.getName() + " added to shopping list!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(root, scannedItem.getName() + " added to shopping list!", Snackbar.LENGTH_SHORT).show();
 
                     finish();
                 }
@@ -200,10 +206,6 @@ public class BarcodeResultActivity extends AppCompatActivity {
                     shoppingListItems.add(shoppingListItem);
 
                 }
-
-
-                // System.out.println("Shopping list items: but some are null for no reason "+shoppingListItems.toString());
-
 
             }
 

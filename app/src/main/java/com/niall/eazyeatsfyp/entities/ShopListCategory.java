@@ -11,6 +11,7 @@ public class ShopListCategory {
 
     public ShopListCategory(String name) {
         this.name = name;
+        items = new ArrayList<>();
 
     }
 

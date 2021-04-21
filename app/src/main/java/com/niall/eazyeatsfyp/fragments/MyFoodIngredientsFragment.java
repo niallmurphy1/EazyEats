@@ -147,9 +147,6 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
         adapter = new IngredientCardAdapter(getContext(), foodIngredients, this, this);
         ingredientRecycler.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-     
-
-
     }
 
 

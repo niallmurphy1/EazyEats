@@ -664,12 +664,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                         Log.d(TAG, "onResponse: Recipes.toString(): " + recipe.getMethod());
 
-
-
                         tinderRecipes.add(recipe);
-
-
-
 
                     }
 

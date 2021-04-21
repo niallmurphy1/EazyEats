@@ -68,8 +68,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
 
     public void searchByIngredient(String ingredientQuery) {
-        
-        
+
         AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
                 .build().getAsString(new StringRequestListener() {
             @Override
@@ -77,7 +76,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                 Log.d(TAG, "onResponse: api works...");
 
                 System.out.println("API RESPONSE: " + response);
-
 
                 try {
                     JSONObject obj = new JSONObject(response);
@@ -99,13 +97,16 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                         String recipeID = arr.getJSONObject(i).getString("id");
                         Log.d(TAG, "Recipe ID: " + recipeID);
 
+                        //TODO: if time, notify user of ingredients they need to complete recipe,
+                        // using missingIngredients array in API response
+
+
                         JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
 
                         ArrayList<Food> ingredients = new ArrayList<>();
                         ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
 
                         for (int f = 0; f < extIngredients.length(); f++) {
-
 
                             String ingredientName = extIngredients.getJSONObject(f).getString("name");
 

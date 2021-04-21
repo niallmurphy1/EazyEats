@@ -1,6 +1,5 @@
 package com.niall.eazyeatsfyp.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,12 +46,13 @@ import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListItemForAdapter;
 import com.niall.eazyeatsfyp.adapters.AmazonCardViewBSheetAdapter;
-import com.niall.eazyeatsfyp.adapters.ChildShopListRecyclerAdapter;
-import com.niall.eazyeatsfyp.adapters.MainShopListTestAdapter;
 import com.niall.eazyeatsfyp.adapters.ShoppingListAdapter;
 import com.niall.eazyeatsfyp.barcode.Scanner;
+import com.niall.eazyeatsfyp.entities.Food;
+import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShopListCategory;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
+import com.niall.eazyeatsfyp.util.DuplicateChecker;
 import com.niall.eazyeatsfyp.zincActivities.AmazonCredsActivity;
 import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 
@@ -58,7 +60,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,12 +68,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
+
 public class ShoppingListFragment extends Fragment implements ShoppingListItemForAdapter.OnShopListItemListener {
 
 
-    public MainShopListTestAdapter mainAdapter;
     public RecyclerView mainRecycler;
     ArrayList<ShopListCategory> shopListCategories = new ArrayList<>();
+
+    ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
+
+    private ArrayList<String> ingredientNames;
 
 
     public RecyclerView productRecycler;
@@ -108,12 +114,13 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     private FloatingActionButton scanBtn;
 
 
-    private EditText dialogTextName;
+    private AutoCompleteTextView dialogTextName;
 
     private ShoppingListItem shopListAddedItem;
 
     private boolean duplicate;
 
+    private DatabaseReference allItemsRef;
 
     //new RCV variables
     private RecyclerView newRecycler;
@@ -143,6 +150,8 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
         userShopList = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-shoppinglist");
         userAmazonCartRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-amazonShoppingCart");
 
+        allItemsRef = FirebaseDatabase.getInstance().getReference("Recipe");
+
     }
 
     @Override
@@ -158,6 +167,8 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getRecipeIngredientsFromFirebase(allItemsRef);
 
         quantTotalText = view.findViewById(R.id.bap_sheet_total_items_text_view);
         subtotalText = view.findViewById(R.id.bap_subtotal_textview);
@@ -257,15 +268,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
         productRecycler.setAdapter(productViewAdapter);
         productRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-//        mainRecycler = view.findViewById(R.id.shopList_rcv);
-//        mainAdapter = new MainShopListTestAdapter(shopListCategories);
-//        mainRecycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-//        mainRecycler.setAdapter(mainAdapter);
-
         setUpBetterRCV();
-
-
     }
 
     public void onCheckoutClick() {
@@ -337,7 +340,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     public void getShoppingListFromFirebase() {
 
         shoppingListItems.clear();
-
         ArrayList<String> categoryNames = new ArrayList<>();
 
         userShopList.addValueEventListener(new ValueEventListener() {
@@ -359,14 +361,32 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
                 System.out.println("Cat Names w/out doops : " + categoryNames);
 
                 for (String catName : categoryNames) {
+
                     ShopListCategory sListCat = new ShopListCategory(catName);
-                    shopListCategories.add(sListCat);
+                    if(catName == null || catName.equals("")) {
+                        Log.d(ShoppingListFragment.class.getName(), "onDataChange: This is null");
+                    }
+                    else{
+                        shopListCategories.add(sListCat);
+                    }
                 }
+
+
+                Log.d(ShoppingListFragment.class.getSimpleName(), "onDataChange: Shop list categories toString: " + shopListCategories.toString());
+
+
                 for (ShopListCategory shopListCategory : shopListCategories) {
+
+                    if(shopListCategory.getName() == null) {
+                        Log.d(ShoppingListFragment.class.getSimpleName(), "onDataChange: shoplist category null: " + shopListCategory.getName());
+                        shopListCategories.remove(shopListCategory);
+                    }
 
                     ArrayList<ShoppingListItem> items = new ArrayList<>();
 
                     shopListCategory.setItems(items);
+
+                    Log.d(ShoppingListFragment.class.getSimpleName(), "onDataChange: Shop list categories toString after null check: " + shopListCategories.toString());
 
                     for (ShoppingListItem shoppingListItem : shoppingListItems) {
                         if (shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())) {
@@ -374,6 +394,26 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
                         }
                     }
                 }
+
+//                for (ShopListCategory shopListCategory : shopListCategories) {
+//
+//                    for (ShoppingListItem shoppingListItem : shoppingListItems) {
+//
+//                        System.out.println("These are the shopping list items: " + shoppingListItem.toString());
+//
+//
+//                        if(shoppingListItem.getCategory() == null){
+//                            Toast.makeText(getContext(), "not working", Toast.LENGTH_SHORT).show();
+//                            shoppingListItem.setCategory("Other");
+//                            //shoppingListItem.getCategory() == null is true
+//                        }
+//
+//                        else  if(shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())){
+//                            shopListCategory.getItems().add(shoppingListItem);
+//                        }
+//
+//                    }
+//                }
 
                 Log.d("TAG", "onDataChange: These are the shopping list category names and their item: " + shopListCategories.toString());
 
@@ -384,8 +424,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
 
 
                 newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
-
-
             }
 
             @Override
@@ -415,20 +453,25 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     }
 
 
-    public void onAddShopListItemClick() {
+    public void deleteItemsFromShoppingList(){
 
+        //TODO: if the items is the only one in the ShoppingListCategory on deletion, delete the ShoppingListCategory Object
+    }
+
+
+    public void onAddShopListItemClick() {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_shop_list_item, null);
         builder.setView(dialogView);
+        dialogTextName = dialogView.findViewById(R.id.dialog_shop_list_item_name);
+        String[] ingredientSuggestions = ingredientNames.toArray(new String[0]);
+        Log.d(TAG, "onAddShopListItemClick: ingredient suggestions: " + ingredientSuggestions.toString());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredientSuggestions);
+        dialogTextName.setAdapter(arrayAdapter);
         builder.setTitle("New Shopping list item");
         builder.setPositiveButton("Add", (dialog, which) -> {
-
-
-            dialogTextName = dialogView.findViewById(R.id.dialog_shop_list_item_name);
-
             System.out.println("Dialog edit text name: " + dialogTextName.getText());
-
 
             AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query=" + dialogTextName.getText().toString().trim() + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
                     .build().getAsString(new StringRequestListener() {
@@ -454,23 +497,43 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
 
                         for (int i = 0; i < shoppingListItems.size(); i++) {
                             if (shopListAddedItem.getName().equalsIgnoreCase(shoppingListItems.get(i).getName())) {
-                                Toast.makeText(getActivity(), shopListAddedItem.getName() + " is already in your Shopping List!", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(getView(), shopListAddedItem.getName() + " is already in your Shopping List!", Snackbar.LENGTH_SHORT).show();
                                 duplicate = true;
                             }
                         }
 
                         if (!duplicate) {
+                            Log.d(ShoppingListFragment.class.getSimpleName(), "onResponse: Shop list added item: " + shopListAddedItem.toString());
+                            boolean categoryExists = false;
+
+                            for(ShopListCategory shopListCategory: shopListCategories){
+
+                                if(shopListAddedItem.getCategory().equals(shopListCategory.getName())){
+                                    shopListCategory.addItemToItems(shopListAddedItem);
+                                    categoryExists =true;
+                                }
+                            }
+
+                            if(!categoryExists){
+                                ShopListCategory shopListCategory = new ShopListCategory(shopListAddedItem.getName());
+                                shopListCategory.getItems().add(shopListAddedItem);
+                                shopListCategories.add(shopListCategory);
+
+                            }
 
                             Log.d("TAG", "SHOPLISTADDEDITEM: " + shopListAddedItem.getName() + shopListAddedItem.getCategory() + shopListAddedItem.getsId());
 
                             Map<String, Object> shoppingListItemMap = shopListAddedItem.toMap();
                             newShopListItem.put(shopListAddedItem.getsId(), shoppingListItemMap);
+
                             userShopList.updateChildren(newShopListItem).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
                                     Toast.makeText(getContext(), shopListAddedItem.getName().toString() + " added to list", Toast.LENGTH_SHORT).show();
-                                    //shoppingListItems.clear();
-                                    //getShoppingListFromFirebase();
+
+
+                                    buildShopListAdapterItems(shopListCategories);
+                                    newAdapter.notifyDataSetChanged();
 
                                 }
                             });
@@ -488,13 +551,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
                 }
             });
 
-
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        }).setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
 
         alertDialog.show();
@@ -503,7 +560,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
 
 
     public ArrayList<ShoppingListAdapterItem> buildShopListAdapterItems(ArrayList<ShopListCategory> shopListCategories) {
-        ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
+        shoppingListAdapterItems.clear();
         for (ShopListCategory shopListCategory : shopListCategories) {
             shoppingListAdapterItems.add(new ShoppingListCategoryItem(shopListCategory.getName()));
             for (ShoppingListItem shoppingListItem : shopListCategory.getItems()) {
@@ -526,4 +583,63 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
         Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListItemForAdapter.getName());
         startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListItemForAdapter.getName(), shoppingListItemForAdapter.getBarcodeUPC()));
     }
+
+
+
+
+    //get all recipe ingredients for suggested textView
+
+    public void getRecipeIngredientsFromFirebase(DatabaseReference recipeRef){
+
+        ArrayList<Recipe> allRecipes = new ArrayList<>();
+        allRecipes.clear();
+        ArrayList<String> recipeKeys = new ArrayList<>();
+        recipeKeys.clear();
+
+        recipeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot keyNode: snapshot.getChildren()){
+
+                    String key = keyNode.getKey();
+
+                    keyNode.child(key).child("ingredients").getChildren();
+
+                    Recipe recipe = keyNode.getValue(Recipe.class);
+                    allRecipes.add(recipe);
+                    recipeKeys.add(key);
+
+                }
+
+                ingredientNames = getIngredientNames(allRecipes);
+                Log.d(TAG, "onDataChange: ingredients without duplicates: " + getIngredientNames(allRecipes));
+
+                Log.d(TAG, "onDataChange: ingredients without duplicates size: "+ getIngredientNames(allRecipes).size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public ArrayList<String> getIngredientNames(ArrayList<Recipe> recipes){
+
+        ArrayList<String> ingredientNames = new ArrayList<>();
+
+        ingredientNames.clear();
+
+        for(Recipe recipe: recipes) {
+            for(Food food : recipe.getIngredients())
+                ingredientNames.add(food.getName());
+        }
+
+        Log.d(TAG, "getIngredientNames: ingredients with duplicates: " + ingredientNames);
+        Log.d(TAG, "getIngredientNames: ingredients with duplicates size: "+ ingredientNames.size());
+        return DuplicateChecker.getRidOfDuplicates(ingredientNames);
+
+    }
+
 }

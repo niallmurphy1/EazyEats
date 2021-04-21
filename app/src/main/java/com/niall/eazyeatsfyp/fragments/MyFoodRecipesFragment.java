@@ -283,9 +283,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         bapsChangeServingsBtn = view.findViewById(R.id.baps_change_servings_button);
 
-
         //TODO: add more func. to bottom sheet eg. removeFromFav btn, see similar recipes,
-
 
     }
 

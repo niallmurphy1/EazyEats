@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <AutoCompleteTextView
         android:id="@+id/dialog_shop_list_item_name"
         android:layout_width="match_parent"
         android:hint="Enter name of item..."
@@ -12,6 +12,8 @@
         android:padding="20dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:completionThreshold="1"
         style="@style/AlertDialogTheme"/>
 
 </LinearLayout>
+

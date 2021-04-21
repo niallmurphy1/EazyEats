@@ -23,7 +23,6 @@
         android:id="@+id/addInventoryBtn"
         android:layout_width="206dp"
         android:layout_height="42dp"
-        android:onClick="updateInventory"
         android:text="@string/add_apple_to_inventory"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
