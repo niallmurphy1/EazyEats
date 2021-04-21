@@ -371,16 +371,8 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
 
             }
-
             query.deleteCharAt(query.length()-1);
-
-
-
-            //searchByIngredient("&includeIngredients=" + query + "&sort=random&fillIngredients=true&number=10");
-
-
-            String ingredientQuery = "&includeIngredients=" + query + "&sort=random&fillIngredients=true&number=10";
-
+            String ingredientQuery = "&includeIngredients=" + query + "&sort=random&fillIngredients=true&number=1";
 
             recipeFromIngredientsIntent = new Intent(getContext(), RecipeFromIngredientsActivity.class);
             recipeFromIngredientsIntent.putExtra(INGREDIENTSQUERY, ingredientQuery);

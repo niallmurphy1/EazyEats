@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.niall.eazyeatsfyp.adapters.RecipeCardAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
@@ -43,19 +45,21 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
     public RecyclerView recipeRecycler;
     RecipeCardAdapter adapter;
 
+    private View root;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_from_ingredients);
 
+        root = findViewById(R.id.activity_recipe_from_ingredients_view);
 
         Log.d(TAG, "onCreate: ");
         ingredientQueryIntent = getIntent();
 
+
         String ingredientQuery = ingredientQueryIntent.getStringExtra(MyFoodIngredientsFragment.INGREDIENTSQUERY);
-
-
 
         searchByIngredient(ingredientQuery);
 
@@ -67,10 +71,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
         
         
         AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
-                .addQueryParameter("limit", "1")
-                .addHeaders("token", "1234")
-                .setTag("test")
-                .setPriority(Priority.LOW)
                 .build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
@@ -99,8 +99,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                         String recipeID = arr.getJSONObject(i).getString("id");
                         Log.d(TAG, "Recipe ID: " + recipeID);
 
-
-                        // TODO: fix getIngredients... and this whole thing
                         JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
 
                         ArrayList<Food> ingredients = new ArrayList<>();
@@ -156,14 +154,17 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                         recipes.add(recipe);
 
+
                     }
 
 
 
                     Log.d(TAG, "onResponse: gottem " + recipes.toString());
 
+                    notifyUserIfNoResults(recipes);
 
-                   // setUpRCV();
+
+                    // setUpRCV();
 
                     recipeRecycler = findViewById(R.id.recipe_from_ingredients_rcv);
                     recipeRecycler.setLayoutManager(new LinearLayoutManager(RecipeFromIngredientsActivity.this));
@@ -178,6 +179,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
             }
 
+
+
             @Override
             public void onError(ANError anError) {
 
@@ -188,10 +191,17 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
     }
 
+    public void notifyUserIfNoResults(ArrayList<Recipe> recipes) {
+
+        if(recipes.isEmpty()){
+            Snackbar.make(root, "No recipes found for these ingredients, try using other ingredients!", Snackbar.LENGTH_LONG).setAction("Go back", v -> {
+                this.finish();
+            }).show();
+        }
+    }
+
     @Override
     public void onRecipeClick(int position) {
-        //TODO: open recipe viewer activity
-
         recipeViewerIntent = new Intent(this, RecipeViewerActivity.class);
 
         recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMINGREDIENTS");

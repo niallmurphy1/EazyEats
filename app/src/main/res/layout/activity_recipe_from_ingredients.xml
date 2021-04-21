@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeFromIngredientsActivity">
+    tools:context=".RecipeFromIngredientsActivity"
+    android:id="@+id/activity_recipe_from_ingredients_view">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_from_ingredients_rcv"

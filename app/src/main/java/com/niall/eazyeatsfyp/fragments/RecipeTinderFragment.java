@@ -154,48 +154,6 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
         switch(item.getItemId()){
 
-            case R.id.random_menu_item:
-                fetchRecipes("&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_type_breakfast_option:
-                fetchRecipes("&type=breakfast&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_type_main_course_option:
-                fetchRecipes("&type=main%20course&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_type_dessert_option:
-                fetchRecipes("&type=dessert&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_type_side_dish_option:
-                fetchRecipes("&type=side%20dish&sort=random&fillIngredients=true&number=10");
-                return true;
-
-
-            case R.id.by_type_beverage_option:
-                fetchRecipes("&type=beverage&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_cuisine_french:
-                fetchRecipes("&cuisine=french&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_cuisine_italian:
-                fetchRecipes("&cuisine=italian&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_cuisine_chinese:
-                fetchRecipes("&cuisine=chinese&sort=random&fillIngredients=true&number=10");
-                return true;
-
-            case R.id.by_cuisine_mexican:
-                fetchRecipes("&cuisine=mexican&sort=random&fillIngredients=true&number=10");
-                return true;
-
-
             case R.id.like_mine_options_menu:
 
                 Log.d(TAG, "onOptionsItemSelected: hellooooo");
@@ -230,15 +188,16 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
                 for(int i =0; i < favRecipes.size(); i++) {
 
                     if (favRecipes.get(i).getCuisines() != null) {
+
                         for (int p = 0; p < favRecipes.get(i).getCuisines().size(); p++) {
 
                             allCuisines.add(favRecipes.get(i).getCuisines().get(p));
                         }
 
-                        Log.d(TAG, "all cuisines names: " + allCuisines.get(i));
                     }
                     else{
                         Log.d(TAG, "null cuisines on recipe: "+ favRecipes.get(i).getName());
+                        Snackbar.make(getView(), "Not enough recipes in favourites to suggest similar", Snackbar.LENGTH_SHORT).show();
                     }
                 }
 

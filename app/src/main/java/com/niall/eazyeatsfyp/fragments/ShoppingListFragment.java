@@ -39,11 +39,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.niall.eazyeatsfyp.ProductSelectorActivity;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
+import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
+import com.niall.eazyeatsfyp.adapterEntities.ShoppingListItemForAdapter;
 import com.niall.eazyeatsfyp.adapters.AmazonCardViewBSheetAdapter;
 import com.niall.eazyeatsfyp.adapters.ChildShopListRecyclerAdapter;
 import com.niall.eazyeatsfyp.adapters.MainShopListTestAdapter;
-import com.niall.eazyeatsfyp.adapters.ShoppingListItemAdapter;
+import com.niall.eazyeatsfyp.adapters.ShoppingListAdapter;
 import com.niall.eazyeatsfyp.barcode.Scanner;
 import com.niall.eazyeatsfyp.entities.ShopListCategory;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
@@ -54,6 +58,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +67,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class ShoppingListFragment extends Fragment implements ChildShopListRecyclerAdapter.ViewHolder.OnShopListener {
+public class ShoppingListFragment extends Fragment implements ShoppingListItemForAdapter.OnShopListItemListener {
 
 
     public MainShopListTestAdapter mainAdapter;
@@ -73,7 +78,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     public RecyclerView productRecycler;
     public AmazonCardViewBSheetAdapter productViewAdapter;
 
-    //ShoppingListItemAdapter adapter = new ShoppingListItemAdapter();
     public ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
     public ArrayList<ShopListCategory> categories;
     private List<ProductObject> productObjects = new ArrayList<>();
@@ -109,6 +113,11 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     private ShoppingListItem shopListAddedItem;
 
     private boolean duplicate;
+
+
+    //new RCV variables
+    private RecyclerView newRecycler;
+    private ShoppingListAdapter newAdapter;
 
 
     //TODO: make it easier to the user to know that they need to click on an item to search it in amazon.
@@ -249,10 +258,12 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
         productRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        mainRecycler = view.findViewById(R.id.shopList_rcv);
-        mainAdapter = new MainShopListTestAdapter(shopListCategories);
-        mainRecycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        mainRecycler.setAdapter(mainAdapter);
+//        mainRecycler = view.findViewById(R.id.shopList_rcv);
+//        mainAdapter = new MainShopListTestAdapter(shopListCategories);
+//        mainRecycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        mainRecycler.setAdapter(mainAdapter);
+
+        setUpBetterRCV();
 
 
     }
@@ -312,6 +323,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 productViewAdapter.setProductObjects(productObjects);
                 productViewAdapter.notifyDataSetChanged();
                 setProductTotals((ArrayList<ProductObject>) productObjects);
+
+
             }
 
             @Override
@@ -320,6 +333,7 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
             }
         });
     }
+
     public void getShoppingListFromFirebase() {
 
         shoppingListItems.clear();
@@ -344,14 +358,10 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 removeDuplicates(categoryNames);
                 System.out.println("Cat Names w/out doops : " + categoryNames);
 
-
                 for (String catName : categoryNames) {
-
                     ShopListCategory sListCat = new ShopListCategory(catName);
                     shopListCategories.add(sListCat);
-
                 }
-
                 for (ShopListCategory shopListCategory : shopListCategories) {
 
                     ArrayList<ShoppingListItem> items = new ArrayList<>();
@@ -359,11 +369,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                     shopListCategory.setItems(items);
 
                     for (ShoppingListItem shoppingListItem : shoppingListItems) {
-
                         if (shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())) {
-
                             items.add(shoppingListItem);
-
                         }
                     }
                 }
@@ -376,9 +383,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 //TODO: items added from dialog are messed up, have a look at this tuesday
 
 
-                mainAdapter.setShopListCategories(shopListCategories);
+                newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
 
-                mainAdapter.notifyDataSetChanged();
 
             }
 
@@ -447,11 +453,8 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                         shopListAddedItem = new ShoppingListItem(id, name, category);
 
                         for (int i = 0; i < shoppingListItems.size(); i++) {
-
                             if (shopListAddedItem.getName().equalsIgnoreCase(shoppingListItems.get(i).getName())) {
-
                                 Toast.makeText(getActivity(), shopListAddedItem.getName() + " is already in your Shopping List!", Toast.LENGTH_SHORT).show();
-
                                 duplicate = true;
                             }
                         }
@@ -471,15 +474,11 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
 
                                 }
                             });
-
-
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
 
                 @Override
@@ -496,8 +495,6 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
                 dialog.cancel();
             }
         });
-
-
         AlertDialog alertDialog = builder.create();
 
         alertDialog.show();
@@ -505,10 +502,28 @@ public class ShoppingListFragment extends Fragment implements ChildShopListRecyc
     }
 
 
-    @Override
-    public void onShopListItemClick(View v, ShoppingListItem item) {
-
+    public ArrayList<ShoppingListAdapterItem> buildShopListAdapterItems(ArrayList<ShopListCategory> shopListCategories) {
+        ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
+        for (ShopListCategory shopListCategory : shopListCategories) {
+            shoppingListAdapterItems.add(new ShoppingListCategoryItem(shopListCategory.getName()));
+            for (ShoppingListItem shoppingListItem : shopListCategory.getItems()) {
+                shoppingListAdapterItems.add(new ShoppingListItemForAdapter().createFrom(shoppingListItem));
+            }
+        }
+        return shoppingListAdapterItems;
     }
 
+    public void setUpBetterRCV() {
+        newRecycler = getView().findViewById(R.id.shopList_rcv);
+        newRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        newAdapter = new ShoppingListAdapter(this);
+        newRecycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        newRecycler.setAdapter(newAdapter);
+    }
 
+    @Override
+    public void onShopListItemClick(ShoppingListItemForAdapter shoppingListItemForAdapter) {
+        Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListItemForAdapter.getName());
+        startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListItemForAdapter.getName(), shoppingListItemForAdapter.getBarcodeUPC()));
+    }
 }

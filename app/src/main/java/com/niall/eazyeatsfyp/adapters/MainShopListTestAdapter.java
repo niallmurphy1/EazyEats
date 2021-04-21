@@ -88,7 +88,9 @@ public class MainShopListTestAdapter extends RecyclerView.Adapter<MainShopListTe
     public void onShopListItemClick(View v, ShoppingListItem item) {
 
         Toast.makeText(v.getContext(),  item.getName() + " clicked!", Toast.LENGTH_SHORT).show();
-        Log.d("TAG", "onShopListItemClick: item: " + item.getName());
+        Log.d("TAG", "onShopListItemClick: item: " + item.toString());
+
+
 
         //TODO: need the barcode for this....May not work the same way as it did in ElectronicsStore
         v.getContext().startActivity(ProductSelectorActivity.getIntent(v.getContext(), item.getName(), item.getBarcodeUPC()));
