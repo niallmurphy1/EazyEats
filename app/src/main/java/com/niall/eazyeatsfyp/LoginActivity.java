@@ -17,6 +17,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +40,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "EmailPassword";
 
+
+    private View root;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                 mAuth = FirebaseAuth.getInstance();
         loginPwordEdit = findViewById(R.id.loginPasswordEditText);
         loginEmailEdit = findViewById(R.id.loginEmailEditText);
+
+        root = findViewById(R.id.activity_login_new_layout);
 
     }
 
@@ -65,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "onLoginClick: login button clicked");
 
         if(getEmailInput().isEmpty() || getPasswordInput().isEmpty()){
-            Toast.makeText(this, "You must enter in details!", Toast.LENGTH_SHORT).show();
+            Snackbar.make(root, "You must enter in details!", Snackbar.LENGTH_SHORT).show();
         }else {
 
 
@@ -85,9 +92,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                 db = FirebaseDatabase.getInstance().getReference().child("User");
                                 String key = db.push().getKey();
-
-                                Toast.makeText(LoginActivity.this, userId,
-                                        Toast.LENGTH_LONG).show();
 
 
                                 startActivity(nav);

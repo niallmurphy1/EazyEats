@@ -109,7 +109,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
 
     public Map newShopListItem = new HashMap();
 
-
     private FloatingActionButton addItem;
     private FloatingActionButton scanBtn;
 

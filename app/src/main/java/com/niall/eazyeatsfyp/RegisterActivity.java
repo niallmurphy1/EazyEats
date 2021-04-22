@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passwordEdit;
 
 
+    private View root;
 
     private static final String TAG = "EmailPassword";
 
@@ -60,6 +61,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
+
+        root = findViewById(R.id.activity_register_new_layout);
 
         emailEdit = findViewById(R.id.emailEditText);
         usernameEdit = findViewById(R.id.uNameEditText);
@@ -88,8 +91,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view) {
 
-        //TODO: handle no fields entered here, crashes
-        if (getEmailInput().isEmpty() || getPasswordInput().isEmpty() || usernameEdit.getText().toString().isEmpty()) {
+        Log.d(TAG, "onRegisterClick: value of emailEdit: " + emailEdit.getText().toString());;
+
+        if(usernameEdit.getText().toString().equals("") || usernameEdit.getText().toString().isEmpty())
+            Snackbar.make(getCurrentFocus(), "You must provide a username!", Snackbar.LENGTH_LONG).show();
+        else if (getEmailInput() == null || getPasswordInput() == null || emailEdit.getText().toString() == null) {
             Snackbar.make(getCurrentFocus(), "You must enter all fields!", Snackbar.LENGTH_LONG);
         } else {
 
@@ -127,8 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Register failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Snackbar.make(root, "Register failed: " + task.getException().getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
                         }
 
                         //...

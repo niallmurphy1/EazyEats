@@ -265,82 +265,75 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                 , getResources().getStringArray(R.array.units));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton("Add", (dialog, which) -> {
 
-                if(!spinner.getSelectedItem().toString().equalsIgnoreCase("Choose a Unit…")){
+            if(!spinner.getSelectedItem().toString().equalsIgnoreCase("Choose a Unit…")){
 
 
-                    Food food = new Food(dialogIngredientName.getText().toString(), dialogIngredientQuant.getText().toString(), spinner.getSelectedItem().toString());
+                Food food = new Food(dialogIngredientName.getText().toString(), dialogIngredientQuant.getText().toString(), spinner.getSelectedItem().toString());
 
-                    for(Food aFood : foodIngredients){
+                for(Food aFood : foodIngredients){
 
-                        if(aFood.getName().equalsIgnoreCase(food.getName()) && aFood.getUnit().equalsIgnoreCase(food.getUnit())){
+                    if(aFood.getName().equalsIgnoreCase(food.getName()) && aFood.getUnit().equalsIgnoreCase(food.getUnit())){
 
-                           food.setQuantity(addQuants(food.getQuantity(), aFood.getQuantity()));
+                       food.setQuantity(addQuants(food.getQuantity(), aFood.getQuantity()));
 
-                            Snackbar.make(getView(), "Food quantity added to ingredients!", Snackbar.LENGTH_SHORT).show();
-                        }
+                        Snackbar.make(getView(), "Food quantity added to ingredients!", Snackbar.LENGTH_SHORT).show();
                     }
-
-
-
-                    //TODO: live search to add food, display options with proper quantities
-
-                    AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query="+food.getName()
-                            +"&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
-                            .build().getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-
-                            Log.d(TAG, "onResponse: " + response);
-
-                            JSONObject results;
-                            try {
-
-                                Log.d(TAG, "onResponse: " + response);
-                                results = new JSONObject(response);
-                                JSONArray arr = results.getJSONArray("results");
-
-                                String id = arr.getJSONObject(0).getString("id");
-
-                                String name = arr.getJSONObject(0).getString("name");
-
-                                food.setFoodId(id);
-
-                                Log.d(TAG, "Food  : " + food.toString());
-
-
-                                Map<String, Object> foodMap = food.toMap();
-                                newFoodMap.put(food.getFoodId(), foodMap);
-                                userIngredientsRef.updateChildren(newFoodMap).addOnSuccessListener(new OnSuccessListener() {
-                                    @Override
-                                    public void onSuccess(Object o) {
-                                        Log.d(TAG, "onSuccess: Food added to database: " + food.toString());
-                                    }
-                                });
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onError(ANError anError) {
-                            Log.d(TAG, "onError:" +  anError);
-                            Snackbar.make(getView(), "Ingredient" + food.getName() + " not found in database, please try again", Snackbar.LENGTH_SHORT);
-
-                        }
-                    });
-
-                }else {
-                    Snackbar.make(getView(), " Please enter a unit", Snackbar.LENGTH_LONG).show();
                 }
 
+                AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query="+food.getName()
+                        +"&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
+                        .build().getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.d(TAG, "onResponse: " + response);
+
+                        JSONObject results;
+                        try {
+
+                            Log.d(TAG, "onResponse: " + response);
+                            results = new JSONObject(response);
+                            JSONArray arr = results.getJSONArray("results");
+
+                            String id = arr.getJSONObject(0).getString("id");
+
+                            String name = arr.getJSONObject(0).getString("name");
+
+                            food.setFoodId(id);
+
+                            Log.d(TAG, "Food  : " + food.toString());
+
+
+                            Map<String, Object> foodMap = food.toMap();
+                            newFoodMap.put(food.getFoodId(), foodMap);
+                            userIngredientsRef.updateChildren(newFoodMap).addOnSuccessListener(new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Log.d(TAG, "onSuccess: Food added to database: " + food.toString());
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError:" +  anError);
+                        Snackbar.make(getView(), "Ingredient" + food.getName() + " not found in database, please try again", Snackbar.LENGTH_SHORT);
+
+                    }
+                });
+
+            }else {
+                Snackbar.make(getView(), " Please enter a unit", Snackbar.LENGTH_LONG).show();
             }
+
         });
         AlertDialog alertDialog = builder.create();
 
@@ -384,128 +377,6 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
     }
 
-    public void searchByIngredient(String ingredientQuery) {
-
-
-        ArrayList<Recipe> recipes = new ArrayList<>();
-
-        AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
-                .addQueryParameter("limit", "1")
-                .addHeaders("token", "1234")
-                .setTag("test")
-                .setPriority(Priority.LOW)
-                .build().getAsString(new StringRequestListener() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse: api works...");
-
-                System.out.println("API RESPONSE: " + response);
-
-
-                try {
-                    JSONObject obj = new JSONObject(response);
-
-                    JSONArray arr = obj.getJSONArray("results");
-
-                    Log.d(TAG, "recipe JSON Array size: " + arr.length());
-
-                    for (int i = 0; i < arr.length(); i++) {
-
-
-                        //pull title, readyInMinutes, Image URI, servings, ID, dishtypes
-
-                        String image = arr.getJSONObject(i).getString("image");
-
-                        Log.d(TAG, "Recipe ImageURI: " + image);
-                        String title = arr.getJSONObject(i).getString("title");
-                        int readyInMinutes = arr.getJSONObject(i).getInt("readyInMinutes");
-                        int servings = arr.getJSONObject(i).getInt("servings");
-                        String recipeID = arr.getJSONObject(i).getString("id");
-                        Log.d(TAG, "Recipe ID: " + recipeID);
-
-
-                        // TODO: fix getIngredients... and this whole thing
-                        JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
-
-                        ArrayList<Food> ingredients = new ArrayList<>();
-                        ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
-
-                        for (int f = 0; f < extIngredients.length(); f++) {
-
-
-                            String ingredientName = extIngredients.getJSONObject(f).getString("name");
-
-                            String categories = extIngredients.getJSONObject(f).getString("aisle");
-
-                            String foodId = extIngredients.getJSONObject(f).getString("id");
-
-                            ShoppingListItem shoppingListItem = new ShoppingListItem(foodId, ingredientName, categories);
-
-                            String unit = extIngredients.getJSONObject(f).getString("unit");
-
-                            String quant = extIngredients.getJSONObject(f).getString("amount");
-
-                            Food food = new Food(ingredientName, quant, unit);
-
-                            food.setFoodId(foodId);
-                            ingredients.add(food);
-
-                            Log.d(TAG, "onResponse: Number of ingredients: " + ingredients.size());
-
-                            System.out.println("Ingredient #" + f + ": " + ingredientName);
-
-
-                            shoppingListItems.add(shoppingListItem);
-
-
-                        }
-
-
-                        JSONArray jArray = arr.getJSONObject(i).getJSONArray("dishTypes");
-                        ArrayList<String> dishTypes = new ArrayList<>();
-
-                        for (int x = 0; x < jArray.length(); x++) {
-                            dishTypes.add(jArray.get(x).toString());
-                        }
-
-                        JSONArray cuisinesArray = arr.getJSONObject(i).getJSONArray("cuisines");
-                        ArrayList<String> cuisines = new ArrayList<>();
-
-
-                        for (int x = 0; x < cuisinesArray.length(); x++) {
-                            cuisines.add(cuisinesArray.get(x).toString());
-                        }
-
-
-                        Recipe recipe = new Recipe(title, dishTypes, ingredients, readyInMinutes, servings, image, recipeID, cuisines);
-                        
-                        recipes.add(recipe);
-
-                    }
-
-
-
-                    Log.d(TAG, "onResponse: gottem " + recipes.toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-
-            @Override
-            public void onError(ANError anError) {
-
-                System.out.println("Error " + anError);
-            }
-        });
-
-
-    }
-
-
-
     @Override
     public void onIngredientClick(int position) {
 
@@ -539,7 +410,6 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                                 keyNode.getRef().removeValue();
 
                                 Log.d(TAG, "onDataChange: Great success ");
-
                             }
 
                         }
@@ -549,8 +419,10 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
                     for(Food food : selectedItemsDelete){
                         foodIngredients.remove(food);
-                        adapter.notifyDataSetChanged();
+
                     }
+                    adapter.setSelectedItems(new ArrayList<Food>());
+                    adapter.notifyDataSetChanged();
 
 
                 }
@@ -558,6 +430,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
+                    Log.d(MyFoodIngredientsFragment.class.getSimpleName(), "onCancelled: Error removing food items: " + error);
                 }
             });
 

@@ -42,7 +42,11 @@
                     android:padding="15dp"
                     android:text="Recipe Name"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
+                    android:shadowColor="#000000"
+                    android:shadowDx="1.5"
+                    android:shadowDy="1.3"
+                    android:shadowRadius="1.6"
                     app:layout_collapseMode="pin"
                     android:textSize="25dp"/>
 

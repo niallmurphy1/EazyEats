@@ -147,7 +147,6 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                                 @Override
                                 public void onChanged(String s) {
 
-                                    //TODO: fix number  %s selected incorrect
                                     mode.setTitle(String.format("%s selected",s));
 
                                 }
@@ -208,8 +207,6 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                             isEnabled = false;
 
                             selectAll = false;
-
-                            //selectedItems.clear();
 
                             notifyDataSetChanged();
 
@@ -277,6 +274,14 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
             selectedItems.remove(food);
         }
         ingredientViewModel.setFoodMutableLiveData(String.valueOf(selectedItems.size()));
+    }
+
+    public ArrayList<Food> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public void setSelectedItems(ArrayList<Food> selectedItems) {
+        this.selectedItems = selectedItems;
     }
 
     public void setIngredients(ArrayList<Food> ingredients) {

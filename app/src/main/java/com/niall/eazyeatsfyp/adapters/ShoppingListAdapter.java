@@ -17,8 +17,6 @@ import com.niall.eazyeatsfyp.adapterEntities.ShoppingListItemForAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: try to migrate to the better way of doing this rcv
-
 public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
@@ -35,8 +33,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewType == R.layout.shop_list_category_item_rcv) {
             return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false));
         } else  {
-
-            //TODO: find out why this returns a Resources$NotFoundException
 
             Log.d(ShoppingListAdapter.class.getSimpleName(), "onCreateViewHolder: The view type : " + viewType);
             return new ShopListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false), onShopListItemListener);

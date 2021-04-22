@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +25,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.android.gms.common.api.internal.ApiKey;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -43,27 +38,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.niall.eazyeatsfyp.R;
-import com.niall.eazyeatsfyp.adapters.IngredientCardAdapter;
 import com.niall.eazyeatsfyp.adapters.MyIngredientsAdapter;
 import com.niall.eazyeatsfyp.adapters.RecipeCardAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
-import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
-
-import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
 
 
 public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter.ViewHolder.OnRecipeListener, MyIngredientsAdapter.ViewHolder.OnMyIngredientListener{
@@ -92,6 +79,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     public RecyclerView ingredientsRecycler;
     ArrayList<Food> ingredients = new ArrayList<>();
 
+    private TextView recipeNameText;
     private ImageView recipeImage;
     private TextView recipeInstructions;
     private TextView recipeTimeTextView;
@@ -279,7 +267,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         bottomSheetConstraint = getView().findViewById(R.id.bottom_app_sheet_recipe_view);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetConstraint);
 
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         bapsChangeServingsBtn = view.findViewById(R.id.baps_change_servings_button);
 
@@ -390,10 +378,13 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 headerLayout = getView().findViewById(R.id.baps_header_layout);
 
 
+                recipeNameText = getView().findViewById(R.id.baps_recipe_viewer_recipe_name_text);
                 recipeImage = getView().findViewById(R.id.baps_recipe_viewer_image_new);
                 recipeInstructions = getView().findViewById(R.id.baps_recipe_instructions_recipe_view);
                 recipeTimeTextView = getView().findViewById(R.id.baps_ready_in_mins_recipe_viewer);
                 servingsTextView = getView().findViewById(R.id.baps_recipe_viewer_servings_text);
+
+                recipeNameText.setText(recipes.get(position).getName());
 
                 Picasso.get()
                         .load(recipes.get(position).getImageURI().toString())
