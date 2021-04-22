@@ -17,9 +17,9 @@ public class ShoppingListItem {
 
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
-        result.put("sId:", sId);
+        result.put("sId", sId);
         result.put("name", name);
-        result.put("category:", category);
+        result.put("category", category);
         return result;
     }
 

@@ -72,7 +72,6 @@ import static android.content.ContentValues.TAG;
 public class ShoppingListFragment extends Fragment implements ShoppingListProductAdapterItem.OnShopListItemListener {
 
 
-    public RecyclerView mainRecycler;
     ArrayList<ShopListCategory> shopListCategories = new ArrayList<>();
 
     ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
@@ -301,7 +300,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
     }
 
-    public void retrieveProductsFromFirebase() {
+    private void retrieveProductsFromFirebase() {
         //productObjects.clear();
         userAmazonCartRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -391,25 +390,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
                     }
                 }
 
-//                for (ShopListCategory shopListCategory : shopListCategories) {
-//
-//                    for (ShoppingListItem shoppingListItem : shoppingListItems) {
-//
-//                        System.out.println("These are the shopping list items: " + shoppingListItem.toString());
-//
-//
-//                        if(shoppingListItem.getCategory() == null){
-//                            Toast.makeText(getContext(), "not working", Toast.LENGTH_SHORT).show();
-//                            shoppingListItem.setCategory("Other");
-//                            //shoppingListItem.getCategory() == null is true
-//                        }
-//
-//                        else  if(shopListCategory.getName().equalsIgnoreCase(shoppingListItem.getCategory())){
-//                            shopListCategory.getItems().add(shoppingListItem);
-//                        }
-//
-//                    }
-//                }
 
                 Log.d("TAG", "onDataChange: These are the shopping list category names and their item: " + shopListCategories.toString());
 
@@ -511,7 +491,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
                             }
 
                             if(!categoryExists){
-                                ShopListCategory shopListCategory = new ShopListCategory(shopListAddedItem.getName());
+                                ShopListCategory shopListCategory = new ShopListCategory(shopListAddedItem.getCategory());
                                 shopListCategory.getItems().add(shopListAddedItem);
                                 shopListCategories.add(shopListCategory);
 
@@ -528,8 +508,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
                                     Toast.makeText(getContext(), shopListAddedItem.getName().toString() + " added to list", Toast.LENGTH_SHORT).show();
 
 
-                                    buildShopListAdapterItems(shopListCategories);
-                                    newAdapter.notifyDataSetChanged();
+                                   newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
 
                                 }
                             });

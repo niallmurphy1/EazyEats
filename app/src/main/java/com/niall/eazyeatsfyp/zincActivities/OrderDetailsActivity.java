@@ -2,13 +2,18 @@ package com.niall.eazyeatsfyp.zincActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +28,7 @@ import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.zincEntities.Address;
 import com.niall.eazyeatsfyp.zincEntities.Order;
 import com.niall.eazyeatsfyp.zincEntities.OrderRepo;
+import com.niall.eazyeatsfyp.zincEntities.OrderResponse;
 import com.niall.eazyeatsfyp.zincEntities.PaymentMethod;
 import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
@@ -104,6 +110,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private DatabaseReference userAddressRef;
 
+    private OrderStatusViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +120,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         //initialise variables
         initFields();
 
-
+        initViewModel();
+        observeOrderStatus();
+        observeLoadingStatus();
 
         //assign required variables to create an order object
         userAmazonCartRef = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonShoppingCart");
@@ -314,11 +323,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         userAmazonDetailsWriter.writeAddress(userAddressRef, order.getShipping_address());
 
 
-        orderRepo.createOrder(order, new Callback<String>() {
+        orderRepo.createOrder(order, new Callback<OrderResponse>() {
             @Override
-            public void onSuccess(String data) {
-
-                Log.d("TAG", "onSuccess: The string for order confirmation " + data);
+            public void onSuccess(OrderResponse orderResponse) {
+                Log.d("TAG", "onSuccess: The string for order confirmation " + orderResponse);
+                viewModel.pollOrderStatus(orderResponse.request_id);
             }
 
             @Override
@@ -345,9 +354,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         }
 
-       else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
+        else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
 
-           useFirebaseAddress = false;
+            useFirebaseAddress = false;
             firstNameBillingEdit.setText(firstNameEdit.getText().toString());
             lastNameBillingEdit.setText(lastNameEdit.getText().toString());
             address1BillingEdit.setText(address1ShippingEdit.getText().toString());
@@ -359,7 +368,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
 
         } else {
-           useFirebaseAddress=false;
+            useFirebaseAddress=false;
             firstNameBillingEdit.setText("");
             lastNameBillingEdit.setText("");
             address1BillingEdit.setText("");
@@ -388,5 +397,54 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     }
 
+    private void observeOrderStatus() {
+        viewModel.orderResponse.observe(this, this::showUiForStatus);
+    }
+
+    private void observeLoadingStatus() {
+        viewModel.loading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if (loading) {
+                    //show loading dialog (if not already shown)
+                    showLoadingState();
+                } else {
+                    //hide loading if shown
+                    hideLoadingState();
+                }
+            }
+        });
+    }
+
+    private void hideLoadingState() {
+        findViewById(R.id.loading_view).setVisibility(View.GONE);
+    }
+
+    private void showLoadingState() {
+        findViewById(R.id.loading_view).setVisibility(View.VISIBLE);
+    }
+
+    private void showUiForStatus(OrderResponse orderResponse) {
+        if (orderResponse.code.equals(OrderResponse.CODE_PROCESSING)) {
+            Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
+            //show processing view
+        } else if (orderResponse.code.equals(OrderResponse.CODE_MAX_PRICE_EXCEEDED)) {
+            Toast.makeText(this, "Order max price exceeded", Toast.LENGTH_SHORT).show();
+            // show max price exceeded (successful test order) view
+        } else  {
+            Toast.makeText(this, "Order other result:" + orderResponse.code , Toast.LENGTH_SHORT).show();
+            // unknown/other result; show error view
+        }
+    }
+
+    private void initViewModel() {
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new OrderStatusViewModel(new OrderRepo());
+            }
+        }).get(OrderStatusViewModel.class);
+    }
 
 }

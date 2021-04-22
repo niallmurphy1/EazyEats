@@ -15,11 +15,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments = new ArrayList<>();
     private List<String> fragmentTitles = new ArrayList<>();
 
-
-
-
-
-
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
@@ -35,13 +30,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-    public void addFragment(Fragment fragment, String title){
+    public void addFragment(Fragment fragment, String title) {
         fragments.add(fragment);
         fragmentTitles.add(title);
     }
-
-
-
 
     @Nullable
     @Override

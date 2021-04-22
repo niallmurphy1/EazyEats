@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<ScrollView
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".zincActivities.OrderDetailsActivity">
@@ -34,26 +38,25 @@
             android:layout_marginTop="20dp"
             android:text="Please fill in the details to complete your order"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
             android:background="@drawable/round_corner_toggle"
-            app:errorEnabled="true"
-            >
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_first_name_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
                 android:background="@drawable/round_corner_toggle"
+                android:ems="10"
                 android:hint="First name"
-                android:importantForAutofill="yes"/>
+                android:importantForAutofill="yes"
+                android:inputType="textPersonName" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,19 +65,19 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_last_name_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:importantForAutofill="yes"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Last name"
+                android:importantForAutofill="yes"
+                android:inputType="textPersonName"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Used previously saved address for Shipping and Billing"/>
+            android:text="Used previously saved address for Shipping and Billing" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,26 +97,26 @@
             android:layout_marginTop="20dp"
             android:text="Shipping"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_address1_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Address Line 1"
+                android:inputType="textPostalAddress"
                 android:maxLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,18 +124,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_address2_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Address Line 2"
+                android:inputType="textPostalAddress"
                 android:maxLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,18 +143,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_zip_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Zip code"
+                android:inputType="textPostalAddress"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,18 +162,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_city_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="City"
+                android:inputType="textPostalAddress"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,18 +181,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_state_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="State"
+                android:inputType="textPostalAddress"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,18 +200,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_country_iso_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="ISO country code"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -215,88 +219,88 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/oder_details_phone_number_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
                 android:background="@drawable/round_corner_toggle"
-                android:importantForAutofill="yes"
                 android:hint="Phone no."
+                android:importantForAutofill="yes"
+                android:inputType="phone"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:text="Shipping preferences"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textSize="15sp" />-->
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="left"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:text="Shipping preferences"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textSize="15sp" />-->
 
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="54dp"-->
-<!--            android:layout_margin="6dp"-->
-<!--            app:counterEnabled="true"-->
-<!--            app:counterMaxLength="15"-->
-<!--            android:background="@drawable/round_corner_toggle"-->
-<!--            app:errorEnabled="true">-->
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="54dp"-->
+        <!--            android:layout_margin="6dp"-->
+        <!--            app:counterEnabled="true"-->
+        <!--            app:counterMaxLength="15"-->
+        <!--            android:background="@drawable/round_corner_toggle"-->
+        <!--            app:errorEnabled="true">-->
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/order_details_order_by_text"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/round_corner_toggle"-->
-<!--                android:importantForAutofill="yes"-->
-<!--                android:hint="Order by..."-->
-<!--                android:maxLines="1" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <!--            <com.google.android.material.textfield.TextInputEditText-->
+        <!--                android:id="@+id/order_details_order_by_text"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:background="@drawable/round_corner_toggle"-->
+        <!--                android:importantForAutofill="yes"-->
+        <!--                android:hint="Order by..."-->
+        <!--                android:maxLines="1" />-->
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="54dp"-->
-<!--            android:layout_margin="6dp"-->
-<!--            app:counterEnabled="true"-->
-<!--            app:counterMaxLength="15"-->
-<!--            android:background="@drawable/round_corner_toggle"-->
-<!--            app:errorEnabled="true">-->
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="54dp"-->
+        <!--            android:layout_margin="6dp"-->
+        <!--            app:counterEnabled="true"-->
+        <!--            app:counterMaxLength="15"-->
+        <!--            android:background="@drawable/round_corner_toggle"-->
+        <!--            app:errorEnabled="true">-->
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/order_details_max_days_text"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="number"-->
-<!--                android:background="@drawable/round_corner_toggle"-->
-<!--                android:hint="Max days"-->
-<!--                android:maxLines="1" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <!--            <com.google.android.material.textfield.TextInputEditText-->
+        <!--                android:id="@+id/order_details_max_days_text"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:inputType="number"-->
+        <!--                android:background="@drawable/round_corner_toggle"-->
+        <!--                android:hint="Max days"-->
+        <!--                android:maxLines="1" />-->
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_max_price_shipping_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Max price"
+                android:inputType="numberDecimal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -309,16 +313,15 @@
             android:layout_marginTop="20dp"
             android:text="Billing address"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/order_details_same_as_shipping_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Shipping address same as billing address"/>
-
+            android:text="Shipping address same as billing address" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -326,17 +329,16 @@
             android:layout_height="54dp"
             android:layout_margin="6dp"
             android:background="@drawable/round_corner_toggle"
-            app:errorEnabled="true"
-            >
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_first_name_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:background="@drawable/round_corner_toggle"
+                android:ems="10"
                 android:hint="First name"
-                android:importantForAutofill="yes"/>
+                android:importantForAutofill="yes" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -345,40 +347,38 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_last_name_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Last name"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
-
-
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_address1_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Address Line 1"
+                android:inputType="text"
                 android:maxLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -386,18 +386,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_address2_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Address Line 2"
+                android:inputType="text"
                 android:maxLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -405,18 +405,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_zip_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Zip code"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -424,18 +424,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_city_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="City"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -443,18 +443,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_state_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="State"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -462,18 +462,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_country_iso_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="ISO country code"
+                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -481,18 +481,18 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/oder_details_phone_number_billing_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Phone no."
+                android:inputType="phone"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -504,26 +504,26 @@
             android:layout_marginTop="20dp"
             android:text="Payment Details"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_margin="6dp"
+            android:background="@drawable/round_corner_toggle"
             app:counterEnabled="true"
             app:counterMaxLength="15"
-            android:background="@drawable/round_corner_toggle"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/order_details_payment_name_on_card_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Name on card"
+                android:inputType="textPersonName"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -538,9 +538,9 @@
                 android:id="@+id/oder_details_card_number_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Card Number"
+                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -555,9 +555,9 @@
                 android:id="@+id/oder_details_security_code_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:background="@drawable/round_corner_toggle"
                 android:hint="Security Code"
+                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -579,9 +579,9 @@
                     android:id="@+id/oder_details_expiration_month_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:background="@drawable/round_corner_toggle"
                     android:hint="month"
+                    android:inputType="number"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -592,8 +592,8 @@
                 android:layout_height="wrap_content"
                 android:text="/"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
@@ -607,9 +607,9 @@
                     android:id="@+id/oder_details_expiration_year_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:background="@drawable/round_corner_toggle"
                     android:hint="year"
+                    android:inputType="number"
                     android:maxLines="1" />
 
 
@@ -623,25 +623,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Use gift"/>
+            android:text="Use gift" />
 
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="54dp"-->
-<!--            android:layout_margin="6dp"-->
-<!--            android:background="@drawable/round_corner_toggle"-->
-<!--            app:errorEnabled="true">-->
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="54dp"-->
+        <!--            android:layout_margin="6dp"-->
+        <!--            android:background="@drawable/round_corner_toggle"-->
+        <!--            app:errorEnabled="true">-->
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/order_details_max_price_text"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="number"-->
-<!--                android:background="@drawable/round_corner_toggle"-->
-<!--                android:hint="max price"-->
-<!--                android:maxLines="1" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <!--            <com.google.android.material.textfield.TextInputEditText-->
+        <!--                android:id="@+id/order_details_max_price_text"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:inputType="number"-->
+        <!--                android:background="@drawable/round_corner_toggle"-->
+        <!--                android:hint="max price"-->
+        <!--                android:maxLines="1" />-->
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
         <Button
@@ -651,15 +651,33 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@color/colorAccent"
-            android:text="Confirm payment and place order"
-            />
+            android:text="Confirm payment and place order" />
 
 
     </LinearLayout>
 
 
-
-
-
-
 </ScrollView>
+
+<FrameLayout
+android:id="@+id/loading_view"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:alpha="200"
+android:background="@color/white">
+
+<ProgressBar
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Processing order..."
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="40dp"/>
+
+</FrameLayout>
+    </FrameLayout>
