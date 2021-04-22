@@ -141,14 +141,11 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                             isEnabled = true;
                             ClickItem(holder);
-
-
                             ingredientViewModel.getText().observe((LifecycleOwner) holder.itemView.getContext(), new Observer<String>() {
                                 @Override
                                 public void onChanged(String s) {
 
                                     mode.setTitle(String.format("%s selected",s));
-
                                 }
                             });
                             return true;
@@ -169,7 +166,6 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                                     //ClickItem(holder);
                                     Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
                                     frag.deleteIngredientsFromFirebase(selectedItems);
-
                                     if(ingredients.size() == 0){
 
                                         //create text view empty, add in constructor of adapter

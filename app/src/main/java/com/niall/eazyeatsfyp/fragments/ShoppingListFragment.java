@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +43,7 @@ import com.niall.eazyeatsfyp.ProductSelectorActivity;
 import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
-import com.niall.eazyeatsfyp.adapterEntities.ShoppingListItemForAdapter;
+import com.niall.eazyeatsfyp.adapterEntities.ShoppingListProductAdapterItem;
 import com.niall.eazyeatsfyp.adapters.AmazonCardViewBSheetAdapter;
 import com.niall.eazyeatsfyp.adapters.ShoppingListAdapter;
 import com.niall.eazyeatsfyp.barcode.Scanner;
@@ -70,7 +69,7 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class ShoppingListFragment extends Fragment implements ShoppingListItemForAdapter.OnShopListItemListener {
+public class ShoppingListFragment extends Fragment implements ShoppingListProductAdapterItem.OnShopListItemListener {
 
 
     public RecyclerView mainRecycler;
@@ -79,7 +78,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
 
     private ArrayList<String> ingredientNames;
-
 
     public RecyclerView productRecycler;
     public AmazonCardViewBSheetAdapter productViewAdapter;
@@ -156,16 +154,17 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         shoppingListItems.clear();
-
         return inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        Snackbar.make(getView(), "Click on items to search for products on Amazon!", Snackbar.LENGTH_LONG).show();
 
         getRecipeIngredientsFromFirebase(allItemsRef);
 
@@ -303,9 +302,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     }
 
     public void retrieveProductsFromFirebase() {
-
         //productObjects.clear();
-
         userAmazonCartRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -563,7 +560,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
         for (ShopListCategory shopListCategory : shopListCategories) {
             shoppingListAdapterItems.add(new ShoppingListCategoryItem(shopListCategory.getName()));
             for (ShoppingListItem shoppingListItem : shopListCategory.getItems()) {
-                shoppingListAdapterItems.add(new ShoppingListItemForAdapter().createFrom(shoppingListItem));
+                shoppingListAdapterItems.add(new ShoppingListProductAdapterItem().createFrom(shoppingListItem));
             }
         }
         return shoppingListAdapterItems;
@@ -578,12 +575,20 @@ public class ShoppingListFragment extends Fragment implements ShoppingListItemFo
     }
 
     @Override
-    public void onShopListItemClick(ShoppingListItemForAdapter shoppingListItemForAdapter) {
-        Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListItemForAdapter.getName());
-        startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListItemForAdapter.getName(), shoppingListItemForAdapter.getBarcodeUPC()));
+    public void onShopListItemClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem) {
+        Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListProductAdapterItem.getName());
+        startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListProductAdapterItem.getName(), shoppingListProductAdapterItem.getBarcodeUPC()));
     }
 
+    @Override
+    public void onShopListItemLongClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem) {
 
+
+        Log.d(TAG, "onShopListItemLongClick: Long clicked: " + shoppingListProductAdapterItem.toString());
+
+        Snackbar.make(getView(),"onShopListItemLongClick: Long clicked: " + shoppingListProductAdapterItem.toString(), Snackbar.LENGTH_LONG ).show();
+
+    }
 
 
     //get all recipe ingredients for suggested textView

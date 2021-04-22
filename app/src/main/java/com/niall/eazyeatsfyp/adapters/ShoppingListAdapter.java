@@ -12,18 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
-import com.niall.eazyeatsfyp.adapterEntities.ShoppingListItemForAdapter;
+import com.niall.eazyeatsfyp.adapterEntities.ShoppingListProductAdapterItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
-    private final ShoppingListItemForAdapter.OnShopListItemListener onShopListItemListener;
+    private final ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener;
 
 
-    public ShoppingListAdapter(ShoppingListItemForAdapter.OnShopListItemListener onShopListItemListener) {
+    public ShoppingListAdapter(ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener) {
         this.onShopListItemListener = onShopListItemListener;
     }
 
@@ -45,7 +44,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(holder instanceof CategoryViewHolder){
             ((CategoryViewHolder) holder).bind((ShoppingListCategoryItem) shoppingListAdapterItems.get(position));
         }else if (holder instanceof ShopListItemViewHolder){
-            ((ShopListItemViewHolder) holder).bind((ShoppingListItemForAdapter) shoppingListAdapterItems.get(position)) ;
+            ((ShopListItemViewHolder) holder).bind((ShoppingListProductAdapterItem) shoppingListAdapterItems.get(position)) ;
         }
     }
 
@@ -85,17 +84,19 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class ShopListItemViewHolder extends RecyclerView.ViewHolder{
 
         private TextView nameText;
-        private ShoppingListItemForAdapter.OnShopListItemListener shopListItemListener;
-        public ShopListItemViewHolder(@NonNull View itemView, ShoppingListItemForAdapter.OnShopListItemListener listener) {
+        private ShoppingListProductAdapterItem.OnShopListItemListener shopListItemListener;
+        public ShopListItemViewHolder(@NonNull View itemView, ShoppingListProductAdapterItem.OnShopListItemListener listener) {
             super(itemView);
             nameText = itemView.findViewById(R.id.shop_list_item_text_view);
             shopListItemListener = listener;
         }
 
-        public void bind(ShoppingListItemForAdapter itemForAdapter){
+        public void bind(ShoppingListProductAdapterItem itemForAdapter){
             nameText.setText(String.valueOf(itemForAdapter.getName()));
             itemView.setOnClickListener(v -> shopListItemListener.onShopListItemClick(itemForAdapter));
             itemView.setOnClickListener(view -> shopListItemListener.onShopListItemClick(itemForAdapter));
+            itemView.setOnLongClickListener(v -> false);
+
         }
     }
 }

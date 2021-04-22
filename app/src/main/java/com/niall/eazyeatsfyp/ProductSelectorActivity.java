@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,6 +57,7 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
 
     Intent intent;
     String productName;
+    private View root;
 
 
     private ArrayList<ProductObject> products;
@@ -71,6 +73,8 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_selector);
+
+        root = findViewById(R.id.product_selector_activity_layout);
 
         intent = getIntent();
         productName = intent.getStringExtra(SHOPLISTITEMNAME);
@@ -168,8 +172,8 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
         NumberPicker numberPicker = dialogView.findViewById(R.id.product_quant_number_picker);
         numberPicker.setMaxValue(99);
         numberPicker.setValue(1);
-        RatingBar ratingBar = dialogView.findViewById(R.id.rating_bar_dialog_amazon_product);
-        ratingBar.setNumStars(5);
+        //RatingBar ratingBar = dialogView.findViewById(R.id.rating_bar_dialog_amazon_product);
+        //ratingBar.setNumStars(5);
         MaterialTextView numRatingsText = dialogView.findViewById(R.id.amazon_num_ratings_text_view);
         ImageView productImage = dialogView.findViewById(R.id.product_image_dialog_image_view);
         MaterialTextView titleText = dialogView.findViewById(R.id.product_name_dialog_text_view);
@@ -197,7 +201,7 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
 
         numRatingsText.setText("(" + productObject.getNum_reviews() + " reviews)");
         starsText.setText(productObject.getStars() + " stars");
-        ratingBar.setRating((float) productObject.getStars());
+        //ratingBar.setRating((float) productObject.getStars());
 
         double price = (productObject.getPrice()/100.00);
 

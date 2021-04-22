@@ -402,7 +402,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                 if(recipeInstructions == null){
 
-                    recipeInstructions.setText("No method avaialable for this recipe!");
+                    recipeInstructions.setText("No method available for this recipe!");
                 }
 
                 recipeTimeTextView.setText("Time: " + String.valueOf(recipes.get(position).getTime()) + " mins");
@@ -490,93 +490,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         alertDialog.show();
     }
 
-
-    public void changeServings(int pos){
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
-        builder.setView(dialogView);
-        builder.setTitle("Change Servings");
-        numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
-        numberPicker.setMaxValue(100);
-        numberPicker.setMinValue(1);
-        numberPicker.setValue(recipes.get(pos).getServings());
-
-        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                recipes.get(pos).setServings(numberPicker.getValue());
-                servingsTextView.setText("Serves: " + String.valueOf(numberPicker.getValue()));
-
-                Log.d("TAG", "onClick: new recipe servings from value picker numberPicker.getValue(): " + numberPicker.getValue());
-
-                Log.d("TAG", "onClick: new recipe servings: " + recipes.get(pos).getServings());
-
-                for(int i = 0; i < recipes.get(pos).getIngredients().size(); i++){
-
-                    Log.d("TAG", "onValueChange ingredients and their quants: " + ingredients.get(i).getName() + ": " + ingredients.get(i).getQuantity());
-                    Log.d("TAG", "onValueChange: initialQuants arraylist: " + initialQuants.get(i));
-                    Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
-                    Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
-                    Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));
-
-
-                    //TODO: IndexOutOfBoundsException: FIX THIS
-                    // whole algorithm is wrong sometimes, strip and redo this
-
-                    String newQuant = String.valueOf(changeIngredientQuants(origServings.get(i), numberPicker.getValue(), initialQuants.get(i)));
-
-                    formatQuants(newQuant);
-
-                    Log.d("TAG", "onClick: new quants after format: " + ingredients.get(i).getName() + " " +  " Qunatity: " + newQuant);
-
-                    ingredients.get(i).setQuantity(newQuant);
-                    //ingredients.clear();
-
-
-                    Log.d("TAG", "onClick: result of setQuant: " + String.valueOf(changeIngredientQuants(initialQuants.get(i), numberPicker.getValue(), Double.valueOf(ingredients.get(i).getQuantity()))));
-
-
-                    Log.d("TAG", "onClick: the ingredients new quants:  "+ingredients.get(i).getName() + ", Quant: "+ ingredients.get(i).getQuantity());
-
-
-                    adapter.notifyDataSetChanged();
-                }
-
-                recipes.get(pos).setIngredients(ingredients);
-                setUpIngredientsRCV(pos);
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-
-        alertDialog.show();
-
-    }
-
-    //TODO: make this for a double
-    public void formatQuants(String quant){
-
-        double dblQuant = Double.parseDouble(quant);
-
-        int decimalPlaces = 2;
-
-        BigDecimal bd = new BigDecimal(dblQuant);
-
-        bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
-
-        dblQuant = bd.doubleValue();
-
-        quant = String.valueOf(dblQuant);
-
-    }
-
-    public double changeIngredientQuants(double oldServe, int newServe, double oldQuant){
-
-        return (newServe / oldServe) * oldQuant;
-    }
 
 }
 

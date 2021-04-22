@@ -3,14 +3,14 @@ package com.niall.eazyeatsfyp.adapterEntities;
 import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 
-public class ShoppingListItemForAdapter extends ShoppingListAdapterItem {
+public class ShoppingListProductAdapterItem extends ShoppingListAdapterItem {
 
     private String sId;
     private String name;
     private String category;
     private String barcodeUPC;
 
-    public ShoppingListItemForAdapter(String sId, String name, String category, String barcodeUPC) {
+    public ShoppingListProductAdapterItem(String sId, String name, String category, String barcodeUPC) {
         super(R.layout.section_shop_list_item_view);
         this.sId = sId;
         this.name = name;
@@ -18,13 +18,13 @@ public class ShoppingListItemForAdapter extends ShoppingListAdapterItem {
         this.barcodeUPC = barcodeUPC;
     }
 
-    public ShoppingListItemForAdapter(){
+    public ShoppingListProductAdapterItem(){
         super(R.layout.section_shop_list_item_view);
 
     }
 
-    public ShoppingListItemForAdapter createFrom(ShoppingListItem shopListItem) {
-        return new ShoppingListItemForAdapter(shopListItem.getsId()
+    public ShoppingListProductAdapterItem createFrom(ShoppingListItem shopListItem) {
+        return new ShoppingListProductAdapterItem(shopListItem.getsId()
                 , shopListItem.getName()
                 , shopListItem.getCategory()
                 , shopListItem.getBarcodeUPC());
@@ -63,8 +63,10 @@ public class ShoppingListItemForAdapter extends ShoppingListAdapterItem {
     }
 
     public interface OnShopListItemListener {
-        void onShopListItemClick(ShoppingListItemForAdapter shoppingListItemForAdapter);
+        void onShopListItemClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem);
+        void onShopListItemLongClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem);
     }
+
 }
 
 

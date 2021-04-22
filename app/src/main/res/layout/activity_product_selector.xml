@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductSelectorActivity">
+    tools:context=".ProductSelectorActivity"
+    android:id="@+id/product_selector_activity_layout">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/amazon_products_rcv"

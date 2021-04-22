@@ -25,11 +25,11 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
     private List<ProductObject> productObjects;
     private ViewHolder.OnProductClickListener onProductClickListener;
 
-    public AmazonProductCardAdapter(){
+    public AmazonProductCardAdapter() {
 
     }
 
-    public AmazonProductCardAdapter(Context context){
+    public AmazonProductCardAdapter(Context context) {
         this.layoutInflater = LayoutInflater.from(context);
         productObjects = new ArrayList<>();
 
@@ -55,9 +55,7 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
         View v = layoutInflater.inflate(R.layout.amazon_product_card, parent, false);
-
         return new ViewHolder(v, onProductClickListener);
 
 
@@ -74,8 +72,7 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
         return productObjects.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         private TextView productTitle;
@@ -93,15 +90,14 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
             itemView.setOnClickListener(this);
 
         }
-        public String formatPricePounds(double price){
+
+        public String formatPricePounds(double price) {
             NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.UK);
             return formatter.format(price);
 
         }
 
-        public void setData(ProductObject productObject){
-
-
+        public void setData(ProductObject productObject) {
             Picasso.get()
                     .load(productObject.getImage())
                     .fit()
@@ -109,10 +105,11 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
                     .into(productImage);
 
             productTitle.setText(productObject.getTitle());
+            price.setText(formatPricePounds((productObject.getPrice()) / 100.00));
 
-            price.setText(formatPricePounds((productObject.getPrice())/100.00));
 
         }
+
         @Override
         public void onClick(View v) {
 
@@ -120,7 +117,7 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
         }
 
 
-        public interface OnProductClickListener{
+        public interface OnProductClickListener {
 
             public void onProductClick(int position);
         }

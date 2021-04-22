@@ -94,9 +94,9 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "onRegisterClick: value of emailEdit: " + emailEdit.getText().toString());;
 
         if(usernameEdit.getText().toString().equals("") || usernameEdit.getText().toString().isEmpty())
-            Snackbar.make(getCurrentFocus(), "You must provide a username!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, "You must provide a username!", Snackbar.LENGTH_LONG).show();
         else if (getEmailInput() == null || getPasswordInput() == null || emailEdit.getText().toString() == null) {
-            Snackbar.make(getCurrentFocus(), "You must enter all fields!", Snackbar.LENGTH_LONG);
+            Snackbar.make(root, "You must enter all fields!", Snackbar.LENGTH_LONG);
         } else {
 
         final Intent i = new Intent(this, BNavigationActivity.class);
