@@ -42,6 +42,7 @@ import com.niall.eazyeatsfyp.adapters.MyIngredientsAdapter;
 import com.niall.eazyeatsfyp.adapters.RecipeCardAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
+import com.niall.eazyeatsfyp.util.FormatDouble;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -86,6 +87,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     private TextView servingsTextView;
     private Button bapsChangeServingsBtn;
 
+    private FormatDouble formatDouble = new FormatDouble();
 
     private int newServe;
     private ArrayList<Integer> origServings = new ArrayList<>();
@@ -467,7 +469,8 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 for(Food food: ingredients){
 
                   double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
-                  Food newFood = new Food(food.getName(), String.valueOf(newFoodQuant), food.getUnit());
+
+                  Food newFood = new Food(food.getName(), formatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
 
                   recipeIngredients.add(newFood);
 
@@ -553,6 +556,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
     }
 
+    //TODO: make this for a double
     public void formatQuants(String quant){
 
         double dblQuant = Double.parseDouble(quant);
