@@ -30,9 +30,8 @@ public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdap
     public MyIngredientsAdapter(){
 
     }
-    public MyIngredientsAdapter(Context context, ArrayList<Food> myIngredientsData){
+    public MyIngredientsAdapter(Context context){
         this.layoutInflater = LayoutInflater.from(context);
-        this.myIngredientsData = myIngredientsData;
        // this.activity = (BNavigationActivity)(context);
 
     }
@@ -88,12 +87,7 @@ public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdap
 
             ingredientQuantUnit.setText(foodItem.getQuantity() + " " + foodItem.getUnit());
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myIngredientListener.onIngredientClick(foodItem);
-                }
-            });
+            itemView.setOnClickListener(v -> myIngredientListener.onIngredientClick(foodItem));
         }
 
         public interface OnMyIngredientListener{

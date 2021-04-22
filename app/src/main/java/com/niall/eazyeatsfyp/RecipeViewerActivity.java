@@ -401,6 +401,8 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     }
 
 
+
+
     public void onFavClick(View View){
 
         System.out.println("Favourite clicked");
@@ -477,14 +479,16 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
             });
         }
 
-
     }
+
+
 
    public void setUpRCV(){
 
         ingredientsRecycler = findViewById(R.id.recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyIngredientsAdapter(this, ingredients);
+        adapter = new MyIngredientsAdapter(this);
+        adapter.setMyIngredientsData(ingredients);
         adapter.setmOnMyIngredientListener(this);
         ingredientsRecycler.setAdapter(adapter);
         adapter.notifyDataSetChanged();

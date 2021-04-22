@@ -70,7 +70,8 @@
                 android:text="Recipe name"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:layout_gravity="bottom"/>
 
 
             <androidx.appcompat.widget.Toolbar

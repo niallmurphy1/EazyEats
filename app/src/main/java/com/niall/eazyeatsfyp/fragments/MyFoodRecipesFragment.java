@@ -86,7 +86,11 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     private TextView servingsTextView;
     private Button bapsChangeServingsBtn;
 
+
+    private int newServe;
     private ArrayList<Integer> origServings = new ArrayList<>();
+
+    private ArrayList<Food> newIngredients = new ArrayList<>();
 
     private NumberPicker numberPicker;
     private ArrayList<Double> initialQuants = new ArrayList<>();
@@ -255,8 +259,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         return inflater.inflate(R.layout.fragment_my_food_recipes, container, false);
     }
 
@@ -273,6 +275,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         //TODO: add more func. to bottom sheet eg. removeFromFav btn, see similar recipes,
 
+
     }
 
 
@@ -286,7 +289,8 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         System.out.println("these are the ingredients: " + ingredients.toString());
         ingredientsRecycler = getView().findViewById(R.id.baps_recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        ingredientsAdapter = new MyIngredientsAdapter(getContext(), ingredients);
+        ingredientsAdapter = new MyIngredientsAdapter(getContext());
+        ingredientsAdapter.setMyIngredientsData(ingredients);
         ingredientsRecycler.setAdapter(ingredientsAdapter);
         adapter.notifyDataSetChanged();
 
@@ -408,7 +412,8 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
             @Override
             public void onClick(View v) {
                 //TODO: fix recipe servings issue
-                changeServings(position);
+                //changeServings(position);
+                changeServingsRework(position);
             }
         });
 
@@ -418,10 +423,70 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     @Override
     public void onIngredientClick(Food ingredient) {
 
-        //TODO: func. for this
+        //TODO: func. for this, crashes
         Toast.makeText(getContext(), ingredient.getName() + " clicked!", Toast.LENGTH_SHORT).show();
 
     }
+
+    public int getServingsTextView(TextView textView){
+
+        String textViewText = textView.getText().toString();
+
+        String servings = textViewText.substring(7).trim();
+
+        int serve = Integer.parseInt(servings);
+
+        return serve;
+    }
+
+
+
+    public void changeServingsRework(int pos){
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
+        builder.setView(dialogView);
+        builder.setTitle("Change Servings");
+        numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
+        numberPicker.setMaxValue(100);
+        numberPicker.setMinValue(1);
+        //change this to get the value in the textview
+        numberPicker.setValue(getServingsTextView(servingsTextView));
+        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                ArrayList<Food> recipeIngredients = new ArrayList<>();
+
+                int newServe = numberPicker.getValue();
+                servingsTextView.setText("Serves: " + newServe);
+
+                double multiplyBy = (double) newServe /recipes.get(pos).getServings();
+
+                for(Food food: ingredients){
+
+                  double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
+                  Food newFood = new Food(food.getName(), String.valueOf(newFoodQuant), food.getUnit());
+
+                  recipeIngredients.add(newFood);
+
+                }
+
+                ingredientsAdapter.setMyIngredientsData(recipeIngredients);
+                ingredientsAdapter.notifyDataSetChanged();
+
+
+            }
+
+
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+    }
+
 
     public void changeServings(int pos){
 
@@ -450,11 +515,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                     Log.d("TAG", "onValueChange ingredients and their quants: " + ingredients.get(i).getName() + ": " + ingredients.get(i).getQuantity());
                     Log.d("TAG", "onValueChange: initialQuants arraylist: " + initialQuants.get(i));
-
-
-
-
-
                     Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
                     Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
                     Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));
