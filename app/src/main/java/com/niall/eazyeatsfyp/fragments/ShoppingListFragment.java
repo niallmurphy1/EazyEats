@@ -52,6 +52,7 @@ import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShopListCategory;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 import com.niall.eazyeatsfyp.util.DuplicateChecker;
+import com.niall.eazyeatsfyp.util.ShopListActionListener;
 import com.niall.eazyeatsfyp.zincActivities.AmazonCredsActivity;
 import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 
@@ -70,7 +71,7 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class ShoppingListFragment extends Fragment implements ShoppingListProductAdapterItem.OnShopListItemListener {
+public class ShoppingListFragment extends Fragment implements ShoppingListProductAdapterItem.OnShopListItemListener, ShopListActionListener {
 
 
     ArrayList<ShopListCategory> shopListCategories = new ArrayList<>();
@@ -397,9 +398,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
                 System.out.println("Shopping list items: but some are null for no reason " + shoppingListItems.toString());
 
-                //TODO: items added from dialog are messed up, have a look at this tuesday
-
-
                 newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
             }
 
@@ -447,8 +445,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredientSuggestions);
         dialogTextName.setAdapter(arrayAdapter);
         builder.setTitle("New Shopping list item");
-        builder.setPositiveButton("Add", (dialog, which) -> {
-            System.out.println("Dialog edit text name: " + dialogTextName.getText());
+        builder.setPositiveButton("Add", (dialog, which) -> { System.out.println("Dialog edit text name: " + dialogTextName.getText());
 
             AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query=" + dialogTextName.getText().toString().trim() + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
                     .build().getAsString(new StringRequestListener() {
@@ -550,7 +547,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
     public void setUpBetterRCV() {
         newRecycler = getView().findViewById(R.id.shopList_rcv);
         newRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        newAdapter = new ShoppingListAdapter(this);
+        newAdapter = new ShoppingListAdapter(this, this);
         newRecycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         newRecycler.setAdapter(newAdapter);
     }
@@ -653,11 +650,15 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         return shoppingListItems;
     }
 
+
+
+    @Override
     public void deleteIngredientsFromFirebase(ArrayList<ShoppingListAdapterItem> selectedItems) {
 
-        //implement deletion from firebase here
-        //getItemsToBeDeleted(selectedItems);
+        if(selectedItems.isEmpty()){
+            Snackbar.make(getView(), "You have no ingredients your inventory", Snackbar.LENGTH_SHORT).show();
 
+        }
         for(ShopListCategory shopListCategory: shopListCategories){
             shopListCategory.getItems().removeAll(getItemsToBeDeleted(selectedItems));
         }

@@ -23,9 +23,7 @@ import com.niall.eazyeatsfyp.fragments.ShoppingListFragment;
 public class BNavigationActivity extends AppCompatActivity {
 
     final SparseArray<Fragment> fragments = new SparseArray<>();
-
     FirebaseAuth firebaseAuth;
-
     Intent cameraIntent;
 
 
@@ -91,7 +89,6 @@ public class BNavigationActivity extends AppCompatActivity {
                         return true;
 
                 }
-
                 return false;
             }
 

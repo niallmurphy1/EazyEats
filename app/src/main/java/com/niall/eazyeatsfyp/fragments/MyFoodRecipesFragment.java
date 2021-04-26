@@ -275,8 +275,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         bapsChangeServingsBtn = view.findViewById(R.id.baps_change_servings_button);
 
-        //TODO: add more func. to bottom sheet eg. removeFromFav btn, see similar recipes,
-
 
     }
 
@@ -291,7 +289,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         System.out.println("these are the ingredients: " + ingredients.toString());
         ingredientsRecycler = getView().findViewById(R.id.baps_recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        ingredientsAdapter = new MyIngredientsAdapter(getContext());
+        ingredientsAdapter = new MyIngredientsAdapter(getContext(), this);
         ingredientsAdapter.setMyIngredientsData(ingredients);
         ingredientsRecycler.setAdapter(ingredientsAdapter);
         adapter.notifyDataSetChanged();
@@ -413,8 +411,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         bapsChangeServingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: fix recipe servings issue
-                //changeServings(position);
                 changeServingsRework(position);
             }
         });

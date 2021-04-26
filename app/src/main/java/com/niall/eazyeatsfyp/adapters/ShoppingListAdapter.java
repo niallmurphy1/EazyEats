@@ -26,6 +26,7 @@ import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListProductAdapterItem;
 import com.niall.eazyeatsfyp.fragments.ShoppingListFragment;
+import com.niall.eazyeatsfyp.util.ShopListActionListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     ShopListItemViewModel shopListItemViewModel;
 
-    ShoppingListFragment shopFrag;
+    ShopListActionListener shopListener;
 
     private final ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
     private final ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener;
@@ -48,8 +49,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     ArrayList<ShoppingListAdapterItem> selectedItems = new ArrayList<>();
 
-    public ShoppingListAdapter(ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener) {
+    public ShoppingListAdapter(ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener, ShopListActionListener shopListActionListener) {
         this.onShopListItemListener = onShopListItemListener;
+        this.shopListener = shopListActionListener;
+
     }
 
     @NonNull
@@ -110,11 +113,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     case R.id.menu_shop_list_delete_item:
                                         //ClickItem(holder);
                                         Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
-                                        shopFrag.deleteIngredientsFromFirebase(selectedItems);
+                                        shopListener.deleteIngredientsFromFirebase(selectedItems);
 
                                         if (shoppingListAdapterItems.size() == 0) {
                                             //create text view empty, add in constructor of adapter
-                                            Snackbar.make(shopFrag.getView(), "You have no ingredients your inventory", Snackbar.LENGTH_SHORT).show();
                                             Log.d(TAG, "onActionItemClicked: no ingredients in the RCV");
                                         }
                                         mode.finish();

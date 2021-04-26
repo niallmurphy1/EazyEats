@@ -30,8 +30,9 @@ public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdap
     public MyIngredientsAdapter(){
 
     }
-    public MyIngredientsAdapter(Context context){
+    public MyIngredientsAdapter(Context context, ViewHolder.OnMyIngredientListener onMyIngredientListener){
         this.layoutInflater = LayoutInflater.from(context);
+        this.mOnMyIngredientListener = onMyIngredientListener;
        // this.activity = (BNavigationActivity)(context);
 
     }
@@ -83,10 +84,10 @@ public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdap
             System.out.println("These are the ingredients::: "+ foodItem.toString());
             System.out.println("Food item name::: " + foodItem.getName());
 
-            ingredientName.setText(foodItem.getName().toString());
+            ingredientName.setText(foodItem.getName());
 
             ingredientQuantUnit.setText(foodItem.getQuantity() + " " + foodItem.getUnit());
-
+            //TODO: get rid of listener, no use
             itemView.setOnClickListener(v -> myIngredientListener.onIngredientClick(foodItem));
         }
 

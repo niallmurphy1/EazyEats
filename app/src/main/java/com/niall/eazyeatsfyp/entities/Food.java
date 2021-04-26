@@ -19,7 +19,6 @@ public class Food {
     private String quantity;
     private String unit;
     private String foodId;
-
     private String macro;
 
     public Food(){

@@ -169,6 +169,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         favRecipes = RecipeChecker.getRecipesFromFirebase(favRecipes, userFavRecipesRef, RecipeViewerActivity.class.getSimpleName());
 
+        setUpRCV();
     }
 
     public void callRecipeAPI(String rID, String rImage){
@@ -292,9 +293,8 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     recipe.setMethod(recipeInstructions.getText().toString());
 
-
-
-                    setUpRCV();
+                    adapter.setMyIngredientsData(ingredients);
+                    //setUpRCV();
 
 
                 } catch (JSONException e) {
@@ -369,7 +369,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 }
 
                 recipe.setIngredients(ingredients);
-                setUpRCV();
+
             }
         });
 
@@ -487,8 +487,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         ingredientsRecycler = findViewById(R.id.recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyIngredientsAdapter(this);
-        adapter.setMyIngredientsData(ingredients);
+        adapter = new MyIngredientsAdapter(this, this);
         adapter.setmOnMyIngredientListener(this);
         ingredientsRecycler.setAdapter(adapter);
         adapter.notifyDataSetChanged();
