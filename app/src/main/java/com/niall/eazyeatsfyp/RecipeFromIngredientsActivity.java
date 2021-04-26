@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 import static com.niall.eazyeatsfyp.util.Constants.RECIPE_SEARCH;
+import static com.niall.eazyeatsfyp.util.Constants.RECIPE_SEARCH_NO_INFO;
 import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
 
 public class RecipeFromIngredientsActivity extends AppCompatActivity implements RecipeCardAdapter.ViewHolder.OnRecipeListener{
@@ -69,7 +70,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
     public void searchByIngredient(String ingredientQuery) {
 
-        AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery+ "&sort=random&number=20")
+        AndroidNetworking.get(RECIPE_SEARCH_NO_INFO + SP_APIKEY + ingredientQuery+ "&sort=random&number=20")
                 .build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
@@ -166,7 +167,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                     // setUpRCV();
 
-                    //TODO: find out why this only returns one recipe in the rcv each time
+                    //TODO: find out why this only returns one recipe in the rcv each time,
+                    // maybe search without info and try to return more recipes
 
                     recipeRecycler = findViewById(R.id.recipe_from_ingredients_rcv);
                     recipeRecycler.setLayoutManager(new LinearLayoutManager(RecipeFromIngredientsActivity.this));

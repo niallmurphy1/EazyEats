@@ -9,6 +9,9 @@ public class Constants {
     public static final String SP_APIKEY = "apiKey=c029b15f6c654e36beba722a71295883";
 
     public static final String RECIPE_SEARCH = "https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&";
+
+    public static final String RECIPE_SEARCH_NO_INFO ="https://api.spoonacular.com/recipes/complexSearch?";
+
     public static final String FOOD_SEARCH = "food/ingredients/search?";
 
     public static final String RECIPE_ID_SEARCH = "https://api.spoonacular.com/recipes/";

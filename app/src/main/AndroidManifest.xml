@@ -18,15 +18,12 @@
         android:roundIcon="@drawable/fork_knife"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".zincActivities.AmazonOrderConfirmationActivity"></activity>
+        <activity android:name=".LoginActivity" android:label="@string/activity_login"/>
+        <activity android:name=".zincActivities.AmazonOrderConfirmationActivity"/>
         <activity android:name=".zincActivities.OrderDetailsActivity" />
         <activity android:name=".zincActivities.AmazonCredsActivity" />
         <activity android:name=".ProductSelectorActivity" />
         <activity android:name=".RecipeFromIngredientsActivity" />
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
         <activity android:name=".barcode.BarcodeResultActivity" />
         <activity android:name=".cameraXbarcode.ScanActivity" />
         <activity android:name=".barcode.CameraActivity" />
@@ -48,15 +45,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/activity_login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
