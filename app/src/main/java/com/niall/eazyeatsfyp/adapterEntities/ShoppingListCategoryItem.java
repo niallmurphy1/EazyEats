@@ -11,4 +11,12 @@ public class ShoppingListCategoryItem extends ShoppingListAdapterItem {
     public String getCategory() {
         return category;
     }
+
+
+    @Override
+    public String toString() {
+        return "ShoppingListCategoryItem{" +
+                "category='" + category + '\'' +
+                '}';
+    }
 }

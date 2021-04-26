@@ -426,7 +426,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void showUiForStatus(OrderResponse orderResponse) {
         if (orderResponse.code.equals(OrderResponse.CODE_PROCESSING)) {
-            Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
             //show processing view
         } else if (orderResponse.code.equals(OrderResponse.CODE_MAX_PRICE_EXCEEDED)) {
             Toast.makeText(this, "Order max price exceeded", Toast.LENGTH_SHORT).show();

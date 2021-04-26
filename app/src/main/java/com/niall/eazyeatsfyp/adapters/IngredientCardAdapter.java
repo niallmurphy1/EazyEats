@@ -203,6 +203,8 @@ public class IngredientCardAdapter extends RecyclerView.Adapter<IngredientCardAd
                             isEnabled = false;
 
                             selectAll = false;
+                            
+                            ingredientViewModel.setFoodMutableLiveData(String.valueOf(selectedItems.size()));
 
                             notifyDataSetChanged();
 

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_shop"
+        android:id="@+id/menu_shop_list_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="Select All"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/menu_delete_ingredient"
+        android:id="@+id/menu_shop_list_delete_item"
         android:icon="@drawable/ic_delete_bin"
         android:title="Delete"
         app:showAsAction="always" />

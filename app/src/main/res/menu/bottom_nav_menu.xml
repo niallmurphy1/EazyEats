@@ -15,7 +15,7 @@
 
     <item android:id="@+id/recipe_tinder_nav"
         android:icon="@drawable/ic_fire_tinder"
-        android:title="@string/recipe_tinder"
+        android:title="Recipe Swiper"
         />
 
 

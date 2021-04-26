@@ -67,6 +67,15 @@ public class ShoppingListProductAdapterItem extends ShoppingListAdapterItem {
         void onShopListItemLongClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem);
     }
 
+    @Override
+    public String toString() {
+        return "ShoppingListProductAdapterItem{" +
+                "sId='" + sId + '\'' +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", barcodeUPC='" + barcodeUPC + '\'' +
+                '}';
+    }
 }
 
 

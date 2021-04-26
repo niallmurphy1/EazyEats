@@ -149,72 +149,72 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
 
     //TODO: find a new use for options menu or get rid of it completely; log out perhaps
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch(item.getItemId()){
-
-            case R.id.like_mine_options_menu:
-
-                Log.d(TAG, "onOptionsItemSelected: hellooooo");
-                Log.d(TAG, "Similar to response Clicked:  " + favRecipes.size());
-
-                ArrayList<String> allIngredients = new ArrayList<>();
-
-                for(int i =0; i < favRecipes.size(); i++){
-
-                    for(int p = 0; p < favRecipes.get(i).getIngredients().size(); p++){
-
-                        allIngredients.add(favRecipes.get(i).getIngredients().get(p).getName().toLowerCase());
-                    }
-
-                    Log.d(TAG, "Fav ingredients names: " + allIngredients.get(i));
-                }
-
-                countFrequencies(allIngredients);
-
-                String mostCommon = mostCommon(allIngredients).replace(" ", "%20");
-
-                allIngredients.remove(mostCommon.replace("%20", " "));
-
-                String secondMostCommon = mostCommon(allIngredients).replace(" ", "%20");
-
-                Log.d(TAG, "onOptionsItemSelected: Most common item: "
-                        + mostCommon + " \n second most common: " + secondMostCommon);
-
-
-                ArrayList<String> allCuisines = new ArrayList<>();
-
-                for(int i =0; i < favRecipes.size(); i++) {
-
-                    if (favRecipes.get(i).getCuisines() != null) {
-
-                        for (int p = 0; p < favRecipes.get(i).getCuisines().size(); p++) {
-
-                            allCuisines.add(favRecipes.get(i).getCuisines().get(p));
-                        }
-
-                    }
-                    else{
-                        Log.d(TAG, "null cuisines on recipe: "+ favRecipes.get(i).getName());
-                        Snackbar.make(getView(), "Not enough recipes in favourites to suggest similar", Snackbar.LENGTH_SHORT).show();
-                    }
-                }
-
-                String mostCommonCuisine = mostCommon(allCuisines).toLowerCase();
-
-                Log.d(TAG, "onOptionsItemSelected: Most common cuisine " + mostCommonCuisine);
-
-                Log.d(TAG, "onOptionsItemSelected: most common ingredient: " + mostCommon);
-
-                String query = "&includeIngredients="+secondMostCommon+"&cuisine="+ mostCommonCuisine+"&sort=random&fillIngredients=true&number=10";
-
-                fetchRecipes(query);
-
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//
+//        switch(item.getItemId()){
+//
+//            case R.id.like_mine_options_menu:
+//
+//                Log.d(TAG, "onOptionsItemSelected: hellooooo");
+//                Log.d(TAG, "Similar to response Clicked:  " + favRecipes.size());
+//
+//                ArrayList<String> allIngredients = new ArrayList<>();
+//
+//                for(int i =0; i < favRecipes.size(); i++){
+//
+//                    for(int p = 0; p < favRecipes.get(i).getIngredients().size(); p++){
+//
+//                        allIngredients.add(favRecipes.get(i).getIngredients().get(p).getName().toLowerCase());
+//                    }
+//
+//                    Log.d(TAG, "Fav ingredients names: " + allIngredients.get(i));
+//                }
+//
+//                countFrequencies(allIngredients);
+//
+//                String mostCommon = mostCommon(allIngredients).replace(" ", "%20");
+//
+//                allIngredients.remove(mostCommon.replace("%20", " "));
+//
+//                String secondMostCommon = mostCommon(allIngredients).replace(" ", "%20");
+//
+//                Log.d(TAG, "onOptionsItemSelected: Most common item: "
+//                        + mostCommon + " \n second most common: " + secondMostCommon);
+//
+//
+//                ArrayList<String> allCuisines = new ArrayList<>();
+//
+//                for(int i =0; i < favRecipes.size(); i++) {
+//
+//                    if (favRecipes.get(i).getCuisines() != null) {
+//
+//                        for (int p = 0; p < favRecipes.get(i).getCuisines().size(); p++) {
+//
+//                            allCuisines.add(favRecipes.get(i).getCuisines().get(p));
+//                        }
+//
+//                    }
+//                    else{
+//                        Log.d(TAG, "null cuisines on recipe: "+ favRecipes.get(i).getName());
+//                        Snackbar.make(getView(), "Not enough recipes in favourites to suggest similar", Snackbar.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                String mostCommonCuisine = mostCommon(allCuisines).toLowerCase();
+//
+//                Log.d(TAG, "onOptionsItemSelected: Most common cuisine " + mostCommonCuisine);
+//
+//                Log.d(TAG, "onOptionsItemSelected: most common ingredient: " + mostCommon);
+//
+//                String query = "&includeIngredients="+secondMostCommon+"&cuisine="+ mostCommonCuisine+"&sort=random&fillIngredients=true&number=10";
+//
+//                fetchRecipes(query);
+//
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public static <T> T mostCommon(List<T> list) {
         Map<T, Integer> map = new HashMap<>();

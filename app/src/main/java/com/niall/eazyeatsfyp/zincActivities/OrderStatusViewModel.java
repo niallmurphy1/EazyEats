@@ -8,6 +8,9 @@ import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.zincEntities.OrderRepo;
 import com.niall.eazyeatsfyp.zincEntities.OrderResponse;
 import java.util.concurrent.TimeUnit;
+
+
+
 public class OrderStatusViewModel extends ViewModel {
     private static final long POLLING_INTERVAL = 5000L;
     private final OrderRepo repo;
@@ -15,9 +18,13 @@ public class OrderStatusViewModel extends ViewModel {
     private Handler handler;
     public MutableLiveData<OrderResponse> orderResponse = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+
+
     public OrderStatusViewModel(OrderRepo repo) {
         this.repo = repo;
     }
+
+
     private final Runnable checkStatusRunnable = new Runnable() {
         @Override
         public void run() {

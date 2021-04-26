@@ -69,7 +69,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
     public void searchByIngredient(String ingredientQuery) {
 
-        AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery)
+        AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + ingredientQuery+ "&sort=random&number=20")
                 .build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
@@ -99,7 +99,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                         //TODO: if time, notify user of ingredients they need to complete recipe,
                         // using missingIngredients array in API response
-
 
                         JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
 
@@ -167,6 +166,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                     // setUpRCV();
 
+                    //TODO: find out why this only returns one recipe in the rcv each time
+
                     recipeRecycler = findViewById(R.id.recipe_from_ingredients_rcv);
                     recipeRecycler.setLayoutManager(new LinearLayoutManager(RecipeFromIngredientsActivity.this));
                     adapter = new RecipeCardAdapter(RecipeFromIngredientsActivity.this, recipes, RecipeFromIngredientsActivity.this);
@@ -204,17 +205,11 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
     @Override
     public void onRecipeClick(int position) {
         recipeViewerIntent = new Intent(this, RecipeViewerActivity.class);
-
         recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMINGREDIENTS");
         recipeViewerIntent.putExtra(RECIPE_ID, recipes.get(position).getRecipeID());
         recipeViewerIntent.putExtra(RECIPE_IMAGEURI, recipes.get(position).getImageURI());
-
         startActivity(recipeViewerIntent);
 
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }

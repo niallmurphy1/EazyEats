@@ -10,4 +10,11 @@ public abstract class ShoppingListAdapterItem {
     public int getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingListAdapterItem{" +
+                "type=" + type +
+                '}';
+    }
 }

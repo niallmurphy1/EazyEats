@@ -59,6 +59,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -543,6 +544,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
             }
         }
         return shoppingListAdapterItems;
+
     }
 
     public void setUpBetterRCV() {
@@ -625,4 +627,41 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
     }
 
+    public ArrayList<ShoppingListItem> getItemsToBeDeleted(ArrayList<ShoppingListAdapterItem> selectedItems){
+
+        ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
+        for( ShoppingListAdapterItem sListAdapterItem: selectedItems){
+
+            if(sListAdapterItem instanceof ShoppingListProductAdapterItem){
+
+                ShoppingListItem shoppingListItem = new ShoppingListItem();
+                shoppingListItem.setCategory(((ShoppingListProductAdapterItem) sListAdapterItem).getCategory());
+                shoppingListItem.setName(((ShoppingListProductAdapterItem) sListAdapterItem).getName());
+                shoppingListItem.setsId(((ShoppingListProductAdapterItem) sListAdapterItem).getsId());
+                if(((ShoppingListProductAdapterItem) sListAdapterItem).getBarcodeUPC() == null){
+                    Log.d(TAG, "getItemsToBeDeleted: null barcode item: " + sListAdapterItem.toString());
+
+                }else {
+                    shoppingListItem.setBarcodeUPC(((ShoppingListProductAdapterItem) sListAdapterItem).getBarcodeUPC());
+                }
+
+               shoppingListItems.add(shoppingListItem);
+            }
+
+        }
+
+        return shoppingListItems;
+    }
+
+    public void deleteIngredientsFromFirebase(ArrayList<ShoppingListAdapterItem> selectedItems) {
+
+        //implement deletion from firebase here
+        //getItemsToBeDeleted(selectedItems);
+
+        for(ShopListCategory shopListCategory: shopListCategories){
+            shopListCategory.getItems().removeAll(getItemsToBeDeleted(selectedItems));
+        }
+
+        buildShopListAdapterItems(shopListCategories);
+    }
 }

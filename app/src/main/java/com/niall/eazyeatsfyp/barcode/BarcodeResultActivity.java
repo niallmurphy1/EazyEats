@@ -27,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.RecipeViewerActivity;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
+import com.niall.eazyeatsfyp.fragments.ShoppingListFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +88,16 @@ public class BarcodeResultActivity extends AppCompatActivity {
                 Log.d("BarcodeResultActivityAPI", "onResponse: " + response);
                 System.out.println(response);
 
+
+                if(response.startsWith("{\"status\":\"failure\",\"message\":")){
+
+                    Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
                 Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
+
+
 
 
                 String jSonString  = response;
