@@ -68,7 +68,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     private TextView recipeTimeTextView;
     private TextView servingsTextView;
 
-    private int origServings;
+
 
     private ArrayList<Double> initialQuants = new ArrayList<>();
 
@@ -274,7 +274,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     int servings = obj.getInt("servings");
 
-                    origServings = obj.getInt("servings");
+
 
 
                     servingsTextView.setText("Serves: " + String.valueOf(servings));
@@ -353,10 +353,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                 adapter.setMyIngredientsData(recipeIngredients);
                 adapter.notifyDataSetChanged();
-                //ingredientsAdapter.setMyIngredientsData(recipeIngredients);
-                //ingredientsAdapter.notifyDataSetChanged();
-
-
             }
 
 
@@ -380,69 +376,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
 
 
-    public void changeServings(){
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
-        builder.setView(dialogView);
-        builder.setTitle("Change Servings");
-        numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
-        numberPicker.setMaxValue(100);
-        numberPicker.setMinValue(1);
-        numberPicker.setValue(recipe.getServings());
-
-        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                recipe.setServings(numberPicker.getValue());
-                servingsTextView.setText("Serves: " + String.valueOf(numberPicker.getValue()));
-
-                Log.d("TAG", "onClick: new recipe servings from value picker numberPicker.getValue(): " + numberPicker.getValue());
-
-                Log.d("TAG", "onClick: new recipe servings: " + recipe.getServings());
-
-                for(int i = 0; i < ingredients.size(); i++){
-
-                    Log.d("TAG", "onValueChange ingredients and their quants: " + ingredients.get(i).getName() + ": " + ingredients.get(i).getQuantity());
-                    Log.d("TAG", "onValueChange: initialQuants arraylist: " + initialQuants.get(i));
-
-
-                    Log.d("SERVINGSCHECK", "onClick: original servings: " + origServings);
-                    Log.d("SERVINGSCHECK", "onClick: number picker value: " + numberPicker.getValue());
-                    Log.d("SERVINGSCHECK", "onClick: ingredient : " + ingredients.get(i).getName() + " quant: " + Double.valueOf(ingredients.get(i).getQuantity()));
-
-
-                    String newQuant = String.valueOf(changeIngredientQuants(origServings, numberPicker.getValue(), initialQuants.get(i)));
-
-                    formatQuants(newQuant);
-
-                    Log.d("TAG", "onClick: new quants after format: " + ingredients.get(i).getName() + " " +  " Qunatity: " + newQuant);
-
-                    ingredients.get(i).setQuantity(newQuant);
-                    //ingredients.clear();
-
-
-                    Log.d("TAG", "onClick: result of setQuant: " + String.valueOf(changeIngredientQuants(initialQuants.get(i), numberPicker.getValue(), Double.valueOf(ingredients.get(i).getQuantity()))));
-
-
-                    Log.d("TAG", "onClick: the ingredients new quants:  "+ingredients.get(i).getName() + ", Quant: "+ ingredients.get(i).getQuantity());
-
-
-                    adapter.notifyDataSetChanged();
-                }
-
-                recipe.setIngredients(ingredients);
-                adapter.notifyDataSetChanged();
-
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-
-        alertDialog.show();
-
-    }
 
     public void formatQuants(String quant){
 
