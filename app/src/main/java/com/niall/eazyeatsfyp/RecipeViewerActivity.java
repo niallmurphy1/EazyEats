@@ -293,7 +293,9 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     recipe.setMethod(recipeInstructions.getText().toString());
 
+                    Log.d(RecipeViewerActivity.class.getSimpleName(), "onResponse: Ingredients data: " + ingredients.toString());
                     adapter.setMyIngredientsData(ingredients);
+                    adapter.notifyDataSetChanged();
                     //setUpRCV();
 
 
@@ -369,6 +371,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 }
 
                 recipe.setIngredients(ingredients);
+                adapter.notifyDataSetChanged();
 
             }
         });
@@ -488,9 +491,10 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         ingredientsRecycler = findViewById(R.id.recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyIngredientsAdapter(this, this);
-        adapter.setmOnMyIngredientListener(this);
         ingredientsRecycler.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        adapter.setmOnMyIngredientListener(this);
+
+
    }
 
 

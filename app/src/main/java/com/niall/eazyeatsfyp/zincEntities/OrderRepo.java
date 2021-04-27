@@ -16,6 +16,7 @@ public class OrderRepo {
     }
     private static final String POST_URL = "https://api.zinc.io/v1/orders";
     private static final String GET_URL = "https://api.zinc.io/v1/orders/%s";
+
     public void createOrder(Order order, Callback<OrderResponse> callback) {
         String jsonOrder = new Gson().toJson(order);
         AndroidNetworking.post(POST_URL)

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdapter.ViewHolder>{
 
     private LayoutInflater layoutInflater;
-    private ArrayList<Food> myIngredientsData;
+    private ArrayList<Food> myIngredientsData = new ArrayList<>();
     private ViewHolder.OnMyIngredientListener mOnMyIngredientListener;
 
     private BNavigationActivity activity;

@@ -114,7 +114,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 switch (id) {
 
                                     case R.id.menu_shop_list_delete_item:
-                                        //ClickItem(holder);
                                         Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
                                         shopListener.deleteIngredientsFromFirebase(selectedItems);
 
@@ -177,16 +176,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(isEnabled){
-                        clickItem((ShopListItemViewHolder) holder);
+            holder.itemView.setOnClickListener(v -> {
+                if(isEnabled){
+                    clickItem((ShopListItemViewHolder) holder);
 
-                    }else {
+                }else {
 
-                        shopListener.onItemClick((ShoppingListProductAdapterItem) shoppingListAdapterItems.get(holder.getAdapterPosition()));
-                    }
+                    shopListener.onItemClick((ShoppingListProductAdapterItem) shoppingListAdapterItems.get(holder.getAdapterPosition()));
                 }
             });
 
