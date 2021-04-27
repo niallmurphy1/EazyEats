@@ -21,11 +21,10 @@ public class User {
     }
 
 
-    public User(String username, String email, String password, ShoppingListItem sList, List<Recipe> favRecipes, List<String> allergens, List<Food> inventory) {
+    public User(String username, String email, ShoppingListItem sList, List<Recipe> favRecipes, List<String> allergens, List<Food> inventory) {
 
         this.username = username;
         this.email = email;
-        this.password = password;
         this.sList = sList;
         this.favRecipes = favRecipes;
         this.allergens = allergens;

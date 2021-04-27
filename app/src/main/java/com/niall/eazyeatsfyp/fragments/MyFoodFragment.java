@@ -107,6 +107,5 @@ public class MyFoodFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //TODO: figure this out at some point
     }
 }

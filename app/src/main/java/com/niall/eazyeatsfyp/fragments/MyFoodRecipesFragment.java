@@ -421,7 +421,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     @Override
     public void onIngredientClick(Food ingredient) {
 
-        //TODO: func. for this, crashes
         Toast.makeText(getContext(), ingredient.getName() + " clicked!", Toast.LENGTH_SHORT).show();
 
     }

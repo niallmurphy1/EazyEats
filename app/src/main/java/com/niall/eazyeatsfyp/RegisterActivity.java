@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseUser user = mainAuth.getCurrentUser();
                             String userId = user.getUid();
 
-                            User aUser = new User(usernameEdit.getText().toString(), emailEdit.getText().toString(), passwordEdit.getText().toString(), null, null, null, null);
+                            User aUser = new User(usernameEdit.getText().toString(), emailEdit.getText().toString(), null, null, null, null);
 
                             String name = user.getDisplayName();
 
@@ -144,12 +144,5 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-
-//    public void passwordCheck(){
-//
-//    }
-
-
-
 
 }

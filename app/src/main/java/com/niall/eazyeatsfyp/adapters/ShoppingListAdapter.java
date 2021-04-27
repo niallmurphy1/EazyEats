@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.niall.eazyeatsfyp.ProductSelectorActivity;
 import com.niall.eazyeatsfyp.R;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListAdapterItem;
 import com.niall.eazyeatsfyp.adapterEntities.ShoppingListCategoryItem;
@@ -30,6 +31,7 @@ import com.niall.eazyeatsfyp.util.ShopListActionListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,7 +49,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener;
 
 
-    ArrayList<ShoppingListAdapterItem> selectedItems = new ArrayList<>();
+    ArrayList<ShoppingListProductAdapterItem> selectedItems = new ArrayList<>();
+
 
     public ShoppingListAdapter(ShoppingListProductAdapterItem.OnShopListItemListener onShopListItemListener, ShopListActionListener shopListActionListener) {
         this.onShopListItemListener = onShopListItemListener;
@@ -143,12 +146,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                             selectAll = true;
                                             selectedItems.clear();
 
-                                            selectedItems.addAll(shoppingListAdapterItems);
+                                            selectedItems.addAll(getAllProductItems());
                                         }
 
                                         shopListItemViewModel.setFoodMutableLiveData(String.valueOf(selectedItems.size()));
 
-                                        fillItems(shoppingListAdapterItems);
+                                        notifyDataSetChanged();
                                         break;
                                 }
                                 return true;
@@ -157,12 +160,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             @Override
                             public void onDestroyActionMode(ActionMode mode) {
 
-
                                 isEnabled = false;
-
                                 selectAll = false;
-
-                                fillItems(shoppingListAdapterItems);
+                                selectedItems.clear();
+                                notifyDataSetChanged();
                             }
                         };
 
@@ -183,7 +184,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         clickItem((ShopListItemViewHolder) holder);
 
                     }else {
-                       //TODO
+
+                        shopListener.onItemClick((ShoppingListProductAdapterItem) shoppingListAdapterItems.get(holder.getAdapterPosition()));
                     }
                 }
             });
@@ -198,6 +200,23 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
         }
+    }
+
+    private List<ShoppingListProductAdapterItem> getAllProductItems(){
+        ArrayList<ShoppingListProductAdapterItem> productItems = new ArrayList<>();
+
+        if(shoppingListAdapterItems == null){
+            return productItems;
+        }
+
+
+        for(ShoppingListAdapterItem item: shoppingListAdapterItems){
+            if(item instanceof ShoppingListProductAdapterItem){
+                productItems.add((ShoppingListProductAdapterItem) item);
+            }
+        }
+        return productItems;
+
     }
 
     @Override
@@ -260,7 +279,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         Log.d("CLICKITEMMETHOD", "ClickItem: this item has been clicked: " + shoppingListAdapterItems.get(holder.getAdapterPosition()));
 
-        ShoppingListAdapterItem shoppingListAdapterItem = shoppingListAdapterItems.get(holder.getAdapterPosition());
+        ShoppingListProductAdapterItem shoppingListAdapterItem = (ShoppingListProductAdapterItem) shoppingListAdapterItems.get(holder.getAdapterPosition());
 
 
         if (holder.checkImage.getVisibility() == View.GONE) {
@@ -284,13 +303,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    public ArrayList<ShoppingListAdapterItem> getSelectedItems() {
-        return selectedItems;
-    }
 
-    public void setSelectedItems(ArrayList<ShoppingListAdapterItem> selectedItems) {
-        this.selectedItems = selectedItems;
-    }
 }
 
 

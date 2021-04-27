@@ -319,7 +319,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
                 }
                 Log.d("TAG", "onDataChange: product objects::: " + productObjects.toString());
 
-
                 productViewAdapter.setProductObjects(productObjects);
                 productViewAdapter.notifyDataSetChanged();
                 setProductTotals((ArrayList<ProductObject>) productObjects);
@@ -558,6 +557,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListProductAdapterItem.getName(), shoppingListProductAdapterItem.getBarcodeUPC()));
     }
 
+
     @Override
     public void onShopListItemLongClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem) {
 
@@ -630,7 +630,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         for( ShoppingListAdapterItem sListAdapterItem: selectedItems){
 
             if(sListAdapterItem instanceof ShoppingListProductAdapterItem){
-
                 ShoppingListItem shoppingListItem = new ShoppingListItem();
                 shoppingListItem.setCategory(((ShoppingListProductAdapterItem) sListAdapterItem).getCategory());
                 shoppingListItem.setName(((ShoppingListProductAdapterItem) sListAdapterItem).getName());
@@ -650,19 +649,25 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         return shoppingListItems;
     }
 
-
-
     @Override
-    public void deleteIngredientsFromFirebase(ArrayList<ShoppingListAdapterItem> selectedItems) {
+    public void deleteIngredientsFromFirebase(ArrayList<ShoppingListProductAdapterItem> selectedItems) {
 
         if(selectedItems.isEmpty()){
             Snackbar.make(getView(), "You have no ingredients your inventory", Snackbar.LENGTH_SHORT).show();
-
         }
-        for(ShopListCategory shopListCategory: shopListCategories){
-            shopListCategory.getItems().removeAll(getItemsToBeDeleted(selectedItems));
-        }
+        for (ShoppingListProductAdapterItem item : selectedItems) {
+            for(ShopListCategory shopListCategory: shopListCategories){
+                shopListCategory.getItems().removeIf(shoppingListItem -> shoppingListItem.getsId().equals(item.getsId()));
 
-        buildShopListAdapterItems(shopListCategories);
+                //TODO: delete ingredients from firebase
+            }
+        }
+        newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
+    }
+
+    @Override
+    public void onItemClick(ShoppingListProductAdapterItem shoppingListProductAdapterItem) {
+        Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListProductAdapterItem.getName());
+        startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListProductAdapterItem.getName(), shoppingListProductAdapterItem.getBarcodeUPC()));
     }
 }
