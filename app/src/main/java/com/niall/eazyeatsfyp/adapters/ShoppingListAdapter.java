@@ -113,8 +113,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 int id = item.getItemId();
                                 switch (id) {
 
-                                    case R.id.menu_shop_list_delete_item:
-                                        Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
+                                    case R.id.menu_shop_list_delete_item: Log.d("DELETEACTIONBTN", "onActionItemClicked: seleceted items: " + selectedItems.toString());
                                         shopListener.deleteIngredientsFromFirebase(selectedItems);
 
                                         if (shoppingListAdapterItems.size() == 0) {

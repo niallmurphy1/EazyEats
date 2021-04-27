@@ -52,20 +52,20 @@ public class Dashboard extends AppCompatActivity {
 
         dataRef = FirebaseDatabase.getInstance().getReference("User");
 
-         //recipeSearcher = new Intent(this, RecipeSearcherActivity.class);
+        //recipeSearcher = new Intent(this, RecipeSearcherActivity.class);
 
-         navIntent = new Intent(this, BNavigationActivity.class);
+        navIntent = new Intent(this, BNavigationActivity.class);
 
     }
 
-    public void onFoodSearchClick(View view){
+    public void onFoodSearchClick(View view) {
         startActivity(foodSearch);
 
     }
 
 
-    public void onBtnClick(View view){
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+    public void onBtnClick(View view) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Log.w("USER", "Nay user ");
 
         }
@@ -76,14 +76,14 @@ public class Dashboard extends AppCompatActivity {
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot userSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
 
 
                     User userObj = snapshot.child(uId).getValue(User.class);
                     String email = userObj.getEmail();
 
 
-                    Log.w("USER", "Username " +  email);
+                    Log.w("USER", "Username " + email);
 
                 }
             }
@@ -95,24 +95,21 @@ public class Dashboard extends AppCompatActivity {
         });
     }
 
-    public void onRecipeBtnClick(View view){
+    public void onRecipeBtnClick(View view) {
 
         startActivity(recipeSearcher);
     }
 
 
-    public void AddRecipe(View view){
+    public void AddRecipe(View view) {
 
         startActivity(navIntent);
-
-
 
 
     }
 
 
-
-    public void addFoodBtn(View view){
+    public void addFoodBtn(View view) {
 
 
         EditText foodName = findViewById(R.id.editTextFoodName);
@@ -120,10 +117,9 @@ public class Dashboard extends AppCompatActivity {
         EditText foodMacro = findViewById(R.id.editTextMacro);
         EditText foodType = findViewById(R.id.editTextMealType);
 
-        if (foodName.toString() ==null || foodQuant.toString() ==null || foodMacro.toString() ==null || foodType.toString() ==null){
+        if (foodName.toString() == null || foodQuant.toString() == null || foodMacro.toString() == null || foodType.toString() == null) {
             Toast.makeText(this, "You must enter valid values for each field!", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
 
 
             int quant = Integer.parseInt(foodQuant.getText().toString());
@@ -150,8 +146,6 @@ public class Dashboard extends AppCompatActivity {
 
                 }
             });
-
-
 
 
             foodRef.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {

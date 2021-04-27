@@ -28,6 +28,8 @@ public class OrderRepo {
                     public void onResponse(OrderResponse response) {
                         Log.d(OrderRepo.class.getSimpleName(),"Create order method, response request ID:" + response.request_id);
                         callback.onSuccess(response);
+
+
                     }
                     @Override
                     public void onError(ANError anError) {

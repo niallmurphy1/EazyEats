@@ -36,9 +36,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
 
     private Intent ingredientQueryIntent;
-
     private Intent recipeViewerIntent;
-
     private ArrayList<Recipe> recipes = new ArrayList<>();
 
     public static final String RECIPE_ID = "recipeID";
@@ -156,7 +154,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                         recipes.add(recipe);
 
-
                     }
 
 
@@ -164,9 +161,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                     Log.d(TAG, "onResponse: gottem " + recipes.toString());
 
                     notifyUserIfNoResults(recipes);
-
-
-                    // setUpRCV();
 
                     //TODO: find out why this only returns one recipe in the rcv each time,
                     // maybe search without info and try to return more recipes
@@ -181,10 +175,7 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                     e.printStackTrace();
                 }
 
-
             }
-
-
 
             @Override
             public void onError(ANError anError) {
@@ -192,7 +183,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                 System.out.println("Error " + anError);
             }
         });
-
 
     }
 

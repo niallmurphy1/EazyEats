@@ -116,9 +116,6 @@ public class BNavigationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.item1:
-                this.finish();
-                return  true;
 
             case R.id.item2:
                 cameraIntent = new Intent(this, Scanner.class);

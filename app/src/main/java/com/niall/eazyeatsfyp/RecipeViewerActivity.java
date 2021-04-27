@@ -26,6 +26,7 @@ import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 import com.niall.eazyeatsfyp.fragments.MyFoodIngredientsFragment;
 import com.niall.eazyeatsfyp.fragments.RecipeSearcherFragment;
+import com.niall.eazyeatsfyp.util.FormatDouble;
 import com.niall.eazyeatsfyp.util.RecipeChecker;
 import com.squareup.picasso.Picasso;
 
@@ -315,8 +316,69 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
     public void onChangeServingsClick(View v){
         Log.d("TAG", "onChangeServingsClick: clicked ");
-        changeServings();
+        //changeServings();
+        changeServingsRework();
     }
+
+    public void changeServingsRework(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
+        builder.setView(dialogView);
+        builder.setTitle("Change Servings");
+        numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
+        numberPicker.setMaxValue(100);
+        numberPicker.setMinValue(1);
+        //change this to get the value in the textview
+        numberPicker.setValue(getServingsTextView(servingsTextView));
+        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                ArrayList<Food> recipeIngredients = new ArrayList<>();
+
+                int newServe = numberPicker.getValue();
+                servingsTextView.setText("Serves: " + newServe);
+
+                double multiplyBy = (double) newServe /recipe.getServings();
+
+                for(Food food: ingredients){
+
+                    double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
+
+                    Food newFood = new Food(food.getName(), FormatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
+
+                    recipeIngredients.add(newFood);
+
+                }
+
+                adapter.setMyIngredientsData(recipeIngredients);
+                adapter.notifyDataSetChanged();
+                //ingredientsAdapter.setMyIngredientsData(recipeIngredients);
+                //ingredientsAdapter.notifyDataSetChanged();
+
+
+            }
+
+
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+    }
+
+    public int getServingsTextView(TextView textView){
+
+        String textViewText = textView.getText().toString();
+
+        String servings = textViewText.substring(7).trim();
+
+        int serve = Integer.parseInt(servings);
+
+        return serve;
+    }
+
+
 
     public void changeServings(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -496,9 +558,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
 
    }
-
-
-
 
     @Override
     public void onIngredientClick(Food ingredient) {

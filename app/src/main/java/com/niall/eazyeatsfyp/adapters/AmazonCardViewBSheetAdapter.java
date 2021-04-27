@@ -42,10 +42,7 @@ public class AmazonCardViewBSheetAdapter extends RecyclerView.Adapter<AmazonCard
     final String userId = fUser.getUid();
     private DatabaseReference userAmazonCartRef;
 
-
-
     public AmazonCardViewBSheetAdapter(){
-
 
     }
 
@@ -89,8 +86,6 @@ public class AmazonCardViewBSheetAdapter extends RecyclerView.Adapter<AmazonCard
             userAmazonCartRef.child(productObject.getProduct_id()).child("quantity").setValue(productObject.getQuantity() -1);
 
         }
-
-
 
     }
 

@@ -56,9 +56,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter.ViewHolder.OnRecipeListener, MyIngredientsAdapter.ViewHolder.OnMyIngredientListener{
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-
     public FirebaseAuth fAuth = FirebaseAuth.getInstance();
     public FirebaseUser fUser = fAuth.getCurrentUser();
     final String userId = fUser.getUid();
@@ -453,7 +450,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-
                 ArrayList<Food> recipeIngredients = new ArrayList<>();
 
                 int newServe = numberPicker.getValue();
@@ -465,7 +461,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                   double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
 
-                  Food newFood = new Food(food.getName(), formatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
+                  Food newFood = new Food(food.getName(), FormatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
 
                   recipeIngredients.add(newFood);
 

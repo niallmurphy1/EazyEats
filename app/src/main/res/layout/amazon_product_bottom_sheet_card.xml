@@ -29,14 +29,14 @@
 
             <TextView
                 android:id="@+id/bap_amazon_product_title_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="268dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
-                android:textStyle="bold"
                 android:text="This is the product name text field and the\n title of the product will appear here "
                 android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/bap_amazon_product_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
