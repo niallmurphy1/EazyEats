@@ -19,7 +19,6 @@ public class OrderStatusViewModel extends ViewModel {
     public MutableLiveData<OrderResponse> orderResponse = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
 
-
     public OrderStatusViewModel(OrderRepo repo) {
         this.repo = repo;
     }
@@ -36,6 +35,7 @@ public class OrderStatusViewModel extends ViewModel {
             }
         }
     };
+
     private void getOrderStatus() {
         loading.postValue(true);
         repo.retrieveOrder(orderRequestId, new Callback<OrderResponse>() {

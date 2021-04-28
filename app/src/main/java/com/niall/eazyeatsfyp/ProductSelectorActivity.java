@@ -152,8 +152,6 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
     public void onProductClick(int position) {
         ProductObject selectedProduct = adapter.getProductObjects().get(position);
         System.out.println("ONPRODUCTCLICK METHOD");
-        Toast.makeText(this, selectedProduct + " clicked!", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, selectedProduct.getStars() + " stars!" + " " + selectedProduct.getPrice() + " euro, ratings: " + selectedProduct.getNum_reviews(), Toast.LENGTH_SHORT).show();
 
         //dialogue here
 
@@ -240,7 +238,7 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
             public void onSuccess(Object o) {
 
                 Log.d(TAG, "onSuccess: " + newProductMap.toString() + " added!");
-                Toast.makeText(ProductSelectorActivity.this, productObject.toString() + "added to cart!", Toast.LENGTH_SHORT).show();
+                Snackbar.make(root, productObject.getTitle() + " added to cart!", Snackbar.LENGTH_SHORT).show();
             }
         });
 

@@ -1,21 +1,26 @@
 package com.niall.eazyeatsfyp.zincActivities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,8 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.niall.eazyeatsfyp.BNavigationActivity;
 import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.fragments.ShoppingListFragment;
 import com.niall.eazyeatsfyp.zincEntities.Address;
 import com.niall.eazyeatsfyp.zincEntities.Order;
 import com.niall.eazyeatsfyp.zincEntities.OrderRepo;
@@ -34,6 +41,7 @@ import com.niall.eazyeatsfyp.zincEntities.ProductObject;
 import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
 import com.niall.eazyeatsfyp.zincEntities.Shipping;
 import com.niall.eazyeatsfyp.zincEntities.UserAmazonDetailsWriter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +58,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private PaymentMethod payment_method;
     private boolean is_gift;
     private double max_price;
+
+    private View root;
 
     private OrderRepo orderRepo = new OrderRepo();
 
@@ -124,6 +134,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         observeOrderStatus();
         observeLoadingStatus();
 
+        root = findViewById(R.id.order_details_layout);
+
         //assign required variables to create an order object
         userAmazonCartRef = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonShoppingCart");
         userAmazonCreds = FirebaseDatabase.getInstance().getReference().child("User").child(userId).child("user-amazonCreds");
@@ -193,8 +205,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         sameAsShippingCheckbox = findViewById(R.id.order_details_same_as_shipping_checkbox);
 
         useSavedAddressCheckBox = findViewById(R.id.use_saved_shipping_details_checkbox);
-
-
 
 
         //initPaymentMethod
@@ -288,7 +298,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             amazonProducts.add(product);
         }
 
-        if(useFirebaseAddress){
+        if (useFirebaseAddress) {
             order = new Order("amazon_uk"
                     , amazonProducts
                     , addressFromFirebase
@@ -299,9 +309,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     , is_gift
                     , max_price);
 
-        }
-
-        else {
+        } else {
             order = new Order("amazon_uk"
                     , amazonProducts
                     , shipping_address
@@ -337,24 +345,20 @@ public class OrderDetailsActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void sameAsBilling() {
 
 
-        if(useSavedAddressCheckBox.isChecked()){
+        if (useSavedAddressCheckBox.isChecked()) {
             sameAsShippingCheckbox.setClickable(false);
             useFirebaseAddress = true;
 
-        }
-        else if(!useSavedAddressCheckBox.isChecked()){
+        } else if (!useSavedAddressCheckBox.isChecked()) {
             sameAsShippingCheckbox.setClickable(true);
-            useFirebaseAddress=false;
+            useFirebaseAddress = false;
 
-        }
-
-        else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
+        } else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
 
             useFirebaseAddress = false;
             firstNameBillingEdit.setText(firstNameEdit.getText().toString());
@@ -368,7 +372,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
 
         } else {
-            useFirebaseAddress=false;
+            useFirebaseAddress = false;
             firstNameBillingEdit.setText("");
             lastNameBillingEdit.setText("");
             address1BillingEdit.setText("");
@@ -426,16 +430,42 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void showUiForStatus(OrderResponse orderResponse) {
         if (orderResponse.code.equals(OrderResponse.CODE_PROCESSING)) {
-           // Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
             //show processing view
-            Log.d(OrderDetailsActivity.class.getSimpleName(), "showUiForStatus: This is the order: " + orderResponse.toString());
         } else if (orderResponse.code.equals(OrderResponse.CODE_MAX_PRICE_EXCEEDED)) {
             Toast.makeText(this, "Order max price exceeded", Toast.LENGTH_SHORT).show();
+            Log.d(OrderDetailsActivity.class.getSimpleName(), "showUiForStatus: This is the order: " + orderResponse.toString());
+            Log.d(OrderDetailsActivity.class.getSimpleName(), "showUiForStatus: order screenshots" + orderResponse.screenshot_urls);
+            showSuccessDialog(orderResponse);
             // show max price exceeded (successful test order) view
-        } else  {
-            Toast.makeText(this, "Order other result:" + orderResponse.code , Toast.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(root, "Order error result: " + orderResponse.code, Snackbar.LENGTH_SHORT).show();
+
             // unknown/other result; show error view
         }
+    }
+
+    public void showSuccessDialog(OrderResponse orderResponse){
+
+        String imageSuccess = orderResponse.screenshot_urls.get(orderResponse.screenshot_urls.size() -1);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_order_success, null);
+        ImageView imageView = dialogView.findViewById(R.id.order_screenshot_image);
+        Picasso.get()
+                .load(imageSuccess)
+                .fit()
+                .centerCrop()
+                .into(imageView);
+        builder.setView(dialogView);
+        builder.setTitle("Order Success!");
+        builder.setPositiveButton("Done", (dialog, which) -> finish());
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+        //TODO: maybe get rid of shopping cart?
+
     }
 
     private void initViewModel() {

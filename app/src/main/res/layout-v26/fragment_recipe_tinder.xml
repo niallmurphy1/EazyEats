@@ -15,14 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
-
-
     </androidx.appcompat.widget.Toolbar>
 
 
     <TextView
-        android:text="Use the options menu to refine recipes!"
+        android:text="Use the Bottom Sheet to refine recipes!"
         android:layout_width="match_parent"
         android:textSize="25sp"
         android:gravity="center"

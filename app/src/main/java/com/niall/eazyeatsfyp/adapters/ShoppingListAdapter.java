@@ -125,7 +125,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                                     case R.id.menu_shop_list_select_all:
 
-                                        //TODO: check if this works (shoppingListAdapterItems has categories also)
 
                                         ArrayList<ShoppingListProductAdapterItem> allProductItems = new ArrayList<>();
                                         for(ShoppingListAdapterItem shoppingListAdapterItem: shoppingListAdapterItems){

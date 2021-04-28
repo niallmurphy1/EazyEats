@@ -130,7 +130,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
 
     //TODO: make it easier to the user to know that they need to click on an item to search it in amazon.
-    // Implement deletion from shopList
+
 
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -151,7 +151,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         scanIntent = new Intent(getContext(), Scanner.class);
         userShopList = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-shoppinglist");
         userAmazonCartRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-amazonShoppingCart");
-
         allItemsRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
     }
@@ -169,7 +168,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         super.onViewCreated(view, savedInstanceState);
 
 
-        Snackbar.make(getView(), "Click on items to search for products on Amazon!", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), "Click on items to search for products on Amazon!", Snackbar.LENGTH_SHORT).show();
 
         getRecipeIngredientsFromFirebase(allItemsRef);
 
@@ -431,10 +430,7 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
     }
 
 
-    public void deleteItemsFromShoppingList(){
 
-        //TODO: if the items is the only one in the ShoppingListCategory on deletion, delete the ShoppingListCategory Object
-    }
 
 
     public void onAddShopListItemClick() {

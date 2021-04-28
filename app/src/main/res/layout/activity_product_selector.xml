@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProductSelectorActivity"
-    android:id="@+id/product_selector_activity_layout">
+    android:id="@+id/product_selector_activity_layout"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/amazon_products_rcv"

@@ -79,7 +79,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
 
 
-        Toast.makeText(this, "this barcode " + upcBarcode, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "this barcode " + upcBarcode, Toast.LENGTH_SHORT).show();
 
         AndroidNetworking.get("https://api.spoonacular.com/food/products/upc/" + upcBarcode + "?apiKey=c029b15f6c654e36beba722a71295883").build().getAsString(new StringRequestListener() {
             @Override

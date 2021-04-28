@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -132,8 +133,7 @@ public class AmazonCardViewBSheetAdapter extends RecyclerView.Adapter<AmazonCard
             public void onClick(View v) {
                 //handle object removed from firebase and rcv, with confirmation dialog
 
-                Toast.makeText(v.getContext(), "Delete button clicked on : " + productObjects.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-
+                Snackbar.make(v, "Item removed from cart!", Snackbar.LENGTH_SHORT).show();
                 removeFromFirebase(productObjects.get(position));
 
 

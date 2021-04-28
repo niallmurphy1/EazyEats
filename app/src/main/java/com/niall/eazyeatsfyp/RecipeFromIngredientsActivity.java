@@ -69,11 +69,13 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
     public void searchByIngredient(String ingredientQuery) {
 
-        AndroidNetworking.get(RECIPE_SEARCH_NO_INFO + SP_APIKEY + ingredientQuery+ "&sort=random&number=20")
+        AndroidNetworking.get(RECIPE_SEARCH_NO_INFO + SP_APIKEY + ingredientQuery)
                 .build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: api works...");
+
+                Log.d(TAG, "onResponse: Ingredient query: " + ingredientQuery);
 
                 System.out.println("API RESPONSE: " + response);
 
@@ -97,8 +99,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
                         String recipeID = arr.getJSONObject(i).getString("id");
                         Log.d(TAG, "Recipe ID: " + recipeID);
 
-                        //TODO: if time, notify user of ingredients they need to complete recipe,
-                        // using missingIngredients array in API response
 
                         JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
 
@@ -152,6 +152,8 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                         Recipe recipe = new Recipe(title, dishTypes, ingredients, readyInMinutes, servings, image, recipeID, cuisines);
 
+
+                        Log.d(TAG, "onResponse: The recipe "   + recipe.toString());
                         recipes.add(recipe);
 
                     }
@@ -162,8 +164,6 @@ public class RecipeFromIngredientsActivity extends AppCompatActivity implements 
 
                     notifyUserIfNoResults(recipes);
 
-                    //TODO: find out why this only returns one recipe in the rcv each time,
-                    // maybe search without info and try to return more recipes
 
                     recipeRecycler = findViewById(R.id.recipe_from_ingredients_rcv);
                     recipeRecycler.setLayoutManager(new LinearLayoutManager(RecipeFromIngredientsActivity.this));

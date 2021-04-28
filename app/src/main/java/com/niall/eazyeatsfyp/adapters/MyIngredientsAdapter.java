@@ -87,7 +87,6 @@ public class MyIngredientsAdapter extends RecyclerView.Adapter<MyIngredientsAdap
             ingredientName.setText(foodItem.getName());
 
             ingredientQuantUnit.setText(foodItem.getQuantity() + " " + foodItem.getUnit());
-            //TODO: get rid of listener, no use
             itemView.setOnClickListener(v -> myIngredientListener.onIngredientClick(foodItem));
         }
 

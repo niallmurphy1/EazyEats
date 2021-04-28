@@ -258,49 +258,49 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
                     if(getChecked(cuisineChips) == null && getChecked(mealTypeChips) == null && getChecked(allergenChips) == null){
 
                         //no filters applied
-                        fetchRecipes("&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) == null && getChecked(mealTypeChips) == null && getChecked(allergenChips) != null ){
 
                         //everything but allergens is null
-                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) == null && getChecked(mealTypeChips) != null && getChecked(allergenChips) == null){
 
                         //everything but mealtypes is null
 
-                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) != null && getChecked(mealTypeChips) == null && getChecked(allergenChips) == null){
 
                         //everything but cuisines is null
-                        fetchRecipes("&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
                     }else if(getChecked(cuisineChips) == null && getChecked(mealTypeChips) != null && getChecked(allergenChips) != null){
 
                         //only cuisines is null
-                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&type="+getChecked(mealTypeChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&type="+getChecked(mealTypeChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) != null  && getChecked(mealTypeChips) == null && getChecked(allergenChips) != null){
 
                         //only mealtypes is null
-                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&intolerances="+getChecked(allergenChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) != null  && getChecked(mealTypeChips) != null && getChecked(allergenChips) == null){
 
                         //only allergens is null
-                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
 
                     }else if(getChecked(cuisineChips) != null  && getChecked(mealTypeChips) != null && getChecked(allergenChips) != null){
 
                         //nothing is null
-                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&intolerances="+getChecked(allergenChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true&number=10");
+                        fetchRecipes("&type="+getChecked(mealTypeChips)+"&intolerances="+getChecked(allergenChips)+"&cuisine="+getChecked(cuisineChips)+"&sort=random&fillIngredients=true&instructionsRequired=true");
 
                     }
 
@@ -597,6 +597,9 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                         tinderRecipes.add(recipe);
 
+                        if(tinderRecipes.isEmpty()){
+                            Snackbar.make(getView(), "No recipes! Try adding less filters", Snackbar.LENGTH_SHORT).show();
+                        }
                     }
 
                 } catch (JSONException e) {

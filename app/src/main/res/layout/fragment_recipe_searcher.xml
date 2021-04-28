@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".RecipeSearcherActivity">
 
+
     <SearchView
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
@@ -16,11 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+        android:id="@+id/autocomplete_text_view_searc_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:layout_constraintTop_toBottomOf="@id/autocomplete_text_view_searc_recipes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

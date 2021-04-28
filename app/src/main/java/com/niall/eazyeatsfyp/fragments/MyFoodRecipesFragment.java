@@ -54,7 +54,7 @@ import java.util.Map;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
-public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter.ViewHolder.OnRecipeListener, MyIngredientsAdapter.ViewHolder.OnMyIngredientListener{
+public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter.ViewHolder.OnRecipeListener, MyIngredientsAdapter.ViewHolder.OnMyIngredientListener {
 
     public FirebaseAuth fAuth = FirebaseAuth.getInstance();
     public FirebaseUser fUser = fAuth.getCurrentUser();
@@ -98,8 +98,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     private ItemTouchHelper.SimpleCallback simpleCallback;
 
 
-
-
     public MyFoodRecipesFragment() {
         // Required empty public constructor
     }
@@ -110,8 +108,6 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         super.onCreate(savedInstanceState);
 
         userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
-
-
 
 
         simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -130,6 +126,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
+
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
@@ -141,83 +138,76 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 Recipe deletedRecipe = recipes.get(position);
 
 
-                if(direction == ItemTouchHelper.LEFT){
-                   // recipes.remove(position);
+                if (direction == ItemTouchHelper.LEFT) {
+                    // recipes.remove(position);
 
                     undoClicked = false;
-                   // adapter.notifyItemRemoved(position);
+                    // adapter.notifyItemRemoved(position);
                     Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
-                            Snackbar.LENGTH_LONG).setAction("Undo", v -> {
-                                undoClicked = true;
-                                recipes.add(deletedRecipe);
-                                adapter.notifyItemInserted(position);
-                                addToFirebase(deletedRecipe);
-                            }
-                    ).show();
+                            Snackbar.LENGTH_LONG)
+//                            .setAction("Undo", v -> {
+//                                undoClicked = true;
+//                                recipes.add(deletedRecipe);
+//                                adapter.notifyItemInserted(position);
+//                                addToFirebase(deletedRecipe);
+//                            }
+                            .show();
 
 
-                    Log.d("UNDOCLICKED", "onSwiped: value of undo clicked " + undoClicked);
-
-
-                    //TODO: fix this snackbar undo button
-
-
-                    deleteIfNotUndo(deletedRecipe);
+                    //deleteIfNotUndo(deletedRecipe);
                 }
             }
         };
     }
 
 
-    public void deleteIfNotUndo(Recipe deletedRecipe){
+    public void deleteIfNotUndo(Recipe deletedRecipe) {
 
-            if(!undoClicked){
+        if (!undoClicked) {
 
-                Log.d("TAG", "onSwiped: on DeleteRecipe: " + deletedRecipe.toString());
+            Log.d("TAG", "onSwiped: on DeleteRecipe: " + deletedRecipe.toString());
 
-                userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
-
-
-                userFavRecipesRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+            userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
 
 
-                        Log.d("TAG", "onDataChange: in this onDataChanged method");
-                        for(DataSnapshot keyNode: snapshot.getChildren()){
-
-                            Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
-
-
-                            Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
-
-                            if (keyNode.child("recipeID").getValue().equals(deletedRecipe.getRecipeID())){
-
-                                Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
-
-                                userFavRecipesRef.child(keyNode.getKey()).removeValue();
+            userFavRecipesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-                                Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()) );
-                            }
+                    Log.d("TAG", "onDataChange: in this onDataChanged method");
+                    for (DataSnapshot keyNode : snapshot.getChildren()) {
+
+                        Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
+
+
+                        Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
+
+                        if (keyNode.child("recipeID").getValue().equals(deletedRecipe.getRecipeID())) {
+
+                            Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
+
+                            userFavRecipesRef.child(keyNode.getKey()).removeValue();
+
+
+                            Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()));
                         }
-
-                        //adapter.notifyDataSetChanged();
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    //adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
 
-                        Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
-                    }
-                });
+                    Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
+                }
+            });
 
-            }
+        }
 
     }
-
-
 
 
     public void addToFirebase(Recipe deletedRecipe) {
@@ -247,7 +237,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
             public void onFailure(@NonNull Exception e) {
 
 
-                Log.e("ADDTOFIREBASE", "onFailure: Failed to add ",e );
+                Log.e("ADDTOFIREBASE", "onFailure: Failed to add ", e);
             }
         });
 
@@ -276,9 +266,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     }
 
 
-
-
-    public void setUpIngredientsRCV(int pos){
+    public void setUpIngredientsRCV(int pos) {
 
         ingredients = recipes.get(pos).getIngredients();
 
@@ -295,7 +283,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     }
 
 
-    public void fetchRecipesFromFirebase(){
+    public void fetchRecipesFromFirebase() {
 
         userFavRecipesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -305,14 +293,14 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 recipes.clear();
 
                 List<String> keys = new ArrayList<>();
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Recipe recipe = keyNode.getValue(Recipe.class);
                     System.out.println(recipe);
                     recipes.add(recipe);
                 }
 
-                for(Recipe recipe: recipes){
+                for (Recipe recipe : recipes) {
 
                     System.out.println(recipe.toString());
                     System.out.println("recipe Name: " + recipe.getName());
@@ -324,7 +312,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                     origServings.add(origServing);
 
-                    for(Food food : recipe.getIngredients()) {
+                    for (Food food : recipe.getIngredients()) {
 
                         initialQuants.add(Double.parseDouble(food.getQuantity()));
 
@@ -332,7 +320,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                 }
 
-              setUpRCV();
+                setUpRCV();
             }
 
             @Override
@@ -343,10 +331,9 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         });
 
 
-
     }
 
-    public void setUpRCV(){
+    public void setUpRCV() {
 
         if (getView() != null) {
 
@@ -362,47 +349,45 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     }
 
 
-
-
     @Override
     public void onRecipeClick(int position) {
 
-                setUpIngredientsRCV(position);
+        setUpIngredientsRCV(position);
 
 
-                if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }else{
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
 
-                headerLayout = getView().findViewById(R.id.baps_header_layout);
+        headerLayout = getView().findViewById(R.id.baps_header_layout);
 
 
-                recipeNameText = getView().findViewById(R.id.baps_recipe_viewer_recipe_name_text);
-                recipeImage = getView().findViewById(R.id.baps_recipe_viewer_image_new);
-                recipeInstructions = getView().findViewById(R.id.baps_recipe_instructions_recipe_view);
-                recipeTimeTextView = getView().findViewById(R.id.baps_ready_in_mins_recipe_viewer);
-                servingsTextView = getView().findViewById(R.id.baps_recipe_viewer_servings_text);
+        recipeNameText = getView().findViewById(R.id.baps_recipe_viewer_recipe_name_text);
+        recipeImage = getView().findViewById(R.id.baps_recipe_viewer_image_new);
+        recipeInstructions = getView().findViewById(R.id.baps_recipe_instructions_recipe_view);
+        recipeTimeTextView = getView().findViewById(R.id.baps_ready_in_mins_recipe_viewer);
+        servingsTextView = getView().findViewById(R.id.baps_recipe_viewer_servings_text);
 
-                recipeNameText.setText(recipes.get(position).getName());
+        recipeNameText.setText(recipes.get(position).getName());
 
-                Picasso.get()
-                        .load(recipes.get(position).getImageURI().toString())
-                        .fit()
-                        .centerCrop()
-                        .into(recipeImage);
+        Picasso.get()
+                .load(recipes.get(position).getImageURI().toString())
+                .fit()
+                .centerCrop()
+                .into(recipeImage);
 
-                recipeInstructions.setText(recipes.get(position).getMethod());
+        recipeInstructions.setText(recipes.get(position).getMethod());
 
-                if(recipeInstructions == null){
+        if (recipeInstructions == null) {
 
-                    recipeInstructions.setText("No method available for this recipe!");
-                }
+            recipeInstructions.setText("No method available for this recipe!");
+        }
 
-                recipeTimeTextView.setText("Time: " + String.valueOf(recipes.get(position).getTime()) + " mins");
+        recipeTimeTextView.setText("Time: " + String.valueOf(recipes.get(position).getTime()) + " mins");
 
-                servingsTextView.setText("Serves " + (String.valueOf(recipes.get(position).getServings())));
+        servingsTextView.setText("Serves " + (String.valueOf(recipes.get(position).getServings())));
 
 
         bapsChangeServingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -412,7 +397,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
             }
         });
 
-            }
+    }
 
 
     @Override
@@ -422,7 +407,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
     }
 
-    public int getServingsTextView(TextView textView){
+    public int getServingsTextView(TextView textView) {
 
         String textViewText = textView.getText().toString();
 
@@ -434,11 +419,10 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     }
 
 
-
-    public void changeServingsRework(int pos){
+    public void changeServingsRework(int pos) {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings, null);
         builder.setView(dialogView);
         builder.setTitle("Change Servings");
         numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
@@ -455,15 +439,15 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                 int newServe = numberPicker.getValue();
                 servingsTextView.setText("Serves: " + newServe);
 
-                double multiplyBy = (double) newServe /recipes.get(pos).getServings();
+                double multiplyBy = (double) newServe / recipes.get(pos).getServings();
 
-                for(Food food: ingredients){
+                for (Food food : ingredients) {
 
-                  double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
+                    double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
 
-                  Food newFood = new Food(food.getName(), FormatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
+                    Food newFood = new Food(food.getName(), FormatDouble.format2DecimalPlaces(newFoodQuant), food.getUnit());
 
-                  recipeIngredients.add(newFood);
+                    recipeIngredients.add(newFood);
 
                 }
 
