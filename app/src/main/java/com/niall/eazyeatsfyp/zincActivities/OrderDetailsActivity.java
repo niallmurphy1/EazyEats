@@ -428,6 +428,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if (orderResponse.code.equals(OrderResponse.CODE_PROCESSING)) {
            // Toast.makeText(this, "Order processing", Toast.LENGTH_SHORT).show();
             //show processing view
+            Log.d(OrderDetailsActivity.class.getSimpleName(), "showUiForStatus: This is the order: " + orderResponse.toString());
         } else if (orderResponse.code.equals(OrderResponse.CODE_MAX_PRICE_EXCEEDED)) {
             Toast.makeText(this, "Order max price exceeded", Toast.LENGTH_SHORT).show();
             // show max price exceeded (successful test order) view

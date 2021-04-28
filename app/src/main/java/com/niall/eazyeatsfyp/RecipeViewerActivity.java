@@ -55,11 +55,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecipeViewerActivity extends AppCompatActivity implements MyIngredientsAdapter.ViewHolder.OnMyIngredientListener{
+public class RecipeViewerActivity extends AppCompatActivity implements MyIngredientsAdapter.ViewHolder.OnMyIngredientListener {
 
 
     ActivityRecipeViewerNewBindingImpl binding;
-   // ActivityRecipeViewerBinding binding;
+    // ActivityRecipeViewerBinding binding;
     private boolean isRotate = false;
 
     private TextView recipeNameText;
@@ -67,7 +67,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     private TextView recipeInstructions;
     private TextView recipeTimeTextView;
     private TextView servingsTextView;
-
 
 
     private ArrayList<Double> initialQuants = new ArrayList<>();
@@ -86,7 +85,8 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     MyIngredientsAdapter adapter = new MyIngredientsAdapter();
     ArrayList<Food> ingredients = new ArrayList<>();
 
-    private ArrayList<Recipe> favRecipes= new ArrayList<>();;
+    private ArrayList<Recipe> favRecipes = new ArrayList<>();
+    ;
 
     private Button changeServingsBtn;
     private NumberPicker numberPicker;
@@ -127,10 +127,10 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
             @Override
             public void onClick(View v) {
                 isRotate = ViewAnimation.rotateFab(v, !isRotate);
-                if(isRotate){
+                if (isRotate) {
                     ViewAnimation.showIn(binding.fabHeart);
                     ViewAnimation.showIn(binding.fabCart);
-                }else{
+                } else {
                     ViewAnimation.showOut(binding.fabHeart);
                     ViewAnimation.showOut(binding.fabCart);
                 }
@@ -140,23 +140,22 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         Intent intent = getIntent();
 
-        if(intent !=null) {
+        if (intent != null) {
             String strdata = intent.getExtras().getString("WhereFrom");
 
-            if(strdata.equals("RECIPEFROMSEARCH")){
+            if (strdata.equals("RECIPEFROMSEARCH")) {
                 final String recipeID = intent.getStringExtra(RecipeSearcherFragment.RECIPE_ID);
                 String recipeImageURI = intent.getStringExtra(RecipeSearcherFragment.RECIPE_IMAGEURI);
 
                 callRecipeAPI(recipeID, recipeImageURI);
 
-            }else if(strdata.equals("RECIPEFROMINGREDIENTS")){
+            } else if (strdata.equals("RECIPEFROMINGREDIENTS")) {
 
                 final String recipeIDFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_ID);
                 final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
 
                 callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
-            }
-            else if(strdata.equals("RECIPEFROMTINDER")){
+            } else if (strdata.equals("RECIPEFROMTINDER")) {
 
                 final String recipeIDFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_ID);
                 final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
@@ -173,7 +172,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         setUpRCV();
     }
 
-    public void callRecipeAPI(String rID, String rImage){
+    public void callRecipeAPI(String rID, String rImage) {
 
         System.out.println("Recipe ID:" + rID);
         recipeImage = findViewById(R.id.recipe_viewer_image_new);
@@ -205,7 +204,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     JSONArray jArray = obj.getJSONArray("extendedIngredients");
 
-                    for(int i=0; i < jArray.length(); i++){
+                    for (int i = 0; i < jArray.length(); i++) {
                         String ingredientName = jArray.getJSONObject(i).getString("name");
 
                         String categories = jArray.getJSONObject(i).getString("aisle");
@@ -225,7 +224,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                         Food food = new Food(ingredientName, quant, unit);
 
 
-
                         food.setFoodId(foodId);
                         ingredients.add(food);
 
@@ -240,17 +238,16 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     String instructions = obj.getString("instructions");
 
-                    System.out.println("Recipe instructions: "+ instructions);
+                    System.out.println("Recipe instructions: " + instructions);
 
                     String parsedInstructions = Html.fromHtml(instructions).toString();
 
                     System.out.println("Parsed instructions: " + parsedInstructions);
 
 
-                    if(recipeInstructions == null){
+                    if (recipeInstructions == null) {
                         recipeInstructions.setText("No method avaialable for this recipe!");
-                    }
-                    else {
+                    } else {
                         recipeInstructions.setText(parsedInstructions);
                     }
 
@@ -258,23 +255,20 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                     ArrayList<String> dishTypes = new ArrayList<>();
 
 
-
-                    for(int i =0; i< obj.getJSONArray("dishTypes").length(); i++){
+                    for (int i = 0; i < obj.getJSONArray("dishTypes").length(); i++) {
                         dishTypes.add(obj.getJSONArray("dishTypes").get(i).toString());
                     }
 
                     ArrayList<String> cuisines = new ArrayList<>();
 
 
-                    for(int i =0; i< obj.getJSONArray("cuisines").length(); i++){
+                    for (int i = 0; i < obj.getJSONArray("cuisines").length(); i++) {
 
                         cuisines.add(obj.getJSONArray("cuisines").get(i).toString());
                     }
 
 
                     int servings = obj.getInt("servings");
-
-
 
 
                     servingsTextView.setText("Serves: " + String.valueOf(servings));
@@ -287,7 +281,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     int time = obj.getInt("readyInMinutes");
 
-                    recipeTimeTextView.setText("Time: "+time+ " mins");
+                    recipeTimeTextView.setText("Time: " + time + " mins");
 
 
                     recipe = new Recipe(rName, dishTypes, ingredients, time, servings, rImage, rID, cuisines);
@@ -314,15 +308,15 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
     }
 
-    public void onChangeServingsClick(View v){
+    public void onChangeServingsClick(View v) {
         Log.d("TAG", "onChangeServingsClick: clicked ");
         //changeServings();
         changeServingsRework();
     }
 
-    public void changeServingsRework(){
+    public void changeServingsRework() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings,null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_servings, null);
         builder.setView(dialogView);
         builder.setTitle("Change Servings");
         numberPicker = dialogView.findViewById(R.id.change_servings_no_picker);
@@ -339,9 +333,9 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 int newServe = numberPicker.getValue();
                 servingsTextView.setText("Serves: " + newServe);
 
-                double multiplyBy = (double) newServe /recipe.getServings();
+                double multiplyBy = (double) newServe / recipe.getServings();
 
-                for(Food food: ingredients){
+                for (Food food : ingredients) {
 
                     double newFoodQuant = (Double.parseDouble(food.getQuantity()) * multiplyBy);
 
@@ -363,7 +357,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         alertDialog.show();
     }
 
-    public int getServingsTextView(TextView textView){
+    public int getServingsTextView(TextView textView) {
 
         String textViewText = textView.getText().toString();
 
@@ -375,9 +369,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
     }
 
 
-
-
-    public void formatQuants(String quant){
+    public void formatQuants(String quant) {
 
         double dblQuant = Double.parseDouble(quant);
 
@@ -393,15 +385,13 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
     }
 
-    public double changeIngredientQuants(double oldServe, int newServe, double oldQuant){
+    public double changeIngredientQuants(double oldServe, int newServe, double oldQuant) {
 
-       return (newServe / oldServe) * oldQuant;
+        return (newServe / oldServe) * oldQuant;
     }
 
 
-
-
-    public void onFavClick(View View){
+    public void onFavClick(View View) {
 
         System.out.println("Favourite clicked");
         Log.d("FAVOURITE", "Clicked! ");
@@ -411,7 +401,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         Log.d("TAG", "onFavClick: The recipe favourited: " + recipe.toString());
 
-        if(!RecipeChecker.isDuplicateFavourite(favRecipes, recipe)){
+        if (!RecipeChecker.isDuplicateFavourite(favRecipes, recipe)) {
 
             DatabaseReference recipeRef = FirebaseDatabase.getInstance().getReference("Recipe");
 
@@ -445,14 +435,13 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
             System.out.println(recipe.toString());
 
 
-        }else Snackbar.make(findViewById(R.id.recipe_viewer_activity_layout), "You already have this recipe in your Favorites!", Snackbar.LENGTH_SHORT).show();
-
-
+        } else
+            Snackbar.make(findViewById(R.id.recipe_viewer_activity_layout), "You already have this recipe in your Favorites!", Snackbar.LENGTH_SHORT).show();
 
 
     }
 
-    public void onCartClick(View view){
+    public void onCartClick(View view) {
 
         Log.d("CART ", "Clicked! ");
 
@@ -464,7 +453,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        for(int i =0; i< shoppingListItems.size(); i++){
+        for (int i = 0; i < shoppingListItems.size(); i++) {
 
             newShopListItem.put(shoppingListItems.get(i).getsId(), shoppingListItems.get(i));
 
@@ -479,9 +468,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
     }
 
-
-
-   public void setUpRCV(){
+    public void setUpRCV() {
 
         ingredientsRecycler = findViewById(R.id.recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -490,13 +477,13 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         adapter.setmOnMyIngredientListener(this);
 
 
-   }
+    }
 
     @Override
     public void onIngredientClick(Food ingredient) {
         Toast.makeText(this, ingredient.getName() + " clicked!", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(this, ingredient.getName()+ " quant: " + ingredient.getQuantity() + ingredient.getUnit(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ingredient.getName() + " quant: " + ingredient.getQuantity() + ingredient.getUnit(), Toast.LENGTH_SHORT).show();
 
     }
 }

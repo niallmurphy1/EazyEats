@@ -4,17 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.niall.eazyeatsfyp.Callback;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.util.AmazonDetailsGetter;
 import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
 
 public class AmazonCredsActivity extends AppCompatActivity {
@@ -25,6 +29,8 @@ public class AmazonCredsActivity extends AppCompatActivity {
 
     private DatabaseReference userRetailCreds;
 
+    private DatabaseReference userAmazonDB;
+
     public static final String AMAZONCREDSEMAIL = "amazon_creds_email";
     public static final String AMAZONCREDSPASSWORD = "amazon_creds_password";
 
@@ -32,6 +38,8 @@ public class AmazonCredsActivity extends AppCompatActivity {
     private EditText emailEdit;
     private EditText pWordEdit;
     private Button loginBtn;
+
+
 
     private Intent i;
 
@@ -42,19 +50,16 @@ public class AmazonCredsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amazon_creds);
 
+        userAmazonDB = FirebaseDatabase.getInstance().getReference("User").child(userId).child("userAmazonCreds");
+
         emailEdit = findViewById(R.id.amazon_login_email_text);
         pWordEdit = findViewById(R.id.amazon_login_pword_text);
         loginBtn = findViewById(R.id.amazon_login_btn);
-
-
-
-
-
+       // savedDetailsCheckbox = findViewById(R.id.use_saved_details_checkbox);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 loginClick();
             }
         });
@@ -77,11 +82,12 @@ public class AmazonCredsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
-                Toast.makeText(AmazonCredsActivity.this, "Details saved!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AmazonCredsActivity.this, "Details saved!", Toast.LENGTH_SHORT).show();
 
                 startActivity(i);
             }
         });
+
 
     }
 }
