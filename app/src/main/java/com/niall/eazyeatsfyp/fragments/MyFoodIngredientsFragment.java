@@ -61,7 +61,7 @@ import static com.niall.eazyeatsfyp.util.Constants.RECIPE_SEARCH;
 import static com.niall.eazyeatsfyp.util.Constants.SP_APIKEY;
 
 
-public class MyFoodIngredientsFragment extends Fragment implements IngredientCardAdapter.ViewHolder.OnIngredientListener{
+public class MyFoodIngredientsFragment extends Fragment implements IngredientCardAdapter.ViewHolder.OnIngredientListener {
 
 
     private FloatingActionButton fabAddItem;
@@ -89,14 +89,11 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
     public static final String INGREDIENTSQUERY = "ingredientsQuery";
 
 
-
-
     private TextView emptyIngredientsText;
 
     public MyFoodIngredientsFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -150,7 +147,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
     }
 
 
-    public void getRecipeIngredientsFromFirebase(DatabaseReference recipeRef){
+    public void getRecipeIngredientsFromFirebase(DatabaseReference recipeRef) {
 
         ArrayList<Recipe> allRecipes = new ArrayList<>();
         allRecipes.clear();
@@ -161,7 +158,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
 
                     String key = keyNode.getKey();
 
@@ -176,7 +173,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                 ingredientNames = getIngredientNames(allRecipes);
                 Log.d(TAG, "onDataChange: ingredients without duplicates: " + getIngredientNames(allRecipes));
 
-                Log.d(TAG, "onDataChange: ingredients without duplicates size: "+ getIngredientNames(allRecipes).size());
+                Log.d(TAG, "onDataChange: ingredients without duplicates size: " + getIngredientNames(allRecipes).size());
             }
 
             @Override
@@ -186,34 +183,33 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
         });
     }
 
-    public ArrayList<String> getIngredientNames(ArrayList<Recipe> recipes){
+    public ArrayList<String> getIngredientNames(ArrayList<Recipe> recipes) {
 
         ArrayList<String> ingredientNames = new ArrayList<>();
 
         ingredientNames.clear();
 
-        for(Recipe recipe: recipes) {
-            for(Food food : recipe.getIngredients())
+        for (Recipe recipe : recipes) {
+            for (Food food : recipe.getIngredients())
                 ingredientNames.add(food.getName());
         }
 
         Log.d(TAG, "getIngredientNames: ingredients with duplicates: " + ingredientNames);
-        Log.d(TAG, "getIngredientNames: ingredients with duplicates size: "+ ingredientNames.size());
+        Log.d(TAG, "getIngredientNames: ingredients with duplicates size: " + ingredientNames.size());
         return DuplicateChecker.getRidOfDuplicates(ingredientNames);
 
     }
 
 
+    public void getUserInventoryFromFirebase() {
 
-    public void getUserInventoryFromFirebase(){
-
-        Log.d(TAG, "getUserInv: method started" );
+        Log.d(TAG, "getUserInv: method started");
         userIngredientsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 foodIngredients.clear();
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: Here we go");
                     Food food = keyNode.getValue(Food.class);
                     food.setFoodId(keyNode.getKey());
@@ -222,12 +218,11 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                 }
 
 
-                System.out.println("Food items:"+foodIngredients.toString());
+                System.out.println("Food items:" + foodIngredients.toString());
 
                 adapter.setIngredients(foodIngredients);
 
                 adapter.notifyDataSetChanged();
-
 
 
             }
@@ -240,19 +235,19 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
     }
 
-    public String addQuants(String previousQuant, String newQuant){
+    public String addQuants(String previousQuant, String newQuant) {
 
 
-       return String.valueOf( Integer.valueOf(previousQuant) +Integer.valueOf(newQuant));
+        return String.valueOf(Integer.valueOf(previousQuant) + Integer.valueOf(newQuant));
 
 
     }
 
-    public void showDialog(){
+    public void showDialog() {
 
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_ingredient,null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_ingredient, null);
         builder.setView(dialogView);
         builder.setTitle("New Ingredient");
         AutoCompleteTextView dialogIngredientName = dialogView.findViewById(R.id.dialog_new_ingredient_name);
@@ -267,23 +262,23 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
         spinner.setAdapter(adapter);
         builder.setPositiveButton("Add", (dialog, which) -> {
 
-            if(!spinner.getSelectedItem().toString().equalsIgnoreCase("Choose a Unit…")){
+            if (!spinner.getSelectedItem().toString().equalsIgnoreCase("Choose a Unit…")) {
 
 
                 Food food = new Food(dialogIngredientName.getText().toString(), dialogIngredientQuant.getText().toString(), spinner.getSelectedItem().toString());
 
-                for(Food aFood : foodIngredients){
+                for (Food aFood : foodIngredients) {
 
-                    if(aFood.getName().equalsIgnoreCase(food.getName()) && aFood.getUnit().equalsIgnoreCase(food.getUnit())){
+                    if (aFood.getName().equalsIgnoreCase(food.getName()) && aFood.getUnit().equalsIgnoreCase(food.getUnit())) {
 
-                       food.setQuantity(addQuants(food.getQuantity(), aFood.getQuantity()));
+                        food.setQuantity(addQuants(food.getQuantity(), aFood.getQuantity()));
 
                         Snackbar.make(getView(), "Food quantity added to ingredients!", Snackbar.LENGTH_SHORT).show();
                     }
                 }
 
-                AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query="+food.getName()
-                        +"&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
+                AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query=" + food.getName()
+                        + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
                         .build().getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
@@ -324,13 +319,13 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d(TAG, "onError:" +  anError);
+                        Log.d(TAG, "onError:" + anError);
                         Snackbar.make(getView(), "Ingredient" + food.getName() + " not found in database, please try again", Snackbar.LENGTH_SHORT);
 
                     }
                 });
 
-            }else {
+            } else {
                 Snackbar.make(getView(), " Please enter a unit", Snackbar.LENGTH_LONG).show();
             }
 
@@ -340,20 +335,19 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
         alertDialog.show();
 
 
-
     }
 
-    public void showMeTheMoney(ArrayList<Food> foodIngredients){
+    public void showMeTheMoney(ArrayList<Food> foodIngredients) {
 
 
         ArrayList<String> ingredientNames = new ArrayList<>();
         StringBuilder query = new StringBuilder();
 
-        if(foodIngredients.isEmpty())
+        if (foodIngredients.isEmpty())
             Snackbar.make(getView(), "You need to select ingredients to create a recipe", Snackbar.LENGTH_SHORT).show();
 
-        else{
-            for(Food food: foodIngredients) {
+        else {
+            for (Food food : foodIngredients) {
                 ingredientNames.add(food.getName());
 
 
@@ -361,14 +355,13 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
 
             }
-            query.deleteCharAt(query.length()-1);
+            query.deleteCharAt(query.length() - 1);
             String ingredientQuery = "&includeIngredients=" + query + "&sort=random&fillIngredients=true&number=1";
 
             recipeFromIngredientsIntent = new Intent(getContext(), RecipeFromIngredientsActivity.class);
             recipeFromIngredientsIntent.putExtra(INGREDIENTSQUERY, ingredientQuery);
 
             startActivity(recipeFromIngredientsIntent);
-
 
 
             Log.d(TAG, "showMeTheMoney: These are the ingredients comma sep: " + query);
@@ -387,52 +380,50 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
         Log.d(TAG, "deleteIngredientsfromFirebase: selected items: " + selectedItemsDelete.toString());
 
-            Log.d(TAG, "deleteIngredientsfromFirebase: method started");
+        Log.d(TAG, "deleteIngredientsfromFirebase: method started");
 
 
-            userIngredientsRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+        userIngredientsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    for (DataSnapshot keyNode : snapshot.getChildren()) {
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
 
-                        Log.d(TAG, "onDataChange: Here we go");
-                        Food food = keyNode.getValue(Food.class);
+                    Log.d(TAG, "onDataChange: Here we go");
+                    Food food = keyNode.getValue(Food.class);
 
-                        Log.d(TAG, "onDataChanging: food name " + food.getName());
-
-
-                        Log.d(TAG, "onDataChanging: selected item food name " + selectedItemsDelete.toString());
+                    Log.d(TAG, "onDataChanging: food name " + food.getName());
 
 
-                        for(Food foo: selectedItemsDelete){
-                            if(food.getName().equalsIgnoreCase(foo.getName())){
-                                keyNode.getRef().removeValue();
+                    Log.d(TAG, "onDataChanging: selected item food name " + selectedItemsDelete.toString());
 
-                                Log.d(TAG, "onDataChange: Great success ");
-                            }
 
+                    for (Food foo : selectedItemsDelete) {
+                        if (food.getName().equalsIgnoreCase(foo.getName())) {
+                            keyNode.getRef().removeValue();
+
+                            Log.d(TAG, "onDataChange: Great success ");
                         }
 
-
                     }
-
-                    for(Food food : selectedItemsDelete){
-                        foodIngredients.remove(food);
-
-                    }
-                    adapter.setSelectedItems(new ArrayList<Food>());
-                    adapter.notifyDataSetChanged();
-
-
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                for (Food food : selectedItemsDelete) {
+                    foodIngredients.remove(food);
 
-                    Log.d(MyFoodIngredientsFragment.class.getSimpleName(), "onCancelled: Error removing food items: " + error);
                 }
-            });
+                adapter.setSelectedItems(new ArrayList<Food>());
+                adapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                Log.d(MyFoodIngredientsFragment.class.getSimpleName(), "onCancelled: Error removing food items: " + error);
+            }
+        });
 
 
     }

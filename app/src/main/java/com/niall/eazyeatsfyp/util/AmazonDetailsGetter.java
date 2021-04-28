@@ -13,7 +13,7 @@ import com.niall.eazyeatsfyp.zincEntities.RetailerCreds;
 
 public class AmazonDetailsGetter {
 
-    public static RetailerCreds getAmazonDetailsFromFirebase(DatabaseReference db, Callback<RetailerCreds> retailerCredsCallback){
+    public static RetailerCreds getAmazonDetailsFromFirebase(DatabaseReference db, Callback<RetailerCreds> retailerCredsCallback) {
 
         RetailerCreds retailerCreds = new RetailerCreds();
 

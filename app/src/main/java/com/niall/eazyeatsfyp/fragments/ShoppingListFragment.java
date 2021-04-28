@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -77,6 +79,8 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
     ArrayList<ShopListCategory> shopListCategories = new ArrayList<>();
 
     ArrayList<ShoppingListAdapterItem> shoppingListAdapterItems = new ArrayList<>();
+
+    ArrayList<ShoppingListItem> itemsToBeDeleted = new ArrayList<>();
 
     private ArrayList<String> ingredientNames;
 
@@ -651,18 +655,74 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
     @Override
     public void deleteIngredientsFromFirebase(ArrayList<ShoppingListProductAdapterItem> selectedItems) {
+        Log.d(TAG, "deleteIngredientsFromFirebase: Shopping list categories and their items before deletion: " + shopListCategories.toString());
+
+        itemsToBeDeleted.clear();
 
         if(selectedItems.isEmpty()){
             Snackbar.make(getView(), "You have no ingredients your inventory", Snackbar.LENGTH_SHORT).show();
         }
         for (ShoppingListProductAdapterItem item : selectedItems) {
-            for(ShopListCategory shopListCategory: shopListCategories){
+            for(ShopListCategory shopListCategory: shopListCategories) {
+                for(ShoppingListItem shoppingListItem: shopListCategory.getItems()){
+
+                    if(shoppingListItem.getsId().equals(item.getsId())){
+                        itemsToBeDeleted.add(shoppingListItem);
+                    }
+                }
                 shopListCategory.getItems().removeIf(shoppingListItem -> shoppingListItem.getsId().equals(item.getsId()));
 
-                //TODO: delete ingredients from firebase
+
             }
         }
-        newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
+
+        Log.d(TAG, "deleteIngredientsFromFirebase: items to be deleted: " + itemsToBeDeleted.toString());
+        Log.d(TAG, "deleteIngredientsFromFirebase: Shopping list categories and their items after deletion: " + shopListCategories.toString());
+
+        deleteItemsFromFirebase(itemsToBeDeleted);
+
+
+
+
+
+    }
+
+    private void deleteItemsFromFirebase(ArrayList<ShoppingListItem> itemsToBeDeleted) {
+
+        Log.d(TAG, "deleteItemsFromFirebase: Method started: method started delete" );
+
+        Log.d(TAG, "deleteItemsFromFirebase: Method started: method started delete, categories: " + shopListCategories.toString()
+        );
+        userShopList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for(DataSnapshot keyNode: snapshot.getChildren()){
+                    String key = keyNode.getKey();
+
+                    Log.d(TAG, "onDataChange: keys: " + key);
+
+                    for(ShoppingListItem item: itemsToBeDeleted){
+                        if (key.equals(item.getsId())){
+                            shopListCategories.remove(item);
+                            keyNode.getRef().removeValue();
+                        }
+                    }
+
+
+                }
+
+                newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: Cancelled " + error);
+            }
+        });
     }
 
     @Override
@@ -670,4 +730,8 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
         Log.d(ShoppingListFragment.class.getSimpleName(), "onShopListItemClick: " + shoppingListProductAdapterItem.getName());
         startActivity(ProductSelectorActivity.getIntent(getContext(), shoppingListProductAdapterItem.getName(), shoppingListProductAdapterItem.getBarcodeUPC()));
     }
+
+
+
+
 }
