@@ -20,8 +20,8 @@
 
 
     <item android:id="@+id/recipes_nav"
-        android:icon="@drawable/ic_recipe_book"
-        android:title="@string/recipes"
+        android:icon="@drawable/ic_search"
+        android:title="Search Recipes"
         />
 
 

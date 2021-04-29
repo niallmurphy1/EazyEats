@@ -424,7 +424,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
         cardStackView.setItemAnimator(new DefaultItemAnimator());
 
 
-        fetchRecipes("&sort=random&&fillIngredients=true&number=10");
+        fetchRecipes("&sort=random&fillIngredients=true&number=10");
 
 
     }

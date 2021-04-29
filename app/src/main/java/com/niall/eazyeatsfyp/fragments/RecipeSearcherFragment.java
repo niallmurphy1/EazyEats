@@ -63,7 +63,7 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
 
     private DatabaseReference recipeRef;
     private SearchView searchView;
-    private MaterialAutoCompleteTextView autoCompleteTextView;
+
 
     private String[] recipeNamesArray;
 
@@ -107,10 +107,10 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
                  recipeNamesArray = recipeNames.toArray(new String[0]);
 
 
-                autoCompleteTextView = getView().findViewById(R.id.autocomplete_text_view_searc_recipes);
-
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, recipeNamesArray);
-                autoCompleteTextView.setAdapter(arrayAdapter);
+                //autoCompleteTextView = getView().findViewById(R.id.autocomplete_text_view_searc_recipes);
+//
+//                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, recipeNamesArray);
+//                autoCompleteTextView.setAdapter(arrayAdapter);
 
               //  setUpTextView();
 
