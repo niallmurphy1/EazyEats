@@ -230,6 +230,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                Log.d(TAG, "onCancelled: error getUserInvFromFirebase: " + error);
             }
         });
 
@@ -267,6 +268,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
                 Food food = new Food(dialogIngredientName.getText().toString(), dialogIngredientQuant.getText().toString(), spinner.getSelectedItem().toString());
 
+                Log.d(TAG, "showDialog: new food toString() " + food.toString());
                 for (Food aFood : foodIngredients) {
 
                     if (aFood.getName().equalsIgnoreCase(food.getName()) && aFood.getUnit().equalsIgnoreCase(food.getUnit())) {
@@ -278,7 +280,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
                 }
 
                 AndroidNetworking.get("https://api.spoonacular.com/food/ingredients/search?query=" + food.getName()
-                        + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true&number=1")
+                        + "&apiKey=c029b15f6c654e36beba722a71295883&metaInformation=true")
                         .build().getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {

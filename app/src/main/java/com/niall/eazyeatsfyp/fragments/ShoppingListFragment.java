@@ -129,7 +129,6 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
     private ShoppingListAdapter newAdapter;
 
 
-    //TODO: make it easier to the user to know that they need to click on an item to search it in amazon.
 
 
     public ShoppingListFragment() {

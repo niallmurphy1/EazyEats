@@ -426,7 +426,6 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
         fetchRecipes("&sort=random&fillIngredients=true&number=10");
 
-
     }
 
 

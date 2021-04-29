@@ -142,19 +142,12 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
                     // recipes.remove(position);
 
                     undoClicked = false;
-                    // adapter.notifyItemRemoved(position);
                     Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
                             Snackbar.LENGTH_LONG)
-//                            .setAction("Undo", v -> {
-//                                undoClicked = true;
-//                                recipes.add(deletedRecipe);
-//                                adapter.notifyItemInserted(position);
-//                                addToFirebase(deletedRecipe);
-//                            }
                             .show();
 
 
-                    //deleteIfNotUndo(deletedRecipe);
+                    deleteIfNotUndo(deletedRecipe);
                 }
             }
         };

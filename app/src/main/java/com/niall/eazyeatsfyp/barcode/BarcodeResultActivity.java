@@ -50,7 +50,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
     final String userId = fUser.getUid();
 
     private ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
-    private DatabaseReference userShopList  = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-shoppinglist");
+    private DatabaseReference userShopList = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-shoppinglist");
 
     private boolean duplicate = false;
 
@@ -76,9 +76,6 @@ public class BarcodeResultActivity extends AppCompatActivity {
         barcodeTextView.setText(upcBarcode);
 
 
-
-
-
         //Toast.makeText(this, "this barcode " + upcBarcode, Toast.LENGTH_SHORT).show();
 
         AndroidNetworking.get("https://api.spoonacular.com/food/products/upc/" + upcBarcode + "?apiKey=c029b15f6c654e36beba722a71295883").build().getAsString(new StringRequestListener() {
@@ -89,7 +86,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
                 System.out.println(response);
 
 
-                if(response.startsWith("{\"status\":\"failure\",\"message\":")){
+                if (response.startsWith("{\"status\":\"failure\",\"message\":")) {
 
                     Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
                     finish();
@@ -98,9 +95,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
                 Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
 
 
-
-
-                String jSonString  = response;
+                String jSonString = response;
 
                 try {
                     JSONObject obj = new JSONObject(jSonString);
@@ -110,26 +105,24 @@ public class BarcodeResultActivity extends AppCompatActivity {
 
                     String id = obj.getString("id");
 
-                    String  cat;
+                    String cat;
 
-                    if(obj.getString("aisle") != null || !obj.getString("aisle").equalsIgnoreCase("null")){
+                    if (obj.getString("aisle") != null || !obj.getString("aisle").equalsIgnoreCase("null")) {
 
-                         cat = obj.getString("aisle");
+                        cat = obj.getString("aisle");
 
                         Log.d("TAG", "onResponse: string from aisle !null or !.equalsIgnoreCase(null) : " + cat);
-                    }
-                    else if(obj.getString("aisle").equalsIgnoreCase("null") || obj.getString("aisle") == null){
-                         cat = obj.getJSONArray("breadcrumbs").get(0).toString();
+                    } else if (obj.getString("aisle").equalsIgnoreCase("null") || obj.getString("aisle") == null) {
+                        cat = obj.getJSONArray("breadcrumbs").get(0).toString();
                         Log.d("TAG", "onResponse: string from breadcrumbs !null or !.equalsIgnoreCase(null) : " + cat);
 
-                    }
-                    else{
+                    } else {
                         cat = "Other";
 
                         Log.d("TAG", "onResponse: cat is other: " + cat);
                     }
 
-                    if(cat.equalsIgnoreCase("null")){
+                    if (cat.equalsIgnoreCase("null")) {
                         cat = "Other";
                     }
 
@@ -140,19 +133,15 @@ public class BarcodeResultActivity extends AppCompatActivity {
                     scannedItem.setBarcodeUPC(upcBarcode);
 
 
-
                     newShopListItem.put(scannedItem.getsId(), scannedItem);
 
 
                     checkDuplicateAndAdd();
 
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
 
 
             }
@@ -166,28 +155,26 @@ public class BarcodeResultActivity extends AppCompatActivity {
     }
 
 
-    private void checkDuplicateAndAdd(){
+    private void checkDuplicateAndAdd() {
 
 
-        for(ShoppingListItem shopListItem : shoppingListItems){
+        for (ShoppingListItem shopListItem : shoppingListItems) {
 
 
             //Method works, but for some null items that are added with manual FAB button in ShoppingListFragment
 
-            if(shopListItem.getsId() == null){
+            if (shopListItem.getsId() == null) {
                 Log.d("NULL ITEM", "checkDuplicateAndAdd: Null item name " + shopListItem.getName());
-            }
-            else if(shopListItem.getsId().equalsIgnoreCase(scannedItem.getsId())){
+            } else if (shopListItem.getsId().equalsIgnoreCase(scannedItem.getsId())) {
 
-                duplicate=true;
+                duplicate = true;
             }
 
 
         }
 
-        //TODO: figure out why adding works here and not in dialog
 
-        if(!duplicate) {
+        if (!duplicate) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
             userRef.child(userId).child("user-shoppinglist").updateChildren(newShopListItem).addOnSuccessListener(new OnSuccessListener() {
                 @Override
@@ -198,7 +185,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
                     finish();
                 }
             });
-        }else{
+        } else {
             Toast.makeText(BarcodeResultActivity.this, scannedItem.getName() + " is already in your shopping list!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -210,7 +197,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 shoppingListItems.clear();
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
+                for (DataSnapshot keyNode : snapshot.getChildren()) {
 
                     ShoppingListItem shoppingListItem = keyNode.getValue(ShoppingListItem.class);
                     shoppingListItems.add(shoppingListItem);

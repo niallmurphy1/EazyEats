@@ -99,7 +99,7 @@ public class MyFoodFragment extends Fragment {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), 0);
 
         viewPagerAdapter.addFragment(myIngredientsFragment, "My Ingredients");
-        viewPagerAdapter.addFragment(myRecipesFragment, "My Recipes");
+        viewPagerAdapter.addFragment(myRecipesFragment, "My Liked Recipes");
         viewPager.setAdapter(viewPagerAdapter);
     }
 

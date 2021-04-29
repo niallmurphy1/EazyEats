@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/order_screenshot_image"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="380dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

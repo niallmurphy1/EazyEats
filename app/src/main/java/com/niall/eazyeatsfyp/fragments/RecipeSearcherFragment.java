@@ -107,12 +107,6 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
                  recipeNamesArray = recipeNames.toArray(new String[0]);
 
 
-                //autoCompleteTextView = getView().findViewById(R.id.autocomplete_text_view_searc_recipes);
-//
-//                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, recipeNamesArray);
-//                autoCompleteTextView.setAdapter(arrayAdapter);
-
-              //  setUpTextView();
 
             }
 
@@ -124,123 +118,7 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
         });
     }
 
-//    public void setUpTextView(){
-//        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//
-//                recipes.clear();
-//
-//
-//                AndroidNetworking.get(RECIPE_SEARCH + SP_APIKEY + "&query=" + v.getText().toString().trim() + "&addRecipeInformation=true&fillIngredients=true")
-//
-//                            .build().getAsString(new StringRequestListener() {
-//
-//                        @Override
-//                        public void onResponse(String response) {
-//                            Log.w("API", response);
-//                            String jsonString = response;
-//                            try {
-//                                JSONObject obj = new JSONObject(jsonString);
-//                                JSONArray arr = obj.getJSONArray("results");
-//
-//
-//                                for (int i = 0; i < arr.length(); i++) {
-//                                    //get recipe names
-//                                    String name = arr.getJSONObject(i).getString("title");
-//
-//                                    //get recipe dish types
-//                                    JSONArray jArray = arr.getJSONObject(i).getJSONArray("dishTypes");
-//                                    ArrayList<String> dishTypes = new ArrayList<>();
-//
-//                                    for (int x = 0; x < jArray.length(); x++) {
-//                                        dishTypes.add(jArray.get(x).toString());
-//                                    }
-//
-//                                    JSONArray cuisinesArray = arr.getJSONObject(i).getJSONArray("cuisines");
-//                                    ArrayList<String> cuisines = new ArrayList<>();
-//
-//                                    for (int x = 0; x < cuisinesArray.length(); x++) {
-//                                        cuisines.add(cuisinesArray.get(x).toString());
-//                                    }
-//
-//
-//                                    //get cuisines
-//
-//
-//                                    String id = arr.getJSONObject(i).getString("id");
-//
-//
-//                                    String recipeImage = arr.getJSONObject(i).getString("image");
-//
-//
-//                                    //get recipe times
-//                                    int time = arr.getJSONObject(i).getInt("readyInMinutes");
-//
-//                                    //get recipe servings
-//                                    int servings = arr.getJSONObject(i).getInt("servings");
-//
-//
-//                                    JSONArray extIngredients = arr.getJSONObject(i).getJSONArray("extendedIngredients");
-//
-//                                    for (int f = 0; f < extIngredients.length(); f++) {
-//
-//                                        String ingredientName = extIngredients.getJSONObject(i).getString("name");
-//
-//                                        String categories = extIngredients.getJSONObject(i).getString("aisle");
-//
-//                                        String foodId = extIngredients.getJSONObject(i).getString("id");
-//
-//                                        ShoppingListItem shoppingListItem = new ShoppingListItem(foodId, ingredientName, categories);
-//
-//                                        String unit = extIngredients.getJSONObject(i).getString("unit");
-//
-//                                        String quant = extIngredients.getJSONObject(i).getString("amount");
-//
-//                                        Food food = new Food(ingredientName, quant, unit);
-//
-//                                        food.setFoodId(foodId);
-//                                        ingredients.add(food);
-//
-//                                        System.out.println("Ingredient #" + i + ": " + ingredientName);
-//
-//
-//                                        shoppingListItems.add(shoppingListItem);
-//
-//
-//                                    }
-//
-//                                    Recipe recipe = new Recipe(name, dishTypes, ingredients, time, servings, recipeImage, id, cuisines);
-//
-//
-//                                    recipes.add(recipe);
-//
-//                                    System.out.println(recipe.toString());
-//
-//                                    setUpRCV();
-//
-//                                }
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onError(ANError anError) {
-//                            Log.w("API", anError);
-//
-//                        }
-//                    });
-//
-//
-//                }
-//                return true;
-//            }
-//        });
-//
-//
-//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
