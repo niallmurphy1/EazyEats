@@ -686,38 +686,20 @@ public class ShoppingListFragment extends Fragment implements ShoppingListProduc
 
         Log.d(TAG, "deleteItemsFromFirebase: Method started: method started delete" );
 
-        Log.d(TAG, "deleteItemsFromFirebase: Method started: method started delete, categories: " + shopListCategories.toString()
-        );
-        userShopList.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Log.d(TAG, "deleteItemsFromFirebase: Method started: method started delete, categories: " + shopListCategories.toString());
 
+        for(ShoppingListItem deletedItem: itemsToBeDeleted){
 
-                for(DataSnapshot keyNode: snapshot.getChildren()){
-                    String key = keyNode.getKey();
+            userShopList.child(deletedItem.getsId()).removeValue();
 
-                    Log.d(TAG, "onDataChange: keys: " + key);
+            shopListCategories.remove(deletedItem);
+        }
 
-                    for(ShoppingListItem item: itemsToBeDeleted){
-                        if (key.equals(item.getsId())){
-                            shopListCategories.remove(item);
-                            keyNode.getRef().removeValue();
-                        }
-                    }
-
-
-                }
 
                 newAdapter.fillItems(buildShopListAdapterItems(shopListCategories));
 
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d(TAG, "onCancelled: Cancelled " + error);
-            }
-        });
     }
 
     @Override
