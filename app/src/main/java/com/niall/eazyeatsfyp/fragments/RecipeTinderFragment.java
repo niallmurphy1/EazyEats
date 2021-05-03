@@ -337,7 +337,7 @@ public class RecipeTinderFragment extends Fragment implements CardStackAdapter.V
 
                         Map<String, Object> childUpdates = new HashMap<>();
 
-                        childUpdates.put(key, recipeValues);
+                        childUpdates.put(recipeSwiped.getRecipeID(), recipeValues);
 
                         userRef.child(userId).child("user-favRecipes").updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

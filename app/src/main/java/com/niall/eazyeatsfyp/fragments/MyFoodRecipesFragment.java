@@ -143,9 +143,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
                     undoClicked = false;
                     Snackbar.make(recipeRecycler, deletedRecipe.getName() + " Deleted!",
-                            Snackbar.LENGTH_LONG)
-                            .show();
-
+                            Snackbar.LENGTH_LONG).show();
 
                     deleteIfNotUndo(deletedRecipe);
                 }
@@ -162,41 +160,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
             userFavRecipesRef = FirebaseDatabase.getInstance().getReference("User").child(userId).child("user-favRecipes");
 
-
-            userFavRecipesRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                    Log.d("TAG", "onDataChange: in this onDataChanged method");
-                    for (DataSnapshot keyNode : snapshot.getChildren()) {
-
-                        Log.d("TAG", "onDataChange: the recipe to be deleted " + keyNode.getValue());
-
-
-                        Log.d("TAG", "onDataChange: " + keyNode.child("recipeID").getValue().toString());
-
-                        if (keyNode.child("recipeID").getValue().equals(deletedRecipe.getRecipeID())) {
-
-                            Log.d("TAG", "onDataChange: recipe to be deleted: " + userFavRecipesRef.child(keyNode.getKey()));
-
-                            userFavRecipesRef.child(keyNode.getKey()).removeValue();
-
-
-                            Log.d("TAG", "onDataChange: Item removed: " + userFavRecipesRef.child(keyNode.getKey()));
-                        }
-                    }
-
-                    //adapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-
-                    Log.d("TAG", "onCancelled: This is an error for deleting by swipe from Firebase " + error);
-                }
-            });
+            userFavRecipesRef.child(deletedRecipe.getRecipeID()).removeValue();
 
         }
 
@@ -216,8 +180,8 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        childUpdates.put(key, recipeValues);
-        newOldRecipe.put(key, recipeValues);
+        childUpdates.put(deletedRecipe.getRecipeID(), recipeValues);
+        newOldRecipe.put(deletedRecipe.getRecipeID(), recipeValues);
 
         userFavRecipesRef.updateChildren(newOldRecipe).addOnSuccessListener(new OnSuccessListener() {
             @Override

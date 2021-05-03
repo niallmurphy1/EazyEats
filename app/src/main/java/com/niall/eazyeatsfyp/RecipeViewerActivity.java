@@ -413,8 +413,10 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
             Map<String, Object> childUpdates = new HashMap<>();
 
-            childUpdates.put(key, recipeValues);
-            newUserRecipe.put(key, recipeValues);
+
+            //TODO: make sure this doesn't mess everything up
+            childUpdates.put(recipe.getRecipeID(), recipeValues);
+            newUserRecipe.put(recipe.getRecipeID(), recipeValues);
 
             userRef.child(userId).child("user-favRecipes").updateChildren(newUserRecipe).addOnSuccessListener(new OnSuccessListener() {
                 @Override
