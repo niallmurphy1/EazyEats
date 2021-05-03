@@ -124,6 +124,8 @@ public class RecipeSearcherFragment extends Fragment implements RecipeCardAdapte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recipe_searcher, container, false);
+
+        //TODO: maybe change colour of recipe ingredients quants/units to differentiate ingredients
     }
 
     @Override

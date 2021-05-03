@@ -384,31 +384,14 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
         Log.d(TAG, "deleteIngredientsfromFirebase: method started");
 
+     for(Food deletedFood: selectedItemsDelete) {
 
-        userIngredientsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+         userIngredientsRef.child(deletedFood.getFoodId()).removeValue();
 
-                for (DataSnapshot keyNode : snapshot.getChildren()) {
-
-                    Log.d(TAG, "onDataChange: Here we go");
-                    Food food = keyNode.getValue(Food.class);
-
-                    Log.d(TAG, "onDataChanging: food name " + food.getName());
+         Log.d(TAG, "deleteIngredientsFromFirebase: Food removed: " + deletedFood.toString());
+     }
 
 
-                    Log.d(TAG, "onDataChanging: selected item food name " + selectedItemsDelete.toString());
-
-
-                    for (Food foo : selectedItemsDelete) {
-                        if (food.getName().equalsIgnoreCase(foo.getName())) {
-                            keyNode.getRef().removeValue();
-
-                            Log.d(TAG, "onDataChange: Great success ");
-                        }
-
-                    }
-                }
 
                 for (Food food : selectedItemsDelete) {
                     foodIngredients.remove(food);
@@ -420,13 +403,7 @@ public class MyFoodIngredientsFragment extends Fragment implements IngredientCar
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-                Log.d(MyFoodIngredientsFragment.class.getSimpleName(), "onCancelled: Error removing food items: " + error);
-            }
-        });
 
 
-    }
+
 }
