@@ -448,8 +448,6 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
         Log.d("CART ", "Clicked! ");
 
-        Toast.makeText(this, recipe.getIngredients().toString(), Toast.LENGTH_SHORT).show();
-
         System.out.println(foodIds.toString());
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
@@ -464,10 +462,14 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 @Override
                 public void onSuccess(Object o) {
 
-                    Toast.makeText(RecipeViewerActivity.this, "Items added!", Toast.LENGTH_SHORT).show();
+                    Log.d(RecipeViewerActivity.class.getSimpleName(), "onSuccess: Items added: " + shoppingListItems.toString());
                 }
             });
+
         }
+
+        Toast.makeText(RecipeViewerActivity.this, "Items added!", Toast.LENGTH_SHORT).show();
+
 
     }
 

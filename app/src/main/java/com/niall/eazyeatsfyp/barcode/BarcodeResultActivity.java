@@ -92,7 +92,7 @@ public class BarcodeResultActivity extends AppCompatActivity {
                     finish();
                 }
 
-                Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BarcodeResultActivity.this, response, Toast.LENGTH_SHORT).show();
 
 
                 String jSonString = response;
