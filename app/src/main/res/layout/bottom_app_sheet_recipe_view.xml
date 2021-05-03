@@ -154,8 +154,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="8dp" />
-
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="15sp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -170,10 +170,12 @@
                 android:id="@+id/baps_recipe_instructions_recipe_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="8sp"
+                android:lineSpacingExtra="6sp"
                 android:padding="8dp"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:text="This is where the recipe method goes into the recipe bottom app sheet"
+                />
 
 
         </LinearLayout>

@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -240,7 +241,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
 
                     System.out.println("Recipe instructions: " + instructions);
 
-                    String parsedInstructions = Html.fromHtml(instructions).toString();
+                    String parsedInstructions = HtmlCompat.fromHtml(instructions, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
 
                     System.out.println("Parsed instructions: " + parsedInstructions);
 

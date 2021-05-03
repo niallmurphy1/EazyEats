@@ -45,7 +45,6 @@ import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.util.FormatDouble;
 import com.squareup.picasso.Picasso;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -337,6 +336,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
 
         recipeInstructions.setText(recipes.get(position).getMethod());
 
+        Log.d(MyFoodIngredientsFragment.class.getSimpleName(), "onRecipeClick: you clicked: " + recipes.get(position).toString());
         if (recipeInstructions == null) {
 
             recipeInstructions.setText("No method available for this recipe!");
@@ -361,6 +361,29 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     public void onIngredientClick(Food ingredient) {
 
         Toast.makeText(getContext(), ingredient.getName() + " clicked!", Toast.LENGTH_SHORT).show();
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_shop_list_item, null);
+        builder.setView(dialogView);
+        TextView dialogTextName = dialogView.findViewById(R.id.add_to_shop_list_tview);
+        dialogTextName.setText(String.format("Add %s to Shopping list?", ingredient.getName()));
+        builder.setTitle("Add to shopping list");
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                addIngredientToShopList(ingredient);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void addIngredientToShopList(Food ingredient) {
+
 
     }
 
