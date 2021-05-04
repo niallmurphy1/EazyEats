@@ -105,8 +105,14 @@ public class AmazonProductCardAdapter extends RecyclerView.Adapter<AmazonProduct
                     .into(productImage);
 
             productTitle.setText(productObject.getTitle());
-            price.setText(formatPricePounds((productObject.getPrice()) / 100.00));
 
+            if(productObject.getPrice() == 0){
+                price.setText("Price may vary depending on seller");
+
+
+            }else {
+                price.setText(formatPricePounds((productObject.getPrice()) / 100.00));
+            }
 
         }
 

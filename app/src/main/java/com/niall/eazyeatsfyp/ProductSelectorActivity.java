@@ -122,6 +122,7 @@ public class ProductSelectorActivity extends AppCompatActivity implements Amazon
                 if(data == null){
                     Toast.makeText(ProductSelectorActivity.this, "No products were found matching the selected item", Toast.LENGTH_SHORT).show();
                 }
+                Log.d(TAG, "onSuccess: These are the products returned: " + data.toString());
                 adapter.setProductObjects(data);
                 adapter.notifyDataSetChanged();
             }

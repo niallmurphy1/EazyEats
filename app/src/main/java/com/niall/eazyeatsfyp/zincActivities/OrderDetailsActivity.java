@@ -83,9 +83,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private EditText countryCodeShippingEdit;
     private EditText phoneNoShippingEdit;
 
-    private MaterialCheckBox sameAsShippingCheckbox;
+    //private MaterialCheckBox sameAsShippingCheckbox;
 
-    private MaterialCheckBox useSavedAddressCheckBox;
+    //private MaterialCheckBox useSavedAddressCheckBox;
 
     //billing_address
     private EditText firstNameBillingEdit;
@@ -164,7 +164,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        sameAsBilling();
+                        //sameAsBilling();
                         assignVariables();
                     }
                 });
@@ -202,9 +202,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         countryCodeBillingEdit = findViewById(R.id.order_details_country_iso_billing_text);
         phoneNoBillingEdit = findViewById(R.id.oder_details_phone_number_billing_text);
 
-        sameAsShippingCheckbox = findViewById(R.id.order_details_same_as_shipping_checkbox);
+        //sameAsShippingCheckbox = findViewById(R.id.order_details_same_as_shipping_checkbox);
 
-        useSavedAddressCheckBox = findViewById(R.id.use_saved_shipping_details_checkbox);
+        //useSavedAddressCheckBox = findViewById(R.id.use_saved_shipping_details_checkbox);
 
 
         //initPaymentMethod
@@ -347,43 +347,43 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void sameAsBilling() {
-
-
-        if (useSavedAddressCheckBox.isChecked()) {
-            sameAsShippingCheckbox.setClickable(false);
-            useFirebaseAddress = true;
-
-        } else if (!useSavedAddressCheckBox.isChecked()) {
-            sameAsShippingCheckbox.setClickable(true);
-            useFirebaseAddress = false;
-
-        } else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
-
-            useFirebaseAddress = false;
-            firstNameBillingEdit.setText(firstNameEdit.getText().toString());
-            lastNameBillingEdit.setText(lastNameEdit.getText().toString());
-            address1BillingEdit.setText(address1ShippingEdit.getText().toString());
-            address2BillingEdit.setText(address2ShippingEdit.getText().toString());
-            zipBillingEdit.setText(zipShippingEdit.getText().toString());
-            cityBillingEdit.setText(cityShippingEdit.getText().toString());
-            stateBillingEdit.setText(stateShippingEdit.getText().toString());
-            countryCodeBillingEdit.setText(countryCodeShippingEdit.getText().toString());
-            phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
-
-        } else {
-            useFirebaseAddress = false;
-            firstNameBillingEdit.setText("");
-            lastNameBillingEdit.setText("");
-            address1BillingEdit.setText("");
-            address2BillingEdit.setText("");
-            zipBillingEdit.setText("");
-            cityBillingEdit.setText("");
-            stateBillingEdit.setText("");
-            countryCodeBillingEdit.setText("");
-            phoneNoBillingEdit.setText("");
-        }
-    }
+//    public void sameAsBilling() {
+//
+//
+//        if (useSavedAddressCheckBox.isChecked()) {
+//            sameAsShippingCheckbox.setClickable(false);
+//            useFirebaseAddress = true;
+//
+//        } else if (!useSavedAddressCheckBox.isChecked()) {
+//            sameAsShippingCheckbox.setClickable(true);
+//            useFirebaseAddress = false;
+//
+//        } else if (!useSavedAddressCheckBox.isChecked() && sameAsShippingCheckbox.isChecked()) {
+//
+//            useFirebaseAddress = false;
+//            firstNameBillingEdit.setText(firstNameEdit.getText().toString());
+//            lastNameBillingEdit.setText(lastNameEdit.getText().toString());
+//            address1BillingEdit.setText(address1ShippingEdit.getText().toString());
+//            address2BillingEdit.setText(address2ShippingEdit.getText().toString());
+//            zipBillingEdit.setText(zipShippingEdit.getText().toString());
+//            cityBillingEdit.setText(cityShippingEdit.getText().toString());
+//            stateBillingEdit.setText(stateShippingEdit.getText().toString());
+//            countryCodeBillingEdit.setText(countryCodeShippingEdit.getText().toString());
+//            phoneNoBillingEdit.setText(phoneNoShippingEdit.getText().toString());
+//
+//        } else {
+//            useFirebaseAddress = false;
+//            firstNameBillingEdit.setText("");
+//            lastNameBillingEdit.setText("");
+//            address1BillingEdit.setText("");
+//            address2BillingEdit.setText("");
+//            zipBillingEdit.setText("");
+//            cityBillingEdit.setText("");
+//            stateBillingEdit.setText("");
+//            countryCodeBillingEdit.setText("");
+//            phoneNoBillingEdit.setText("");
+//        }
+//    }
 
     public void getAddressFromFirebase() {
 

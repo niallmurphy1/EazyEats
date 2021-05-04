@@ -82,14 +82,6 @@ android:layout_width="match_parent"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/use_saved_shipping_details_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="Used previously saved address for Shipping and Billing" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -317,12 +309,6 @@ android:layout_width="match_parent"
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/order_details_same_as_shipping_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="Shipping address same as billing address" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -625,6 +611,7 @@ android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Use gift" />
+
 
 
         <!--        <com.google.android.material.textfield.TextInputLayout-->
