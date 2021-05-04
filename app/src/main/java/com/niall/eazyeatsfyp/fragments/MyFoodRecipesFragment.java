@@ -1,6 +1,7 @@
 package com.niall.eazyeatsfyp.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -38,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.niall.eazyeatsfyp.R;
+import com.niall.eazyeatsfyp.RecipeViewerActivity;
 import com.niall.eazyeatsfyp.adapters.MyIngredientsAdapter;
 import com.niall.eazyeatsfyp.adapters.RecipeCardAdapter;
 import com.niall.eazyeatsfyp.entities.Food;
@@ -82,6 +84,11 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
     private TextView recipeTimeTextView;
     private TextView servingsTextView;
     private Button bapsChangeServingsBtn;
+    private Button bapsViewFullRecipeBtn;
+
+    private Intent recipeViewerIntent;
+    public static final String RECIPE_ID = "recipeID";
+    public static final String RECIPE_IMAGEURI = "recipeImage";
 
     private FormatDouble formatDouble = new FormatDouble();
 
@@ -217,6 +224,7 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         bapsChangeServingsBtn = view.findViewById(R.id.baps_change_servings_button);
+        bapsViewFullRecipeBtn = view.findViewById(R.id.bap_view_full_recipe_button);
 
 
     }
@@ -354,6 +362,18 @@ public class MyFoodRecipesFragment extends Fragment implements RecipeCardAdapter
             }
         });
 
+        bapsViewFullRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recipeViewerIntent = new Intent(getContext(), RecipeViewerActivity.class);
+
+                recipeViewerIntent.putExtra("WhereFrom", "RECIPEFROMLIKEDRECIPES");
+                recipeViewerIntent.putExtra(RECIPE_ID, recipes.get(position).getRecipeID());
+                recipeViewerIntent.putExtra(RECIPE_IMAGEURI, recipes.get(position).getImageURI());
+
+                startActivity(recipeViewerIntent);
+            }
+        });
     }
 
 

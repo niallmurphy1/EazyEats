@@ -25,7 +25,9 @@ import com.niall.eazyeatsfyp.entities.Food;
 import com.niall.eazyeatsfyp.entities.Recipe;
 import com.niall.eazyeatsfyp.entities.ShoppingListItem;
 import com.niall.eazyeatsfyp.fragments.MyFoodIngredientsFragment;
+import com.niall.eazyeatsfyp.fragments.MyFoodRecipesFragment;
 import com.niall.eazyeatsfyp.fragments.RecipeSearcherFragment;
+import com.niall.eazyeatsfyp.fragments.RecipeTinderFragment;
 import com.niall.eazyeatsfyp.util.FormatDouble;
 import com.niall.eazyeatsfyp.util.RecipeChecker;
 import com.squareup.picasso.Picasso;
@@ -35,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -156,12 +159,22 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
                 final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
 
                 callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
+
             } else if (strdata.equals("RECIPEFROMTINDER")) {
 
-                final String recipeIDFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_ID);
-                final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeFromIngredientsActivity.RECIPE_IMAGEURI);
+                final String recipeIDFromIngredients = intent.getStringExtra(RecipeTinderFragment.RECIPE_ID);
+                final String recipeImageURIFromIngredients = intent.getStringExtra(RecipeTinderFragment.RECIPE_IMAGEURI);
 
                 callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
+            }
+            else if(strdata.equals("RECIPEFROMLIKEDRECIPES")){
+
+                final String recipeIDFromIngredients = intent.getStringExtra(MyFoodRecipesFragment.RECIPE_ID);
+                final String recipeImageURIFromIngredients = intent.getStringExtra(MyFoodRecipesFragment.RECIPE_IMAGEURI);
+
+                callRecipeAPI(recipeIDFromIngredients, recipeImageURIFromIngredients);
+
+
             }
 
 
@@ -478,6 +491,7 @@ public class RecipeViewerActivity extends AppCompatActivity implements MyIngredi
         ingredientsRecycler = findViewById(R.id.recipe_viewer_ingredients_rcv);
         ingredientsRecycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyIngredientsAdapter(this, this);
+        ingredientsRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         ingredientsRecycler.setAdapter(adapter);
         adapter.setmOnMyIngredientListener(this);
 
